@@ -1301,7 +1301,7 @@
                 </li>
             <?php } ?>
             <?php if ($this->session->userdata('role_id') == 1 or $menu['help_menu'] == 1) { ?>
-                <li class="nav-item <?= $title == 'Data Help'  | $title == 'Help Setting' ? 'active' : '' ?>">
+                <li class="nav-item position-relative <?= $title == 'Data Help'  | $title == 'Help Setting' ? 'active' : '' ?>" id="navItemHelp">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsehelp" aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-info-circle"></i>
                         <span>Bantuan</span>
@@ -1316,6 +1316,13 @@
                             <?php } ?>
                         </div>
                     </div>
+                    <!-- Sidebar Toggler Docked on Right Side of Bantuan (Desktop) -->
+                    <button class="rounded-circle border-0 d-none d-md-flex" id="sidebarToggle" title="Perkecil / Perbesar Sidebar"></button>
+                </li>
+            <?php } else { ?>
+                <!-- Fallback Sidebar Toggler if Bantuan menu hidden -->
+                <li class="nav-item position-relative d-none d-md-block" style="height:0;margin:0;padding:0;" id="navItemHelpFallback">
+                    <button class="rounded-circle border-0 d-none d-md-flex" id="sidebarToggle" title="Perkecil / Perbesar Sidebar"></button>
                 </li>
             <?php } ?>
             <?php if ($this->session->userdata('role_id') == 1 or $menu['master_menu'] == 1) { ?>
@@ -1542,10 +1549,7 @@
                         <span>Changelog</span></a>
                 </li>
             <?php } ?>
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+            <!-- Sidebar Toggler moved beside Bantuan -->
 
         </ul>
         <!-- End of Sidebar -->
