@@ -223,21 +223,55 @@ Pada pembaruan versi 2 (V2) ini, dilakukan perbaikan arsitektur tampilan antarmu
 
 ---
 
+### 14. Freeze Panel & Reposisi Kolom Menu Jatuh Tempo (*Due Date Freeze Panes & Checkbox Overhaul*)
+- **Kondisi Awal / Masalah**:
+  - Pada halaman Data Pelanggan Jatuh Tempo (`http://billtest.gayuh.net.id.test/bill/duedate`), tata letak kolom awal adalah: `No` (Col 0), `Checkbox` (Col 1), `Aksi` (Col 2), `Nama Pelanggan` (Col 3), `No Layanan` (Col 4), `Periode - Jatuh Tempo` (Col 5), `Tagihan` (Col 6).
+  - Kolom checkbox memiliki padding lebar yang tidak proporsional sehingga tampak renggang.
+  - Kolom Nama Pelanggan terletak jauh di sebelah kanan kolom Aksi, dan saat tabel digeser/scroll secara horizontal pada layar sempit/mobile, kolom Nama Pelanggan tergulung hilang ke kiri sehingga pengguna kehilangan konteks data baris yang sedang dilihat.
+- **Solusi yang Diterapkan**:
+  1. **Rekonstruksi Urutan Kolom Sesuai Preferensi Pengguna**:
+     - Kolom 1: **No** (Nomor urut)
+     - Kolom 2: **Nama Pelanggan** (Langsung di sebelah kanan kolom No)
+     - Kolom 3: **Checkbox** (Langsung di sebelah kanan kolom Nama Pelanggan, dengan ukuran ringkas, presisi, dan terpusat di tengah)
+     - Kolom 4: **Aksi** (Tombol Detail, WhatsApp, Hapus)
+     - Kolom 5: **No Layanan**
+     - Kolom 6: **Periode - Jatuh Tempo**
+     - Kolom 7: **Tagihan**
+  2. **Implementasi Freeze Panel Berjenjang (.table-sticky-duedate)**:
+     - **Mode Desktop**:
+       - Kolom 1 (`No`): `position: sticky; left: 0; width: 42px; text-align: center;`
+       - Kolom 2 (`Nama Pelanggan`): `position: sticky; left: 42px; width: 220px; white-space: normal; word-break: break-word;`
+       - Kolom 3 (`Checkbox`): `position: sticky; left: 262px; width: 42px; text-align: center; box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.12);`
+     - **Mode Mobile (< 768px)**:
+       - Kolom 1 (`No`): `width: 36px; left: 0;`
+       - Kolom 2 (`Nama Pelanggan`): `width: 140px; left: 36px; line-height: 1.25;`
+       - Kolom 3 (`Checkbox`): `width: 38px; left: 176px; box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.12);`
+       - Penguncian `min-width == max-width == width` identik memastikan **0 pixel gap** dan **0 pixel overlap** saat digulir ke kanan/kiri.
+  3. **Presisi Checkbox & Interaktivitas**:
+     - Checkbox menggunakan styling 16×16px dengan `accent-color: #f47b20` (warna oranye brand Gayuh Media).
+     - Checkbox terpusat simetris (`margin: 0 auto; display: block;`).
+     - Event listener `#selectAll` menggunakan *delegated event* `$(document).on('click', '#selectAll', ...)` sehingga seluruh checkbox baris terceklis/tidak terceklis secara andal bahkan setelah AJAX redraw DataTables.
+  4. **Paritas Dark Mode**:
+     - Latar belakang sel beku menggunakan warna navy gelap pekat `#111625` dengan efek bayangan kedalaman `box-shadow: 4px 0 12px -1px rgba(0, 0, 0, 0.5)` dan status hover baris `#1a2238`.
+
+---
+
 ## 📂 Berkas yang Diperbarui
 
 | No | Berkas | Deskripsi Perubahan |
 |:---|:---|:---|
-| 1 | `assets/backend/css/neumorphism.css` | Penambahan Bagian 12 (*Select2 Neumorphic Modern Styling & Mobile Overflow Protection*), Bagian 6.2 (*Sidebar Toggler Button Docked Beside Bantuan*), Bagian 11 (*Frozen / Sticky Customer Name Panel*), Bagian 6.1 (*Sidebar Minimized State Desktop*), perbaikan pembungkusan teks nama pelanggan (`white-space: normal`, `word-break: break-word`, lebar 220px), perbaikan simetri dan emblem melingkar logo wifi brand, perbaikan stacking drawer mobile, tombol close drawer, styling backdrop blur, perbaikan z-index Select2, dan transisi smooth. |
+| 1 | `assets/backend/css/neumorphism.css` | Penambahan Bagian 11B (*Sticky Freeze Panes Menu Jatuh Tempo .table-sticky-duedate*), Bagian 12 (*Select2 Neumorphic Modern Styling & Mobile Overflow Protection*), Bagian 6.2 (*Sidebar Toggler Button Docked Beside Bantuan*), Bagian 11 (*Frozen / Sticky Customer Name Panel*), Bagian 6.1 (*Sidebar Minimized State Desktop*), perbaikan pembungkusan teks nama pelanggan (`white-space: normal`, `word-break: break-word`, lebar 220px), perbaikan simetri dan emblem melingkar logo wifi brand, perbaikan stacking drawer mobile, tombol close drawer, styling backdrop blur, perbaikan z-index Select2, dan transisi smooth. |
 | 2 | `assets/backend/js/sb-admin-2.js` | Logika kontrol mobile drawer (`toggleMobileSidebar`), event listener penutupan (backdrop, close btn, escape, link click), dynamic scroll listener untuk sticky topbar, auto-close Select2, dan inisialisasi hover tooltip (`initSidebarTooltips`). |
 | 3 | `application/views/backend.php` | Inisialisasi Select2 dengan `{ width: '100%' }`, pemindahan `#sidebarToggle` ke samping kanan menu Bantuan (`#navItemHelp`), penghapusan toggler lama di bawah sidebar, penyesuaian layout utama, penyisipan elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, perbaikan CSS responsif drawer & minimized brand header, penggantian `overflow-x` menjadi `clip`, dan pembersihan skrip toggle saat *document ready*. |
 | 4 | `application/views/backend/dashboard.php` | Pembungkusan kartu Pencarian Cepat Layanan dalam grid `<div class="row">` dan penambahan `style="width: 100% !important;"` pada `<select>` untuk mencegah overflow di mobile. |
 | 5 | `application/views/member/speedtest.php` | Penerapan pembungkus responsif `.speedtest-wrapper` dan `.speedtest-iframe` dengan tinggi adaptif (1000px di desktop, 1060px-1200px di tablet/mobile) agar gauge meteran dan deskripsi bagian bawah (*User Info* dan footer hak cipta) pas (*fit*) sempurna tanpa terpotong. |
-| 6 | `application/views/backend/bill/unpaid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox saat digulir ke kanan/kiri. |
-| 7 | `application/views/backend/bill/paid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 8 | `application/views/backend/bill/bill.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 9 | `application/views/backend/bill/get-data-bill.php` | Penambahan kelas `table-sticky-customer` pada tabel server-side `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 10 | `application/views/mikrotik.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
-| 11 | `application/views/olt.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
+| 6 | `application/views/backend/bill/duedate.php` | Penyesuaian urutan kolom tabel (No -> Nama Pelanggan -> Checkbox -> Aksi -> No Layanan -> Periode - Jatuh Tempo -> Tagihan), penambahan kelas `table-sticky-duedate`, pengaturan `autoWidth: false`, sinkronisasi array `columns` dan `columnDefs` DataTables, serta event listener delegasi untuk `#selectAll`. |
+| 7 | `application/views/backend/bill/unpaid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox saat digulir ke kanan/kiri. |
+| 8 | `application/views/backend/bill/paid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 9 | `application/views/backend/bill/bill.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 10 | `application/views/backend/bill/get-data-bill.php` | Penambahan kelas `table-sticky-customer` pada tabel server-side `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 11 | `application/views/mikrotik.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
+| 12 | `application/views/olt.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
 
 ---
 
