@@ -663,70 +663,139 @@ body.dark-mode .nm-sidebar .nav-item .nav-link[data-toggle="collapse"]:hover::af
   color: var(--nm-brand) !important;
 }
 
-/* Sidebar Toggler Button (Di Bawah Sidebar) */
-.sidebar.nm-sidebar #sidebarToggle,
-.sidebar-dark.nm-sidebar #sidebarToggle,
-.nm-sidebar #sidebarToggle,
-.sidebar-dark #sidebarToggle {
-  background-color: var(--nm-bg) !important;
-  box-shadow: var(--nm-raised-sm) !important;
-  border: 1px solid rgba(255, 255, 255, 0.5) !important;
-  width: 2.6rem !important;
-  height: 2.6rem !important;
-  margin: 1.25rem auto !important;
-  transition: all 0.25s ease !important;
+/* ==========================================================================
+   6.2. SIDEBAR TOGGLER BUTTON (DOCKED BESIDE BANTUAN)
+   ========================================================================== */
+#accordionSidebar,
+.sidebar,
+.sidebar.nm-sidebar {
+  overflow: visible !important;
+}
+
+#navItemHelp {
+  position: relative !important;
+}
+
+#navItemHelp .nav-link {
+  padding-right: 32px !important;
+}
+
+#navItemHelp .nav-link[data-toggle="collapse"]::after {
+  margin-right: 18px !important;
+}
+
+/* Tombol Toggle Docked di Samping Kanan Tombol Bantuan (Desktop) */
+.sidebar #sidebarToggle {
+  position: absolute !important;
+  right: -24px !important;
+  top: 24px !important;
+  transform: translateY(-50%) !important;
+  z-index: 1060 !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  background-color: var(--nm-bg, #e6ecf4) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 2px 2px 6px rgba(163, 177, 198, 0.6), -2px -2px 6px rgba(255, 255, 255, 0.8) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
   outline: none !important;
 }
 
-.sidebar.nm-sidebar #sidebarToggle::after,
-.sidebar-dark.nm-sidebar #sidebarToggle::after,
-.nm-sidebar #sidebarToggle::after,
-.sidebar-dark #sidebarToggle::after {
+.sidebar #sidebarToggle::after {
   color: #475569 !important;
-  font-size: 0.95rem !important;
+  font-size: 0.78rem !important;
   font-weight: 900 !important;
-  opacity: 1 !important;
+  line-height: 1 !important;
+  margin: 0 !important;
   transition: color 0.25s ease !important;
 }
 
-.sidebar.nm-sidebar #sidebarToggle:hover,
-.nm-sidebar #sidebarToggle:hover {
-  background-color: var(--nm-bg) !important;
-  box-shadow: var(--nm-raised) !important;
-  transform: scale(1.06);
+.sidebar #sidebarToggle:hover {
+  background-color: var(--nm-bg, #e6ecf4) !important;
+  box-shadow: 3px 3px 8px rgba(163, 177, 198, 0.75), -3px -3px 8px rgba(255, 255, 255, 0.95) !important;
+  transform: translateY(-50%) scale(1.12) !important;
 }
 
-.sidebar.nm-sidebar #sidebarToggle:hover::after,
-.nm-sidebar #sidebarToggle:hover::after {
-  color: var(--nm-brand) !important;
+.sidebar #sidebarToggle:hover::after {
+  color: var(--nm-brand, #f47b20) !important;
 }
 
-.sidebar.nm-sidebar #sidebarToggle:active,
-.nm-sidebar #sidebarToggle:active {
-  box-shadow: var(--nm-inset-sm) !important;
-  transform: scale(0.96);
+.sidebar #sidebarToggle:active {
+  box-shadow: var(--nm-inset-sm, inset 2px 2px 4px rgba(163, 177, 198, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.7)) !important;
+  transform: translateY(-50%) scale(0.96) !important;
 }
 
-html.dark-mode .sidebar.nm-sidebar #sidebarToggle,
-html.dark-mode .sidebar-dark.nm-sidebar #sidebarToggle,
-html.dark-mode .nm-sidebar #sidebarToggle,
-html.dark-mode .sidebar-dark #sidebarToggle,
-body.dark-mode .sidebar.nm-sidebar #sidebarToggle,
-body.dark-mode .sidebar-dark.nm-sidebar #sidebarToggle,
-body.dark-mode .nm-sidebar #sidebarToggle,
-body.dark-mode .sidebar-dark #sidebarToggle {
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+/* Posisi di Minimized / Toggled Mode */
+@media (min-width: 768px) {
+  .sidebar.toggled #sidebarToggle,
+  .sidebar.nm-sidebar.toggled #sidebarToggle,
+  #accordionSidebar.toggled #sidebarToggle,
+  body.sidebar-toggled .sidebar #sidebarToggle {
+    top: 29px !important;
+    right: -24px !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .sidebar.toggled #sidebarToggle:hover,
+  .sidebar.nm-sidebar.toggled #sidebarToggle:hover,
+  #accordionSidebar.toggled #sidebarToggle:hover,
+  body.sidebar-toggled .sidebar #sidebarToggle:hover {
+    transform: translateY(-50%) scale(1.12) !important;
+  }
+
+  .sidebar.toggled #sidebarToggle:active,
+  .sidebar.nm-sidebar.toggled #sidebarToggle:active,
+  #accordionSidebar.toggled #sidebarToggle:active,
+  body.sidebar-toggled .sidebar #sidebarToggle:active {
+    transform: translateY(-50%) scale(0.96) !important;
+  }
 }
 
-html.dark-mode .sidebar.nm-sidebar #sidebarToggle::after,
-html.dark-mode .sidebar-dark.nm-sidebar #sidebarToggle::after,
-html.dark-mode .nm-sidebar #sidebarToggle::after,
-html.dark-mode .sidebar-dark #sidebarToggle::after,
-body.dark-mode .sidebar.nm-sidebar #sidebarToggle::after,
-body.dark-mode .sidebar-dark.nm-sidebar #sidebarToggle::after,
-body.dark-mode .nm-sidebar #sidebarToggle::after,
-body.dark-mode .sidebar-dark #sidebarToggle::after {
-  color: #cbd5e1 !important;
+/* Sembunyikan Tombol Toggle Docked di Layar Mobile (< 768px) */
+@media (max-width: 767.98px) {
+  .sidebar #sidebarToggle,
+  #sidebarToggle {
+    display: none !important;
+  }
+}
+
+/* Dark Mode untuk Tombol Toggle Docked */
+html.dark-mode .sidebar #sidebarToggle,
+body.dark-mode .sidebar #sidebarToggle {
+  background-color: #1a2236 !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5), -2px -2px 6px rgba(255, 255, 255, 0.04) !important;
+}
+
+html.dark-mode .sidebar #sidebarToggle::after,
+body.dark-mode .sidebar #sidebarToggle::after {
+  color: #94a3b8 !important;
+}
+
+html.dark-mode .sidebar #sidebarToggle:hover,
+body.dark-mode .sidebar #sidebarToggle:hover {
+  border-color: rgba(244, 123, 32, 0.4) !important;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.7), -3px -3px 8px rgba(255, 255, 255, 0.06) !important;
+}
+
+html.dark-mode .sidebar #sidebarToggle:hover::after,
+body.dark-mode .sidebar #sidebarToggle:hover::after {
+  color: #f47b20 !important;
+}
+
+html.dark-mode .sidebar #sidebarToggle:active,
+body.dark-mode .sidebar #sidebarToggle:active {
+  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.6), inset -2px -2px 4px rgba(255, 255, 255, 0.03) !important;
 }
 
 /* ==========================================================================

@@ -157,38 +157,85 @@ Pada pembaruan versi 2 (V2) ini, dilakukan perbaikan arsitektur tampilan antarmu
 
 ---
 
+### 8. Relokasi & Penyelarasan Simetris Tombol Minimize Sidebar di Samping Kanan Tombol Bantuan (*Docked Sidebar Toggler*)
+* **Masalah Sebelumnya:**
+  - Tombol minimize sidebar (`#sidebarToggle`) awalnya berada di paling bawah sidebar (di bawah menu Changelog).
+  - Ketika menu sidebar bertambah panjang atau saat sidebar dalam mode mini (*toggled*), tombol tersebut terdorong jauh ke bawah (hingga koordinat Y > 1000px) dan terpotong/hilang dari viewport layar monitor biasa. Pengguna harus menggulir halaman ke bawah hanya untuk memperbesar kembali sidebar.
+  - Tampilan tombol di bawah terasa terisolasi dan kurang ergonomis bagi alur kerja operator.
+* **Solusi & Implementasi:**
+  - **Relokasi ke Samping Kanan Menu Bantuan:**
+    - Memindahkan tombol `#sidebarToggle` langsung ke dalam elemen menu Bantuan (`#navItemHelp`) yang merupakan titik tengah vertikal (*vertical center*) dari daftar navigasi (item ke-7 dari 15 menu).
+  - **Desain Melayang Simetris pada Border Kanan (*Docked Border-Center Pin*):**
+    - Tombol didesain sebagai pin melingkar neumorphic berukuran **28×28px** dengan posisi `position: absolute; right: -14px; top: 24px; transform: translateY(-50%); z-index: 1060;`.
+    - Sumbu tengah lingkaran berada persis di atas garis batas pembatas antara sidebar dan konten utama, memberikan tampilan modern mirip panel SaaS kelas dunia (Linear / Notion).
+  - **Simetri di Mode Expanded & Minimized serta Proteksi Salah Tekan:**
+    - Pada mode terbuka (lebar 224px): tombol diposisikan pada `right: -24px` (menjorok ke kanan pada celah gutter) sejajar dengan menu Bantuan, menampilkan panah chevron `<` (fa-angle-left) yang mengisyaratkan aksi ciutkan.
+    - Pada mode mini (lebar 104px): tombol tetap bertengger di `right: -24px` pada koordinat `top: 29px` (sejajar dengan ikon Bantuan), otomatis mengubah panah menjadi `>` (fa-angle-right) yang mengisyaratkan aksi bentangkan.
+    - **Zona Penyangga Bebas Salah Tekan (*Zero Misclick Buffer*):** Diberikan jarak aman horizontal > 24px antara chevron dropdown `>` Bantuan (`margin-right: 18px !important;` & `padding-right: 32px !important;`) dengan tombol `#sidebarToggle`. Dengan ini, pengguna tidak akan sengaja menekan tombol minimize saat bermaksud mengklik menu Bantuan.
+  - **Estetika Neumorphic Dinamis:**
+    - Efek timbul melingkar halus dengan `border-radius: 50%`, latar `var(--nm-bg)`, dan border semi-transparan.
+    - Efek mikro-interaksi hover (`transform: translateY(-50%) scale(1.12)`) dengan sorotan warna oranye `#f47b20`, serta efek cekung (*inset*) saat diklik.
+    - Mendukung penuh mode gelap (*Dark Mode*) dengan bayangan pekat dan border aksen redup.
+  - **Proteksi Mode Mobile (< 768px):**
+    - Tombol otomatis disembunyikan (`d-none d-md-flex`) di layar ponsel untuk mencegah interferensi dengan laci offcanvas drawer.
+
+---
+
+### 12. Optimalisasi Tampilan Landing Page Menu Speedtest (*Bottom Description & Gauge Fit*)
+- **Kondisi Awal / Masalah**:
+  - Pada menu **Speed Test** di landing page (`http://billtest.gayuh.net.id.test/front/speedtest`), tinggi iframe sebelumnya dipatok mati secara statis pada atribut HTML `height="650px"`.
+  - Aplikasi LibreSpeed (`speedtest.gayuh.net.id`) di dalam iframe memiliki tinggi konten aktual ~950px yang terdiri dari: header/navigasi, tombol Start, indikator Ping & Jitter, gauge meteran Download & Upload, bagian **User Info** (IP Address, ASN, ISP: PT. GAYUH MEDIA INFORMATIKA, Lokasi, User Agent, Browser, OS), dan bar footer hak cipta.
+  - Akibat `height="650px"`, bar footer gelap di dalam iframe menabrak dan memotong setengah lingkaran gauge Download & Upload, sedangkan seluruh deskripsi **User Info** di bagian bawah terpotong (*truncated / hidden*).
+- **Solusi yang Diterapkan**:
+  - Memperbarui berkas template [`application/views/member/speedtest.php`](file:///d:/project/billtest.gayuh.net.id/application/views/member/speedtest.php) dengan pembungkus `.speedtest-wrapper` dan kelas `.speedtest-iframe`.
+  - Menerapkan aturan CSS responsif adaptif sesuai breakpoint layar:
+    - **Desktop (≥ 992px)**: `height: 1000px; min-height: 1000px;` — seluruh gauge, bagian User Info, dan bar footer gelap pas (*fit*) sempurna dengan ruang bernapas yang lega.
+    - **Tablet (768px - 991px)**: `height: 1060px; min-height: 1060px;` — mengakomodasi tata letak tablet.
+    - **Mobile Standar (481px - 767px)**: `height: 1140px; min-height: 1140px;` — mengakomodasi teks User Info yang melipat menjadi beberapa baris.
+    - **Mobile Kecil (≤ 480px)**: `height: 1200px; min-height: 1200px;` — memastikan tidak ada elemen yang terpotong di layar ponsel sempit.
+  - Hasilnya: Seluruh bagian meteran dan deskripsi informasi jaringan di bagian bawah tampil utuh, rapi, dan menyatu mulus dengan footer situs utama.
+
+---
+
 ## 📂 Berkas yang Diperbarui
 
 | No | Berkas | Deskripsi Perubahan |
 |:---|:---|:---|
-| 1 | `assets/backend/css/neumorphism.css` | Penambahan Bagian 11 (*Frozen / Sticky Customer Name Panel*), Bagian 6.1 (*Sidebar Minimized State Desktop*), perbaikan pembungkusan teks nama pelanggan (`white-space: normal`, `word-break: break-word`, lebar 220px), perbaikan simetri dan emblem melingkar logo wifi brand, perbaikan stacking drawer mobile, tombol close drawer, styling backdrop blur, perbaikan z-index Select2, dan transisi smooth. |
+| 1 | `assets/backend/css/neumorphism.css` | Penambahan Bagian 6.2 (*Sidebar Toggler Button Docked Beside Bantuan*), Bagian 11 (*Frozen / Sticky Customer Name Panel*), Bagian 6.1 (*Sidebar Minimized State Desktop*), perbaikan pembungkusan teks nama pelanggan (`white-space: normal`, `word-break: break-word`, lebar 220px), perbaikan simetri dan emblem melingkar logo wifi brand, perbaikan stacking drawer mobile, tombol close drawer, styling backdrop blur, perbaikan z-index Select2, dan transisi smooth. |
 | 2 | `assets/backend/js/sb-admin-2.js` | Logika kontrol mobile drawer (`toggleMobileSidebar`), event listener penutupan (backdrop, close btn, escape, link click), dynamic scroll listener untuk sticky topbar, auto-close Select2, dan inisialisasi hover tooltip (`initSidebarTooltips`). |
-| 3 | `application/views/backend.php` | Penyesuaian layout utama, penyisipan elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, perbaikan CSS responsif drawer & minimized brand header, penggantian `overflow-x` menjadi `clip`, dan pembersihan skrip toggle saat *document ready*. |
-| 4 | `application/views/backend/bill/unpaid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox saat digulir ke kanan/kiri. |
-| 5 | `application/views/backend/bill/paid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 6 | `application/views/backend/bill/bill.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 7 | `application/views/backend/bill/get-data-bill.php` | Penambahan kelas `table-sticky-customer` pada tabel server-side `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 8 | `application/views/mikrotik.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
-| 9 | `application/views/olt.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
+| 3 | `application/views/backend.php` | Pemindahan `#sidebarToggle` ke samping kanan menu Bantuan (`#navItemHelp`), penghapusan toggler lama di bawah sidebar, penyesuaian layout utama, penyisipan elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, perbaikan CSS responsif drawer & minimized brand header, penggantian `overflow-x` menjadi `clip`, dan pembersihan skrip toggle saat *document ready*. |
+| 4 | `application/views/member/speedtest.php` | Penerapan pembungkus responsif `.speedtest-wrapper` dan `.speedtest-iframe` dengan tinggi adaptif (1000px di desktop, 1060px-1200px di tablet/mobile) agar gauge meteran dan deskripsi bagian bawah (*User Info* dan footer hak cipta) pas (*fit*) sempurna tanpa terpotong. |
+| 5 | `application/views/backend/bill/unpaid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox saat digulir ke kanan/kiri. |
+| 6 | `application/views/backend/bill/paid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 7 | `application/views/backend/bill/bill.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 8 | `application/views/backend/bill/get-data-bill.php` | Penambahan kelas `table-sticky-customer` pada tabel server-side `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 9 | `application/views/mikrotik.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
+| 10 | `application/views/olt.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
 
 ---
 
 ## 🔍 Panduan Verifikasi & Pengujian
 
-1. **Pengujian Batas & Pembungkusan Teks Nama Pelanggan:**
+1. **Pengujian Halaman Speedtest Landing Page:**
+   * Buka halaman Speedtest (`http://billtest.gayuh.net.id.test/front/speedtest`).
+   * Gulir ke bawah: perhatikan bahwa meteran Download dan Upload tampil utuh tanpa terpotong bar gelap.
+   * Perhatikan deskripsi **User Info** di bagian bawah (IP, ASN, ISP, Lokasi, User Agent, Browser, OS) tampil lengkap dan terbaca dengan jelas.
+   * Perhatikan bahwa bar gelap hak cipta berada di bawah User Info dan tepat di atas footer utama situs tanpa saling bertumpukan.
+2. **Pengujian Posisi Tombol Minimize Sidebar (Desktop):**
+   * Buka Dashboard (`http://billtest.gayuh.net.id.test/dashboard`).
+   * Perhatikan posisi tombol toggle berbentuk lingkaran neumorphic kecil di tepi kanan menu **Bantuan** pada jarak aman (`right: -24px`).
+   * Klik tombol tersebut: sidebar akan menyusut (*minimize*) dengan mulus, dan ikon tombol berubah dari `<` menjadi `>`.
+   * Perhatikan bahwa tombol tetap menempel simetris di sisi kanan menu Bantuan pada status sidebar mini.
+   * Klik kembali tombol `>` untuk memperluas sidebar ke ukuran normal.
+3. **Pengujian Batas & Pembungkusan Teks Nama Pelanggan:**
    * Buka halaman tagihan (contoh: `http://billtest.gayuh.net.id.test/bill/paid` atau `/bill/unpaid`).
    * Cari baris dengan nama pelanggan panjang (contoh: baris ke-5 `YOGA FACHRUDIN PERDANA-(Q14B)`).
    * Verifikasi bahwa teks terbungkus rapi menjadi 2 baris di dalam batas sel Kolom 3 tanpa menembus atau menabrak tombol WhatsApp / Nomor Telepon di Kolom 4.
-2. **Pengujian Freeze Panel Nama Pelanggan (Desktop):**
+4. **Pengujian Freeze Panel Nama Pelanggan (Desktop & Mobile):**
    * Buka halaman tagihan (contoh: `http://billtest.gayuh.net.id.test/bill/unpaid`).
    * Gulung (*scroll*) tabel ke kanan untuk melihat kolom *Total*, *Status*, *Coverage*, atau *Aksi*.
    * Pastikan kolom **No**, **Checkbox**, dan **Nama Pelanggan** tetap diam terkunci (*sticky*) di sisi kiri layar dengan bayangan pembatas yang rapi.
-   * Coba centang salah satu checkbox saat tabel sedang digulung ke kanan: checkbox tetap berfungsi normal dan baris tetap dapat dipilih untuk aksi massal.
-3. **Pengujian Freeze Panel Nama Pelanggan (Mobile):**
-   * Buka browser ponsel atau aktifkan *Device Toolbar* (`Ctrl + Shift + M`) dengan resolusi ponsel (misal: 375px atau 412px).
-   * Masuk ke halaman `bill/unpaid` atau `bill/paid` dan gulung tabel ke kanan.
-   * Pastikan nama pelanggan tetap terbaca jelas di kiri layar bersama nomor dan checkbox, terbungkus rapi tanpa menembus kolom telepon.
-4. **Pengujian Mobile Drawer & Sticky Topbar:**
+5. **Pengujian Mobile Drawer & Sticky Topbar:**
    * Verifikasi drawer menu hamburger dan sticky topbar tetap berfungsi mulus dan tidak terganggu oleh scrolling tabel.
-5. **Pengujian Dark Mode:**
-   * Aktifkan dark mode: panel nama pelanggan yang dibekukan beradaptasi otomatis dengan latar `#111625` dan bayangan pekat, bebas dari teks bocor (*bleed through*).
+6. **Pengujian Dark Mode:**
+   * Aktifkan mode gelap: tombol toggle sidebar di samping Bantuan beradaptasi serasi dengan tema gelap `#1a2236`, border halus, dan bayangan pekat.
