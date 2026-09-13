@@ -85,7 +85,21 @@ class Customer_m extends CI_Model
         if (isset($post['coverage']) && $post['coverage'] != 0) {
             $this->db->where('coverage', $post['coverage']);
         }
-        $this->db->order_by('name', 'ASC');
+        if (isset($_POST['order'])) {
+            $col = (int)$_POST['order']['0']['column'];
+            $dir = isset($_POST['order']['0']['dir']) ? $_POST['order']['0']['dir'] : 'ASC';
+            if ($col == 1) {
+                $this->db->order_by('name', $dir);
+            } elseif ($col == 3) {
+                $this->db->order_by('no_services', $dir);
+            } elseif ($col == 5) {
+                $this->db->order_by('due_date', $dir);
+            } else {
+                $this->db->order_by('name', 'ASC');
+            }
+        } else {
+            $this->db->order_by('name', 'ASC');
+        }
         $query = $this->db->get();
         return $query;
     }
@@ -588,9 +602,16 @@ class Customer_m extends CI_Model
         }
 
         if (isset($_POST['order'])) {
-            $col = $_POST['order']['0']['column'];
-            if (isset($this->order[$col]) && $this->order[$col] !== null) {
-                $this->db->order_by($this->order[$col], $_POST['order']['0']['dir']);
+            $col = (int)$_POST['order']['0']['column'];
+            $dir = isset($_POST['order']['0']['dir']) ? $_POST['order']['0']['dir'] : 'ASC';
+            if ($col == 1) {
+                $this->db->order_by('name', $dir);
+            } elseif ($col == 3) {
+                $this->db->order_by('no_services', $dir);
+            } elseif ($col == 5) {
+                $this->db->order_by('due_date', $dir);
+            } elseif (isset($this->order[$col]) && $this->order[$col] !== null) {
+                $this->db->order_by($this->order[$col], $dir);
             } else {
                 $this->db->order_by('name', 'ASC');
             }

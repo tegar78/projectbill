@@ -2404,13 +2404,15 @@ body.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(3) {
 }
 
 /* ==========================================================================
-   11B. PEMBEKUAN PANEL JATUH TEMPO (.table-sticky-duedate)
+   11B. PEMBEKUAN PANEL JATUH TEMPO & DRAF TAGIHAN (.table-sticky-duedate & .table-sticky-draf)
    Tata Letak: No (Col 1) -> Nama Pelanggan (Col 2) -> Checkbox (Col 3)
    ========================================================================== */
 
 /* Kolom 1: No (Width 42px, Left 0) */
 .table-sticky-duedate th:nth-child(1),
-.table-sticky-duedate td:nth-child(1) {
+.table-sticky-duedate td:nth-child(1),
+.table-sticky-draf th:nth-child(1),
+.table-sticky-draf td:nth-child(1) {
   position: sticky !important;
   left: 0 !important;
   z-index: 5 !important;
@@ -2425,7 +2427,9 @@ body.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(3) {
 
 /* Kolom 2: Nama Pelanggan (Left 42px, Width 220px) */
 .table-sticky-duedate th:nth-child(2),
-.table-sticky-duedate td:nth-child(2) {
+.table-sticky-duedate td:nth-child(2),
+.table-sticky-draf th:nth-child(2),
+.table-sticky-draf td:nth-child(2) {
   position: sticky !important;
   left: 42px !important;
   z-index: 5 !important;
@@ -2439,7 +2443,9 @@ body.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(3) {
 
 /* Kolom 3: Checkbox (Left 262px = 42 + 220, Width 42px) */
 .table-sticky-duedate th:nth-child(3),
-.table-sticky-duedate td:nth-child(3) {
+.table-sticky-duedate td:nth-child(3),
+.table-sticky-draf th:nth-child(3),
+.table-sticky-draf td:nth-child(3) {
   position: sticky !important;
   left: 262px !important;
   z-index: 5 !important;
@@ -2457,7 +2463,9 @@ body.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(3) {
 
 /* Styling Checkbox agar Pas & Simetris */
 .table-sticky-duedate th:nth-child(3) input[type="checkbox"],
-.table-sticky-duedate td:nth-child(3) input[type="checkbox"] {
+.table-sticky-duedate td:nth-child(3) input[type="checkbox"],
+.table-sticky-draf th:nth-child(3) input[type="checkbox"],
+.table-sticky-draf td:nth-child(3) input[type="checkbox"] {
   cursor: pointer;
   margin: 0 auto !important;
   display: block !important;
@@ -2467,7 +2475,8 @@ body.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(3) {
 }
 
 /* Pastikan teks nama pelanggan wrap rapi ke baris berikutnya dan tidak melebihi batas kolom */
-.table-sticky-duedate td:nth-child(2) {
+.table-sticky-duedate td:nth-child(2),
+.table-sticky-draf td:nth-child(2) {
   white-space: normal !important;
   word-wrap: break-word !important;
   word-break: break-word !important;
@@ -2480,14 +2489,18 @@ body.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(3) {
 /* Header Table (thead) Sticky Z-Index Higher than Body */
 .table-sticky-duedate thead th:nth-child(1),
 .table-sticky-duedate thead th:nth-child(2),
-.table-sticky-duedate thead th:nth-child(3) {
+.table-sticky-duedate thead th:nth-child(3),
+.table-sticky-draf thead th:nth-child(1),
+.table-sticky-draf thead th:nth-child(2),
+.table-sticky-draf thead th:nth-child(3) {
   z-index: 10 !important;
   font-weight: 700 !important;
   background-color: var(--nm-bg, #e6ecf4) !important;
   vertical-align: middle !important;
 }
 
-.table-sticky-duedate thead th:nth-child(2) {
+.table-sticky-duedate thead th:nth-child(2),
+.table-sticky-draf thead th:nth-child(2) {
   white-space: nowrap !important;
   padding-right: 28px !important;
 }
@@ -2495,7 +2508,10 @@ body.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(3) {
 /* Hover State pada Baris Tabel */
 .table-sticky-duedate.table-hover tbody tr:hover td:nth-child(1),
 .table-sticky-duedate.table-hover tbody tr:hover td:nth-child(2),
-.table-sticky-duedate.table-hover tbody tr:hover td:nth-child(3) {
+.table-sticky-duedate.table-hover tbody tr:hover td:nth-child(3),
+.table-sticky-draf.table-hover tbody tr:hover td:nth-child(1),
+.table-sticky-draf.table-hover tbody tr:hover td:nth-child(2),
+.table-sticky-draf.table-hover tbody tr:hover td:nth-child(3) {
   background-color: #dbe4f0 !important;
 }
 
@@ -2511,7 +2527,19 @@ body.dark-mode .table-sticky-duedate td:nth-child(1),
 body.dark-mode .table-sticky-duedate th:nth-child(2),
 body.dark-mode .table-sticky-duedate td:nth-child(2),
 body.dark-mode .table-sticky-duedate th:nth-child(3),
-body.dark-mode .table-sticky-duedate td:nth-child(3) {
+body.dark-mode .table-sticky-duedate td:nth-child(3),
+html.dark-mode .table-sticky-draf th:nth-child(1),
+html.dark-mode .table-sticky-draf td:nth-child(1),
+html.dark-mode .table-sticky-draf th:nth-child(2),
+html.dark-mode .table-sticky-draf td:nth-child(2),
+html.dark-mode .table-sticky-draf th:nth-child(3),
+html.dark-mode .table-sticky-draf td:nth-child(3),
+body.dark-mode .table-sticky-draf th:nth-child(1),
+body.dark-mode .table-sticky-draf td:nth-child(1),
+body.dark-mode .table-sticky-draf th:nth-child(2),
+body.dark-mode .table-sticky-draf td:nth-child(2),
+body.dark-mode .table-sticky-draf th:nth-child(3),
+body.dark-mode .table-sticky-draf td:nth-child(3) {
   background-color: #111625 !important;
   color: var(--nm-text-main) !important;
 }
@@ -2520,7 +2548,11 @@ body.dark-mode .table-sticky-duedate td:nth-child(3) {
 html.dark-mode .table-sticky-duedate th:nth-child(3),
 html.dark-mode .table-sticky-duedate td:nth-child(3),
 body.dark-mode .table-sticky-duedate th:nth-child(3),
-body.dark-mode .table-sticky-duedate td:nth-child(3) {
+body.dark-mode .table-sticky-duedate td:nth-child(3),
+html.dark-mode .table-sticky-draf th:nth-child(3),
+html.dark-mode .table-sticky-draf td:nth-child(3),
+body.dark-mode .table-sticky-draf th:nth-child(3),
+body.dark-mode .table-sticky-draf td:nth-child(3) {
   box-shadow: 4px 0 12px -1px rgba(0, 0, 0, 0.5) !important;
 }
 
@@ -2530,14 +2562,22 @@ html.dark-mode .table-sticky-duedate.table-hover tbody tr:hover td:nth-child(2),
 html.dark-mode .table-sticky-duedate.table-hover tbody tr:hover td:nth-child(3),
 body.dark-mode .table-sticky-duedate.table-hover tbody tr:hover td:nth-child(1),
 body.dark-mode .table-sticky-duedate.table-hover tbody tr:hover td:nth-child(2),
-body.dark-mode .table-sticky-duedate.table-hover tbody tr:hover td:nth-child(3) {
+body.dark-mode .table-sticky-duedate.table-hover tbody tr:hover td:nth-child(3),
+html.dark-mode .table-sticky-draf.table-hover tbody tr:hover td:nth-child(1),
+html.dark-mode .table-sticky-draf.table-hover tbody tr:hover td:nth-child(2),
+html.dark-mode .table-sticky-draf.table-hover tbody tr:hover td:nth-child(3),
+body.dark-mode .table-sticky-draf.table-hover tbody tr:hover td:nth-child(1),
+body.dark-mode .table-sticky-draf.table-hover tbody tr:hover td:nth-child(2),
+body.dark-mode .table-sticky-draf.table-hover tbody tr:hover td:nth-child(3) {
   background-color: #1a2238 !important;
 }
 
 /* Responsive Mobile Adjustments (< 768px) */
 @media (max-width: 767.98px) {
   .table-sticky-duedate th:nth-child(1),
-  .table-sticky-duedate td:nth-child(1) {
+  .table-sticky-duedate td:nth-child(1),
+  .table-sticky-draf th:nth-child(1),
+  .table-sticky-draf td:nth-child(1) {
     width: 36px !important;
     min-width: 36px !important;
     max-width: 36px !important;
@@ -2546,7 +2586,9 @@ body.dark-mode .table-sticky-duedate.table-hover tbody tr:hover td:nth-child(3) 
   }
 
   .table-sticky-duedate th:nth-child(2),
-  .table-sticky-duedate td:nth-child(2) {
+  .table-sticky-duedate td:nth-child(2),
+  .table-sticky-draf th:nth-child(2),
+  .table-sticky-draf td:nth-child(2) {
     left: 36px !important;
     width: 140px !important;
     min-width: 140px !important;
@@ -2562,7 +2604,9 @@ body.dark-mode .table-sticky-duedate.table-hover tbody tr:hover td:nth-child(3) 
   }
 
   .table-sticky-duedate th:nth-child(3),
-  .table-sticky-duedate td:nth-child(3) {
+  .table-sticky-duedate td:nth-child(3),
+  .table-sticky-draf th:nth-child(3),
+  .table-sticky-draf td:nth-child(3) {
     left: 176px !important; /* 36px + 140px */
     width: 38px !important;
     min-width: 38px !important;
@@ -2571,7 +2615,8 @@ body.dark-mode .table-sticky-duedate.table-hover tbody tr:hover td:nth-child(3) 
     box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.12) !important;
   }
 
-  .table-sticky-duedate thead th:nth-child(2) {
+  .table-sticky-duedate thead th:nth-child(2),
+  .table-sticky-draf thead th:nth-child(2) {
     padding-right: 20px !important;
   }
 }
