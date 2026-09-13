@@ -4,24 +4,26 @@
 <!-- Content Row -->
 
 <?php if ($this->session->userdata('role_id') == 1 or $menu['customer_menu'] == 1) { ?>
-    <div class="col-lg-4 col-sm-12 col-md-6 mb-4">
-        <div class="nm-card nm-card-sm nm-form">
-            <div class="d-flex align-items-center mb-2">
-                <span class="nm-label" style="color: var(--nm-brand);"><i class="fas fa-search mr-1"></i> Pencarian Cepat Layanan</span>
-            </div>
-            <?php if ($this->session->userdata('role_id') == 1 or $menu['bill_menu'] == 1) { ?>
-                <?php if (count($customer) > 0) { ?>
-                    <div class="form-group mb-0">
-                        <select class="form-control select2 nm-input" name="no_services" id="no_services" onchange="getdetailcustomer()" required>
-                            <option value="">Pilih No Layanan - Nama Pelanggan - Status </option>
-                            <?php
-                            foreach ($customer as $r => $data) { ?>
-                                <option value="<?= $data->no_services ?>"><?= $data->no_services ?> - <?= $data->name ?> - <?= $data->c_status; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="nm-card nm-card-sm nm-form">
+                <div class="d-flex align-items-center mb-2">
+                    <span class="nm-label" style="color: var(--nm-brand);"><i class="fas fa-search mr-1"></i> Pencarian Cepat Layanan</span>
+                </div>
+                <?php if ($this->session->userdata('role_id') == 1 or $menu['bill_menu'] == 1) { ?>
+                    <?php if (count($customer) > 0) { ?>
+                        <div class="form-group mb-0">
+                            <select class="form-control select2 nm-input" style="width: 100% !important;" name="no_services" id="no_services" onchange="getdetailcustomer()" required>
+                                <option value="">Pilih No Layanan - Nama Pelanggan - Status </option>
+                                <?php
+                                foreach ($customer as $r => $data) { ?>
+                                    <option value="<?= $data->no_services ?>"><?= $data->no_services ?> - <?= $data->name ?> - <?= $data->c_status; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    <?php } ?>
                 <?php } ?>
-            <?php } ?>
+            </div>
         </div>
     </div>
 <?php } ?>

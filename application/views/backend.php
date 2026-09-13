@@ -2212,7 +2212,9 @@
 <script>
     $(function() {
         //Initialize Select2 Elements
-        $('.select2').select2()
+        $('.select2').select2({
+            width: '100%'
+        });
     });
 </script>
 <script>
