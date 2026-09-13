@@ -985,6 +985,118 @@
                 color: #f47b20 !important;
             }
         }
+
+        /* Desktop Sidebar Toggled / Minimized - Brand Symmetry Fix */
+        @media (min-width: 768px) {
+            .sidebar.toggled .sidebar-brand,
+            .sidebar.nm-sidebar.toggled .sidebar-brand,
+            #accordionSidebar.toggled .sidebar-brand,
+            body.sidebar-toggled .sidebar .sidebar-brand,
+            body.sidebar-toggled #accordionSidebar .sidebar-brand {
+                width: 6.5rem !important;
+                max-width: 6.5rem !important;
+                height: 4.75rem !important;
+                padding: 0 !important;
+                margin: 0 auto !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                border-bottom: none !important;
+            }
+
+            .sidebar.toggled .sidebar-brand a,
+            .sidebar.nm-sidebar.toggled .sidebar-brand a,
+            #accordionSidebar.toggled .sidebar-brand a,
+            body.sidebar-toggled .sidebar .sidebar-brand a,
+            body.sidebar-toggled #accordionSidebar .sidebar-brand a {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 auto !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+                flex-grow: 0 !important;
+                text-decoration: none !important;
+            }
+
+            .sidebar.toggled .sidebar-brand .sidebar-brand-icon,
+            .sidebar.nm-sidebar.toggled .sidebar-brand .sidebar-brand-icon,
+            #accordionSidebar.toggled .sidebar-brand .sidebar-brand-icon,
+            body.sidebar-toggled .sidebar .sidebar-brand .sidebar-brand-icon,
+            body.sidebar-toggled #accordionSidebar .sidebar-brand .sidebar-brand-icon {
+                width: 44px !important;
+                height: 44px !important;
+                min-width: 44px !important;
+                min-height: 44px !important;
+                margin: 0 auto !important;
+                padding: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+                transform: none !important;
+                border-radius: 50% !important;
+                background-color: var(--nm-bg) !important;
+                box-shadow: var(--nm-raised-xs) !important;
+                color: var(--nm-brand) !important;
+                transition: all 0.25s ease !important;
+            }
+
+            .sidebar.toggled .sidebar-brand .sidebar-brand-icon i,
+            .sidebar.nm-sidebar.toggled .sidebar-brand .sidebar-brand-icon i,
+            #accordionSidebar.toggled .sidebar-brand .sidebar-brand-icon i,
+            body.sidebar-toggled .sidebar .sidebar-brand .sidebar-brand-icon i,
+            body.sidebar-toggled #accordionSidebar .sidebar-brand .sidebar-brand-icon i {
+                font-size: 1.45rem !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: inline-block !important;
+                transform: none !important;
+                line-height: 1 !important;
+                text-align: center !important;
+                color: #f47b20 !important;
+                filter: drop-shadow(0 2px 4px rgba(244, 123, 32, 0.35));
+            }
+
+            .sidebar.toggled .sidebar-brand a:hover .sidebar-brand-icon,
+            .sidebar.nm-sidebar.toggled .sidebar-brand a:hover .sidebar-brand-icon,
+            #accordionSidebar.toggled .sidebar-brand a:hover .sidebar-brand-icon {
+                box-shadow: var(--nm-raised-sm) !important;
+                transform: scale(1.06) !important;
+                color: var(--nm-brand-hover) !important;
+            }
+
+            html.dark-mode .sidebar.toggled .sidebar-brand .sidebar-brand-icon,
+            body.dark-mode .sidebar.toggled .sidebar-brand .sidebar-brand-icon,
+            html.dark-mode #accordionSidebar.toggled .sidebar-brand .sidebar-brand-icon {
+                background-color: #161c2e !important;
+                box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.45), -2px -2px 6px rgba(255, 255, 255, 0.03) !important;
+            }
+
+            .sidebar.toggled .sidebar-brand .sidebar-brand-text,
+            .sidebar.nm-sidebar.toggled .sidebar-brand .sidebar-brand-text,
+            #accordionSidebar.toggled .sidebar-brand .sidebar-brand-text,
+            body.sidebar-toggled .sidebar .sidebar-brand .sidebar-brand-text {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+            }
+
+            .sidebar.toggled .sidebar-brand #sidebarCloseBtn,
+            .sidebar.nm-sidebar.toggled .sidebar-brand #sidebarCloseBtn,
+            #accordionSidebar.toggled .sidebar-brand #sidebarCloseBtn {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -999,7 +1111,6 @@
 
         redirect('member');
     } ?>
-
     <!-- Page Wrapper -->
     <div id="wrapper">
         <?php $role = $this->db->get_where('role_management', ['role_id' => $this->session->userdata('role_id')])->row_array() ?>
@@ -1012,8 +1123,8 @@
         <!-- Sidebar -->
         <ul class="navbar-nav sidebar sidebar-dark nm-sidebar accordion" id="accordionSidebar">
             <!-- Sidebar - Brand -->
-            <div class="sidebar-brand d-flex align-items-center justify-content-between">
-                <a class="d-flex align-items-center justify-content-center flex-grow-1 text-decoration-none text-reset" href="<?= site_url('dashboard') ?>">
+            <div class="sidebar-brand d-flex align-items-center justify-content-between justify-content-md-center">
+                <a class="d-flex align-items-center justify-content-center flex-grow-1 flex-md-grow-0 text-decoration-none text-reset" href="<?= site_url('dashboard') ?>">
                     <div class="sidebar-brand-icon rotate-n-15 mr-2">
                         <i class="fas fa-wifi"></i>
                     </div>

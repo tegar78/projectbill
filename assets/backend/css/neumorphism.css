@@ -744,42 +744,112 @@ body.dark-mode .sidebar-dark #sidebarToggle::after {
     overflow: visible !important;
   }
 
-  /* Centered Brand in Toggled Mode */
+  /* Centered & Perfectly Symmetrical Brand in Toggled / Minimized Mode */
   .sidebar.toggled .sidebar-brand,
   .sidebar.nm-sidebar.toggled .sidebar-brand,
-  #accordionSidebar.toggled .sidebar-brand {
+  #accordionSidebar.toggled .sidebar-brand,
+  body.sidebar-toggled .sidebar .sidebar-brand,
+  body.sidebar-toggled #accordionSidebar .sidebar-brand {
+    width: 6.5rem !important;
+    max-width: 6.5rem !important;
     height: 4.75rem !important;
     padding: 0 !important;
+    margin: 0 auto !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
 
   .sidebar.toggled .sidebar-brand a,
   .sidebar.nm-sidebar.toggled .sidebar-brand a,
-  #accordionSidebar.toggled .sidebar-brand a {
-    justify-content: center !important;
+  #accordionSidebar.toggled .sidebar-brand a,
+  body.sidebar-toggled .sidebar .sidebar-brand a,
+  body.sidebar-toggled #accordionSidebar .sidebar-brand a {
     width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
     padding: 0 !important;
-    text-align: center !important;
-  }
-
-  .sidebar.toggled .sidebar-brand .sidebar-brand-icon,
-  .sidebar.nm-sidebar.toggled .sidebar-brand .sidebar-brand-icon,
-  #accordionSidebar.toggled .sidebar-brand .sidebar-brand-icon {
     margin: 0 auto !important;
-    margin-right: 0 !important;
-    font-size: 1.8rem !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
+    flex-grow: 0 !important;
+    text-decoration: none !important;
+  }
+
+  .sidebar.toggled .sidebar-brand .sidebar-brand-icon,
+  .sidebar.nm-sidebar.toggled .sidebar-brand .sidebar-brand-icon,
+  #accordionSidebar.toggled .sidebar-brand .sidebar-brand-icon,
+  body.sidebar-toggled .sidebar .sidebar-brand .sidebar-brand-icon,
+  body.sidebar-toggled #accordionSidebar .sidebar-brand .sidebar-brand-icon {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    transform: none !important; /* Resets rotate-n-15 for upright symmetry */
+    border-radius: 50% !important;
+    background-color: var(--nm-bg) !important;
+    box-shadow: var(--nm-raised-xs) !important;
+    color: var(--nm-brand) !important;
+    transition: all 0.25s ease !important;
+  }
+
+  .sidebar.toggled .sidebar-brand .sidebar-brand-icon i,
+  .sidebar.nm-sidebar.toggled .sidebar-brand .sidebar-brand-icon i,
+  #accordionSidebar.toggled .sidebar-brand .sidebar-brand-icon i,
+  body.sidebar-toggled .sidebar .sidebar-brand .sidebar-brand-icon i,
+  body.sidebar-toggled #accordionSidebar .sidebar-brand .sidebar-brand-icon i {
+    font-size: 1.45rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-block !important;
+    transform: none !important; /* Ensures straight symmetrical wifi waves */
+    line-height: 1 !important;
+    text-align: center !important;
+    color: #f47b20 !important;
+    filter: drop-shadow(0 2px 4px rgba(244, 123, 32, 0.35));
+  }
+
+  .sidebar.toggled .sidebar-brand a:hover .sidebar-brand-icon,
+  .sidebar.nm-sidebar.toggled .sidebar-brand a:hover .sidebar-brand-icon,
+  #accordionSidebar.toggled .sidebar-brand a:hover .sidebar-brand-icon {
+    box-shadow: var(--nm-raised-sm) !important;
+    transform: scale(1.06) !important;
+    color: var(--nm-brand-hover) !important;
+  }
+
+  html.dark-mode .sidebar.toggled .sidebar-brand .sidebar-brand-icon,
+  body.dark-mode .sidebar.toggled .sidebar-brand .sidebar-brand-icon,
+  html.dark-mode #accordionSidebar.toggled .sidebar-brand .sidebar-brand-icon {
+    background-color: #161c2e !important;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.45), -2px -2px 6px rgba(255, 255, 255, 0.03) !important;
   }
 
   .sidebar.toggled .sidebar-brand .sidebar-brand-text,
   .sidebar.nm-sidebar.toggled .sidebar-brand .sidebar-brand-text,
-  #accordionSidebar.toggled .sidebar-brand .sidebar-brand-text {
+  #accordionSidebar.toggled .sidebar-brand .sidebar-brand-text,
+  body.sidebar-toggled .sidebar .sidebar-brand .sidebar-brand-text {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .sidebar.toggled .sidebar-brand #sidebarCloseBtn,
+  .sidebar.nm-sidebar.toggled .sidebar-brand #sidebarCloseBtn,
+  #accordionSidebar.toggled .sidebar-brand #sidebarCloseBtn {
     display: none !important;
   }
 
@@ -2055,6 +2125,215 @@ body.dark-mode footer.sticky-footer {
     color: #f47b20 !important;
   }
 }
+
+/* ==========================================================================
+   11. FROZEN / STICKY CUSTOMER NAME PANEL (FREEZE PANES)
+   Penyelarasan Kolom Tetap: No, Checkbox, & Nama Pelanggan saat Scroll Horizontal
+   Berfungsi di Mode Desktop dan Mode Mobile
+   ========================================================================== */
+
+/* Pastikan wrapper tabel mengaktifkan scroll horizontal lancar */
+.table-responsive {
+  position: relative;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Kolom 1: No (Width 42px, Left 0) */
+.table-sticky-customer th:nth-child(1),
+.table-sticky-customer td:nth-child(1),
+#tablebill table th:nth-child(1),
+#tablebill table td:nth-child(1) {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 5 !important;
+  width: 42px !important;
+  min-width: 42px !important;
+  max-width: 42px !important;
+  text-align: center !important;
+  background-color: var(--nm-bg, #e6ecf4) !important;
+  box-sizing: border-box !important;
+}
+
+/* Kolom 2: Checkbox (Width 38px, Left 42px) */
+.table-sticky-customer th:nth-child(2),
+.table-sticky-customer td:nth-child(2),
+#tablebill table th:nth-child(2),
+#tablebill table td:nth-child(2) {
+  position: sticky !important;
+  left: 42px !important;
+  z-index: 5 !important;
+  width: 38px !important;
+  min-width: 38px !important;
+  max-width: 38px !important;
+  text-align: center !important;
+  background-color: var(--nm-bg, #e6ecf4) !important;
+  box-sizing: border-box !important;
+}
+
+/* Kolom 3: Nama Pelanggan (Left 80px = 42 + 38) */
+.table-sticky-customer th:nth-child(3),
+.table-sticky-customer td:nth-child(3),
+#tablebill table th:nth-child(3),
+#tablebill table td:nth-child(3) {
+  position: sticky !important;
+  left: 80px !important;
+  z-index: 5 !important;
+  width: 220px !important;
+  min-width: 200px !important;
+  max-width: 260px !important;
+  background-color: var(--nm-bg, #e6ecf4) !important;
+  box-sizing: border-box !important;
+  /* Shadow halus pembatas di sebelah kanan panel beku */
+  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Pastikan teks nama pelanggan wrap rapi ke baris berikutnya dan tidak melebihi batas kolom */
+.table-sticky-customer td:nth-child(3),
+#tablebill table td:nth-child(3) {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  line-height: 1.35 !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
+}
+
+/* Header Table (thead) Sticky Z-Index Higher than Body */
+.table-sticky-customer thead th:nth-child(1),
+.table-sticky-customer thead th:nth-child(2),
+.table-sticky-customer thead th:nth-child(3),
+#tablebill table thead th:nth-child(1),
+#tablebill table thead th:nth-child(2),
+#tablebill table thead th:nth-child(3) {
+  z-index: 10 !important;
+  font-weight: 700 !important;
+  background-color: var(--nm-bg, #e6ecf4) !important;
+  vertical-align: middle !important;
+}
+
+.table-sticky-customer thead th:nth-child(3),
+#tablebill table thead th:nth-child(3) {
+  white-space: nowrap !important;
+  padding-right: 28px !important;
+}
+
+/* Hover State pada Baris Tabel */
+.table-sticky-customer.table-hover tbody tr:hover td:nth-child(1),
+.table-sticky-customer.table-hover tbody tr:hover td:nth-child(2),
+.table-sticky-customer.table-hover tbody tr:hover td:nth-child(3),
+#tablebill table.table-hover tbody tr:hover td:nth-child(1),
+#tablebill table.table-hover tbody tr:hover td:nth-child(2),
+#tablebill table.table-hover tbody tr:hover td:nth-child(3) {
+  background-color: #dbe4f0 !important;
+}
+
+/* Dukungan Dark Mode */
+html.dark-mode .table-sticky-customer th:nth-child(1),
+html.dark-mode .table-sticky-customer td:nth-child(1),
+html.dark-mode .table-sticky-customer th:nth-child(2),
+html.dark-mode .table-sticky-customer td:nth-child(2),
+html.dark-mode .table-sticky-customer th:nth-child(3),
+html.dark-mode .table-sticky-customer td:nth-child(3),
+body.dark-mode .table-sticky-customer th:nth-child(1),
+body.dark-mode .table-sticky-customer td:nth-child(1),
+body.dark-mode .table-sticky-customer th:nth-child(2),
+body.dark-mode .table-sticky-customer td:nth-child(2),
+body.dark-mode .table-sticky-customer th:nth-child(3),
+body.dark-mode .table-sticky-customer td:nth-child(3),
+html.dark-mode #tablebill table th:nth-child(1),
+html.dark-mode #tablebill table td:nth-child(1),
+html.dark-mode #tablebill table th:nth-child(2),
+html.dark-mode #tablebill table td:nth-child(2),
+html.dark-mode #tablebill table th:nth-child(3),
+html.dark-mode #tablebill table td:nth-child(3),
+body.dark-mode #tablebill table th:nth-child(1),
+body.dark-mode #tablebill table td:nth-child(1),
+body.dark-mode #tablebill table th:nth-child(2),
+body.dark-mode #tablebill table td:nth-child(2),
+body.dark-mode #tablebill table th:nth-child(3),
+body.dark-mode #tablebill table td:nth-child(3) {
+  background-color: #111625 !important;
+  color: var(--nm-text-main) !important;
+}
+
+/* Dark Mode Shadow */
+html.dark-mode .table-sticky-customer th:nth-child(3),
+html.dark-mode .table-sticky-customer td:nth-child(3),
+body.dark-mode .table-sticky-customer th:nth-child(3),
+body.dark-mode .table-sticky-customer td:nth-child(3),
+html.dark-mode #tablebill table th:nth-child(3),
+html.dark-mode #tablebill table td:nth-child(3),
+body.dark-mode #tablebill table th:nth-child(3),
+body.dark-mode #tablebill table td:nth-child(3) {
+  box-shadow: 4px 0 12px -1px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Dark Mode Hover */
+html.dark-mode .table-sticky-customer.table-hover tbody tr:hover td:nth-child(1),
+html.dark-mode .table-sticky-customer.table-hover tbody tr:hover td:nth-child(2),
+html.dark-mode .table-sticky-customer.table-hover tbody tr:hover td:nth-child(3),
+body.dark-mode .table-sticky-customer.table-hover tbody tr:hover td:nth-child(1),
+body.dark-mode .table-sticky-customer.table-hover tbody tr:hover td:nth-child(2),
+body.dark-mode .table-sticky-customer.table-hover tbody tr:hover td:nth-child(3),
+html.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(1),
+html.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(2),
+html.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(3),
+body.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(1),
+body.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(2),
+body.dark-mode #tablebill table.table-hover tbody tr:hover td:nth-child(3) {
+  background-color: #1a2238 !important;
+}
+
+/* Responsive Mobile Adjustments (< 768px) */
+@media (max-width: 767.98px) {
+  .table-sticky-customer th:nth-child(1),
+  .table-sticky-customer td:nth-child(1),
+  #tablebill table th:nth-child(1),
+  #tablebill table td:nth-child(1) {
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    padding: 8px 2px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .table-sticky-customer th:nth-child(2),
+  .table-sticky-customer td:nth-child(2),
+  #tablebill table th:nth-child(2),
+  #tablebill table td:nth-child(2) {
+    left: 34px !important;
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    padding: 8px 2px !important;
+  }
+
+  .table-sticky-customer th:nth-child(3),
+  .table-sticky-customer td:nth-child(3),
+  #tablebill table th:nth-child(3),
+  #tablebill table td:nth-child(3) {
+    left: 68px !important;
+    width: 135px !important;
+    min-width: 125px !important;
+    max-width: 145px !important;
+    padding: 8px 6px !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.25 !important;
+  }
+
+  .table-sticky-customer thead th:nth-child(3),
+  #tablebill table thead th:nth-child(3) {
+    padding-right: 22px !important;
+  }
+}
+
 
 
 
