@@ -32,15 +32,15 @@
         </div>
         <div class="table-responsive">
             <form method="post" action="<?php echo base_url('bill/printinvoiceselected') ?>" id="submit-cetak">
-                <table class="table table-bordered" id="example" cellspacing="0">
+                <table class="table table-bordered table-hover text-nowrap w-100 table-sticky-duedate" id="example" width="100%" cellspacing="0">
                     <thead>
                         <tr style="text-align: center">
-                            <th style="text-align: center; width:20px">No</th>
-                            <th>
+                            <th style="text-align: center; width: 42px;">No</th>
+                            <th>Nama Pelanggan</th>
+                            <th style="text-align: center; width: 42px;">
                                 <input type='checkbox' class='check-item' id="selectAll">
                             </th>
-                            <th style="text-align: center; width:100px">Aksi</th>
-                            <th>Nama Pelanggan</th>
+                            <th style="text-align: center; width: 100px;">Aksi</th>
                             <th>No Layanan</th>
                             <th>Periode - Jatuh Tempo</th>
                             <th>Tagihan</th>
@@ -104,7 +104,7 @@
             "lengthChange": true,
             "searching": true,
             "info": true,
-            "autoWidth": true,
+            "autoWidth": false,
             "responsive": true,
             "order": [],
             "ajax": {
@@ -117,14 +117,24 @@
             ],
             dom: 'lBfrtip',
             "columnDefs": [{
-                "targets": [0, 1, 2],
-                "orderable": false
+                "targets": [0, 2, 3],
+                "orderable": false,
+                "className": "text-center text-nowrap"
+            }, {
+                "targets": [4, 5, 6],
+                "className": "text-nowrap"
             }],
             // ajax: '<?= base_url('bill/getduedate'); ?>',
             columns: [{
                     data: 'no',
                     name: 'no',
                     orderable: false,
+                    searchable: true
+                },
+                {
+                    data: 'name',
+                    name: 'name',
+                    orderable: true,
                     searchable: true
                 },
                 {
@@ -138,12 +148,6 @@
                     name: 'action',
                     orderable: false,
                     searchable: false
-                },
-                {
-                    data: 'name',
-                    name: 'name',
-                    orderable: true,
-                    searchable: true
                 },
                 {
                     data: 'no_services',
@@ -195,10 +199,10 @@
         });
         return false;
     })
-    $("#selectAll").click(function() {
+    $(document).on('click', '#selectAll', function() {
         if ($(this).is(":checked"))
             $(".check-item").prop("checked", true);
-        else // Jika checkbox all tidak diceklis
+        else
             $(".check-item").prop("checked", false);
     });
     $(document).on('click', '#hapusmodal', function() {
