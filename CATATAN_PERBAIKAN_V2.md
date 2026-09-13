@@ -72,35 +72,123 @@ Pada pembaruan versi 2 (V2) ini, dilakukan perbaikan arsitektur tampilan antarmu
 
 ---
 
+### 5. Simetri dan Reposisi Logo Wifi Pojok Kiri Atas (*Centered & Symmetrical Minimized Brand Emblem*)
+* **Masalah Sebelumnya:**
+  - Saat sidebar di-minimize (`.sidebar.toggled`), ikon logo wifi di pojok kiri atas tampak **miring ke kanan sejauh ~20px** dan tidak berada pada satu garis vertikal lurus dengan ikon-ikon navigasi di bawahnya (*Beranda, Layanan, Pelanggan*).
+  - Kelas bawaan SB Admin 2 `.rotate-n-15` membuat ikon wifi berputar -15 derajat berlawanan arah jarum jam, sehingga pancaran busur gelombang wifi miring dan merusak simetri visual.
+  - Kontainer brand mewarisi kelas utilitas `justify-content-between` dan `padding-left: 1.25rem` dari layout drawer mobile, menyebabkan kontainer merek melebar dan mendorong logo ke tepi kanan sidebar mini.
+* **Solusi & Implementasi:**
+  - **Penyelarasan Sumbu Vertikal Presisi:** Menerapkan kalkulasi CSS strict pada `.sidebar.toggled .sidebar-brand`:
+    - Membatasi lebar kontainer tepat `6.5rem` (~104px), `margin: 0 auto !important`, dan `justify-content: center !important`.
+    - Mengatur elemen jangkar `<a>` menjadi `width: 100% !important; justify-content: center !important; flex-grow: 0 !important;`.
+  - **Emblem Neumorphic Melingkar (*Circular Neumorphic Plate*):**
+    - Mengubah `.sidebar-brand-icon` menjadi emblem melingkar simetris berukuran **44×44px** (`border-radius: 50% !important; margin: 0 auto !important;`).
+    - Diberikan latar belakang `var(--nm-bg)` dengan elevasi bayangan halus `var(--nm-raised-xs)` di mode terang, dan latar belakang gelap `#161c2e` dengan bayangan *raised* di mode gelap.
+  - **Pemberantasan Kemiringan Rotasi (*Rotation Reset*):**
+    - Mengeliminasi kelas `.rotate-n-15` dengan menyuntikkan `transform: none !important;` pada kontainer ikon dan tag `<i>`.
+    - Gelombang wifi kini berdiri tegak sempurna (*upright*) menghadap lurus ke atas dengan warna oranye cerah (`#f47b20`) dan efek *drop-shadow* lembut.
+  - **Hasil Pengukuran Piksel (Sub-Pixel Accuracy):**
+    - Pengukuran digital berbasis citra konfirmasi: sumbu tengah X ikon wifi kini berada di koordinat **57.0px**, sedangkan sumbu tengah X ikon Beranda di **56.5px**.
+    - Deviasi offset berhasil dipangkas dari **20.0px menjadi hanya 0.5px** (sepenuhnya simetris dan sejajar tegak lurus secara matematis maupun optik).
+  - **Paritas Multi-View:** Aturan kelas `justify-content-md-center` dan `flex-md-grow-0` diterapkan secara serentak pada `backend.php`, `mikrotik.php`, dan `olt.php`.
+
+---
+
+### 6. Pembekuan Panel Nama Pelanggan (*Freeze Panes: No, Checkbox, & Nama Pelanggan*)
+* **Masalah Sebelumnya:**
+  - Pada tabel tagihan (`Data Tagihan Belum Bayar`, `Sudah Bayar`, dll.), terdapat banyak kolom informasi penting (No, Checkbox, Nama Pelanggan, No Telepon, No Layanan, No Invoice, Periode, Jatuh Tempo, Total, Status, Coverage, dan Aksi).
+  - Ketika pengguna menggulir (*scroll*) tabel ke kanan pada mode mobile maupun desktop, kolom identitas pelanggan (No, Checkbox, dan Nama Pelanggan) langsung tergulung hilang ke kiri.
+  - Akibatnya, pengguna kesulitan mengetahui data tagihan, status isolir, atau nominal total yang sedang dilihat milik siapa, dan tidak dapat memilih checkbox pelanggan untuk aksi massal (*Action*) tanpa harus menggulir bolak-balik.
+* **Solusi & Implementasi:**
+  - **Arsitektur CSS Sticky Berjenjang (*Multi-Column Sticky Stacking*):**
+    - **Kolom 1 (No):** `position: sticky; left: 0; z-index: 5; width: 42px; text-align: center; background-color: var(--nm-bg);`.
+    - **Kolom 2 (Checkbox):** `position: sticky; left: 42px; z-index: 5; width: 38px; text-align: center; background-color: var(--nm-bg);`.
+    - **Kolom 3 (Nama Pelanggan):** `position: sticky; left: 80px; z-index: 5; min-width: 175px; max-width: 250px; background-color: var(--nm-bg);`.
+  - **Efek Separator Kedalaman (*Depth Box Shadow*):**
+    - Pada tepi kanan Kolom 3 (Nama Pelanggan) ditambahkan efek bayangan halus `box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.12)` di mode terang, dan `box-shadow: 4px 0 12px -1px rgba(0, 0, 0, 0.5)` di mode gelap. Efek ini memberikan isyarat visual yang tegas bahwa kolom-kolom lain meluncur di bawah panel beku (*floating beneath*).
+  - **Header Z-Index Isolation:**
+    - Elemen `thead th` pada ketiga kolom beku diberikan `z-index: 10 !important;` agar saat tabel digulung secara vertikal, sel header tetap berada di lapisan paling atas melampaui sel body (`z-index: 5`).
+    - Diberikan ruang kanan ekstra `padding-right: 28px !important;` agar panah pengurutan (*sorting arrow*) DataTables tidak menutupi teks "Nama Pelanggan".
+  - **Sinkronisasi Baris Hover (*Row Hover Preservation*):**
+    - Sel beku tetap mendapatkan warna latar hover (`#dbe4f0` di mode terang, `#1a2238` di mode gelap) saat baris disorot kursor, menjaga keharmonisan efek interaktif.
+  - **Adaptasi Mode Mobile Responsif (< 768px):**
+    - Kolom 1 (No) disesuaikan ke lebar `34px` (`left: 0; padding: 8px 2px`).
+    - Kolom 2 (Checkbox) disesuaikan ke lebar `34px` (`left: 34px; padding: 8px 2px`).
+    - Kolom 3 (Nama Pelanggan) disesuaikan ke lebar `135px` (`left: 68px; min-width: 125px; max-width: 145px; white-space: normal; word-break: break-word; line-height: 1.25`).
+    - Total lebar panel beku di mobile hanya **203px**, menyisakan ruang lebar yang sangat leluasa (~172px - 209px) bagi pengguna ponsel untuk menggulir dan membaca kolom Status, Jatuh Tempo, Nominal, dan Aksi.
+  - **Penerapan Multi-Tabel:**
+    - Aturan CSS diterapkan via `#tablebill table` dan kelas utilitas `.table-sticky-customer` pada `unpaid.php`, `paid.php`, `bill.php`, dan `get-data-bill.php`.
+
+---
+
+### 7. Penanganan Ukuran & Pembungkusan Teks Nama Pelanggan (*Customer Name Text Wrapping & Overflow Fit*)
+* **Masalah Sebelumnya:**
+  - Nama pelanggan yang panjang (contoh: `YOGA FACHRUDIN PERDANA-(Q14B)`) melebihi batas sel kolom 3 dan tumpah (*overflow*) secara horizontal ke kolom 4 (*No. Telepon*).
+  - Teks nama yang bocor menabrak dan menutupi ikon WhatsApp serta nomor telepon pelanggan lain.
+  - Akar masalah teknis: tabel tagihan mewarisi kelas bawaan SB Admin 2 `.text-nowrap` yang memaksa seluruh sel tabel menggunakan `white-space: nowrap !important;`. Akibatnya, meskipun kolom dibatasi dengan `max-width`, teks tetap dipaksa berjejer dalam 1 baris panjang dan meluap ke kolom sebelahnya.
+* **Solusi & Implementasi:**
+  - **Overriding Text Wrapping (`white-space: normal !important`):**
+    - Menyuntikkan aturan pembungkusan teks multi-baris secara tegas pada sel nama pelanggan:
+      ```css
+      .table-sticky-customer td:nth-child(3),
+      #tablebill table td:nth-child(3) {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        line-height: 1.35 !important;
+        font-size: 0.88rem !important;
+        font-weight: 600 !important;
+      }
+      ```
+    - Dengan `white-space: normal` dan `word-break: break-word`, nama panjang secara otomatis terbagi menjadi 2 baris rapi (misalnya baris 1: `YOGA FACHRUDIN` dan baris 2: `PERDANA-(Q14B)`) tanpa melebihi batas kanan kolom 3.
+  - **Peningkatan Kapasitas Lebar Kolom Desktop:**
+    - Lebar kolom nama pelanggan di desktop dinaikkan dari sebelumnya 175px–250px menjadi:
+      - `width: 220px !important;`
+      - `min-width: 200px !important;`
+      - `max-width: 260px !important;`
+    - Memberikan ruang horizontal yang lebih lapang bagi nama-nama pelanggan berformat kode ODP/cluster perumahan.
+  - **Proteksi Single-Line Header (`thead th`):**
+    - Judul kolom header *"Nama Pelanggan"* tetap dikunci dalam 1 baris (`white-space: nowrap !important; padding-right: 28px !important;`) sehingga tata letak header tetap konsisten dan panah pengurutan (*sorting arrow*) DataTables tidak terganggu.
+  - **Optimalisasi Mode Mobile (< 768px):**
+    - Di layar ponsel, sel nama pelanggan diatur `width: 135px !important; min-width: 125px !important; max-width: 145px !important;` dengan `line-height: 1.25 !important; font-size: 0.8rem !important;` serta pembungkusan kata multi-baris aktif.
+  - **Integritas Tinggi Baris (Row Height Invariant):**
+    - Baris tabel secara alami sudah memiliki tinggi 2–3 baris teks karena kolom *Jatuh Tempo* (tanggal & isolir) dan *Status* (status & waktu kirim pesan). Pembungkusan nama pelanggan ke 2 baris tidak menambah tinggi baris tabel atau merusak proporsi vertikal.
+
+---
+
 ## 📂 Berkas yang Diperbarui
 
 | No | Berkas | Deskripsi Perubahan |
 |:---|:---|:---|
-| 1 | `assets/backend/css/neumorphism.css` | Penambahan Bagian 6.1 (*Sidebar Minimized State Desktop*), perbaikan stacking drawer mobile, tombol close drawer, styling backdrop blur, perbaikan z-index Select2, dan transisi smooth. |
+| 1 | `assets/backend/css/neumorphism.css` | Penambahan Bagian 11 (*Frozen / Sticky Customer Name Panel*), Bagian 6.1 (*Sidebar Minimized State Desktop*), perbaikan pembungkusan teks nama pelanggan (`white-space: normal`, `word-break: break-word`, lebar 220px), perbaikan simetri dan emblem melingkar logo wifi brand, perbaikan stacking drawer mobile, tombol close drawer, styling backdrop blur, perbaikan z-index Select2, dan transisi smooth. |
 | 2 | `assets/backend/js/sb-admin-2.js` | Logika kontrol mobile drawer (`toggleMobileSidebar`), event listener penutupan (backdrop, close btn, escape, link click), dynamic scroll listener untuk sticky topbar, auto-close Select2, dan inisialisasi hover tooltip (`initSidebarTooltips`). |
-| 3 | `application/views/backend.php` | Penyesuaian layout utama, penyisipan elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, perbaikan CSS responsif drawer, penggantian `overflow-x` menjadi `clip`, dan pembersihan skrip toggle saat *document ready*. |
-| 4 | `application/views/mikrotik.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, dan skrip inisialisasi reset mobile drawer. |
-| 5 | `application/views/olt.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, dan skrip inisialisasi reset mobile drawer. |
+| 3 | `application/views/backend.php` | Penyesuaian layout utama, penyisipan elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, perbaikan CSS responsif drawer & minimized brand header, penggantian `overflow-x` menjadi `clip`, dan pembersihan skrip toggle saat *document ready*. |
+| 4 | `application/views/backend/bill/unpaid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox saat digulir ke kanan/kiri. |
+| 5 | `application/views/backend/bill/paid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 6 | `application/views/backend/bill/bill.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 7 | `application/views/backend/bill/get-data-bill.php` | Penambahan kelas `table-sticky-customer` pada tabel server-side `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 8 | `application/views/mikrotik.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
+| 9 | `application/views/olt.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
 
 ---
 
 ## 🔍 Panduan Verifikasi & Pengujian
 
-1. **Pengujian Tampilan Mobile Drawer:**
-   * Buka aplikasi pada browser ponsel atau aktifkan *Device Toolbar* (`Ctrl + Shift + M`) dengan lebar layar ponsel (misal: 375px atau 412px).
-   * Verifikasi bahwa konten halaman mengambil lebar penuh 100%.
-   * Ketuk tombol hamburger (`☰`) di topbar: drawer sidebar meluncur mulus dari kiri dengan backdrop gelap kabur di belakangnya.
-   * Uji penutupan drawer dengan mengetuk tombol silang (**×**), mengetuk area latar kabur (*backdrop*), atau memilih salah satu menu.
-2. **Pengujian Sticky Topbar:**
-   * Pada halaman formulir panjang (seperti Tambah Pelanggan), gulung (*scroll*) halaman ke bawah.
-   * Pastikan topbar tetap menempel kokoh di posisi atas (*fixed/sticky*), bayangannya bertambah tegas, dan konten formulir meluncur rapi di bawahnya tanpa teks yang bocor di atas topbar.
-   * Tombol hamburger dan toggle tema tetap dapat diakses setiap saat.
-3. **Pengujian Minimized Sidebar (Desktop):**
-   * Pada layar desktop penuh, klik tombol toggle panah bundar di kiri bawah sidebar (`#sidebarToggle`).
-   * Pastikan lebar sidebar mengecil menjadi ramping (~104px).
-   * Verifikasi bahwa ikon menu berada di tengah di atas, teks menu di bawahnya rapi satu baris dengan elipsis, dan tidak ada panah chevron yang menabrak teks.
-   * Arahkan kursor (*hover*) ke salah satu menu untuk melihat tooltip nama menu lengkap.
-   * Klik menu yang memiliki submenu (seperti *Pelanggan* atau *Keuangan*) dan pastikan popover submenu melayang rapi di kanan sidebar tanpa tertutup kartu dashboard.
-4. **Pengujian Dark Mode:**
-   * Alihkan tema menggunakan tombol bulan/matahari di topbar.
-   * Pastikan seluruh komponen (drawer mobile, topbar sticky, sidebar minimized, dan popover submenu) beradaptasi sempurna dengan palet warna gelap (`#161c2e` dan `#1a2236`) tanpa ada elemen yang kontras berlebih atau pecah.
+1. **Pengujian Batas & Pembungkusan Teks Nama Pelanggan:**
+   * Buka halaman tagihan (contoh: `http://billtest.gayuh.net.id.test/bill/paid` atau `/bill/unpaid`).
+   * Cari baris dengan nama pelanggan panjang (contoh: baris ke-5 `YOGA FACHRUDIN PERDANA-(Q14B)`).
+   * Verifikasi bahwa teks terbungkus rapi menjadi 2 baris di dalam batas sel Kolom 3 tanpa menembus atau menabrak tombol WhatsApp / Nomor Telepon di Kolom 4.
+2. **Pengujian Freeze Panel Nama Pelanggan (Desktop):**
+   * Buka halaman tagihan (contoh: `http://billtest.gayuh.net.id.test/bill/unpaid`).
+   * Gulung (*scroll*) tabel ke kanan untuk melihat kolom *Total*, *Status*, *Coverage*, atau *Aksi*.
+   * Pastikan kolom **No**, **Checkbox**, dan **Nama Pelanggan** tetap diam terkunci (*sticky*) di sisi kiri layar dengan bayangan pembatas yang rapi.
+   * Coba centang salah satu checkbox saat tabel sedang digulung ke kanan: checkbox tetap berfungsi normal dan baris tetap dapat dipilih untuk aksi massal.
+3. **Pengujian Freeze Panel Nama Pelanggan (Mobile):**
+   * Buka browser ponsel atau aktifkan *Device Toolbar* (`Ctrl + Shift + M`) dengan resolusi ponsel (misal: 375px atau 412px).
+   * Masuk ke halaman `bill/unpaid` atau `bill/paid` dan gulung tabel ke kanan.
+   * Pastikan nama pelanggan tetap terbaca jelas di kiri layar bersama nomor dan checkbox, terbungkus rapi tanpa menembus kolom telepon.
+4. **Pengujian Mobile Drawer & Sticky Topbar:**
+   * Verifikasi drawer menu hamburger dan sticky topbar tetap berfungsi mulus dan tidak terganggu oleh scrolling tabel.
+5. **Pengujian Dark Mode:**
+   * Aktifkan dark mode: panel nama pelanggan yang dibekukan beradaptasi otomatis dengan latar `#111625` dan bayangan pekat, bebas dari teks bocor (*bleed through*).

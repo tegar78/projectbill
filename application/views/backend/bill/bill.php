@@ -133,7 +133,7 @@ if ($has_cur_m > 0) {
         <div class="table-responsive" id="tablebill" style="display:<?= $totalcustomer >= 500 ? 'none' : '' ?>">
             <form method="post" action="<?php echo base_url('bill/printinvoiceselected') ?>" id="submit-cetak">
                 <!-- <input type="hidden" name='invoice[]' id="result" size="60"> -->
-                    <table class="table table-bordered table-hover text-nowrap w-100" id="example" width="100%" cellspacing="0">
+                    <table class="table table-bordered table-hover text-nowrap w-100 table-sticky-customer" id="example" width="100%" cellspacing="0">
                         <thead>
                             <tr style="text-align: center">
                                 <th style="text-align: center; width:20px">No</th>

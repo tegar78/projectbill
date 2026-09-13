@@ -45,8 +45,8 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <div class="sidebar-brand d-flex align-items-center justify-content-between">
-                <a class="d-flex align-items-center justify-content-center flex-grow-1 text-decoration-none text-reset" href="<?= site_url('dashboard') ?>">
+            <div class="sidebar-brand d-flex align-items-center justify-content-between justify-content-md-center">
+                <a class="d-flex align-items-center justify-content-center flex-grow-1 flex-md-grow-0 text-decoration-none text-reset" href="<?= site_url('dashboard') ?>">
                     <div class="sidebar-brand-icon rotate-n-15 mr-2">
                         <i class="fas fa-wifi"></i>
                     </div>
