@@ -1,0 +1,5 @@
+# Abaikan semua file cache & session CodeIgniter
+/application/cache/*
+!/application/cache/index.html
+!/application/cache/.gitkeep
+/application/config/database.php
