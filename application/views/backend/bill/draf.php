@@ -33,17 +33,19 @@ $this->view('messages');
                 <input type="hidden" name="invoice" value="<?= $invoice ?>">
                 <input type="hidden" name="month" value="<?= date('m') ?>">
                 <input type="hidden" name="year" value="<?= date('Y') ?>">
-                <table class="table table-bordered" id="example" width="100%" cellspacing="0">
+                <table class="table table-bordered table-hover text-nowrap w-100 table-sticky-duedate table-sticky-draf" id="example" width="100%" cellspacing="0">
                     <thead>
                         <tr style="text-align: center">
-                            <th style="text-align: center; width:20px">No</th>
-                            <th><input type='checkbox' class='check-item' id="selectAll"></th>
+                            <th style="text-align: center; width: 42px;">No</th>
+                            <th>Nama Pelanggan</th>
+                            <th style="text-align: center; width: 42px;">
+                                <input type='checkbox' class='check-item' id="selectAll">
+                            </th>
                             <th>No Layanan</th>
-                            <th>Nama</th>
-                            <th style="text-align:center">Tagihan</th>
+                            <th style="text-align: center">Tagihan</th>
                             <th>Jatuh Tempo</th>
                             <th data-order="true">Status</th>
-                            <th style="text-align: center">Aksi</th>
+                            <th style="text-align: center; width: 80px;">Aksi</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -180,10 +182,10 @@ $this->view('messages');
     </div>
 </div>
 <script>
-    $("#selectAll").click(function() {
+    $(document).on('click', '#selectAll', function() {
         if ($(this).is(":checked"))
             $(".check-item").prop("checked", true);
-        else // Jika checkbox all tidak diceklis
+        else
             $(".check-item").prop("checked", false);
     });
     $('#btn-del-selected').click(function() {
@@ -207,7 +209,7 @@ $this->view('messages');
                     "regex": true
                 },
                 "info": true,
-                "autoWidth": true,
+                "autoWidth": false,
                 "responsive": true,
                 // "order": [],
                 "ajax": {
@@ -218,8 +220,14 @@ $this->view('messages');
                 },
                 // "columnDefs": table,
                 "columnDefs": [{
-                    "targets": [1, 4, 6],
+                    "targets": [0, 2, 4, 6, 7],
                     "orderable": false
+                }, {
+                    "targets": [0, 2, 7],
+                    "className": "text-center text-nowrap"
+                }, {
+                    "targets": [3, 4, 5, 6],
+                    "className": "text-nowrap"
                 }],
                 "lengthMenu": [
                     [10, 25, 50, 100, 250, 500, 1000],
@@ -302,7 +310,7 @@ $this->view('messages');
                 "lengthChange": true,
                 "searching": false,
                 "info": true,
-                "autoWidth": true,
+                "autoWidth": false,
                 "responsive": true,
                 // "order": [],
                 "ajax": {
@@ -315,8 +323,14 @@ $this->view('messages');
                     "type": "POST",
                 },
                 "columnDefs": [{
-                    "targets": [1, 4, 5, 6],
+                    "targets": [0, 2, 4, 6, 7],
                     "orderable": false
+                }, {
+                    "targets": [0, 2, 7],
+                    "className": "text-center text-nowrap"
+                }, {
+                    "targets": [3, 4, 5, 6],
+                    "className": "text-nowrap"
                 }]
             });
         });

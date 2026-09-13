@@ -256,22 +256,57 @@ Pada pembaruan versi 2 (V2) ini, dilakukan perbaikan arsitektur tampilan antarmu
 
 ---
 
+### 15. Freeze Panel, Relokasi Kolom & Checkbox Presisi Menu Tagihan Bulan Ini (Draf)
+- **Status**: Selesai & Terverifikasi Penuh
+- **Target URL**: `http://billtest.gayuh.net.id.test/bill/draf`
+- **Permasalahan**:
+  - Pada menu **Tagihan Bulan Ini** (`bill/draf`), urutan kolom lama adalah: `No` -> `Checkbox` -> `No Layanan` -> `Nama` -> `Tagihan` -> `Jatuh Tempo` -> `Status` -> `Aksi`.
+  - Checkbox berada sebelum nama pelanggan dengan ukuran kolom yang tidak proporsional dan tanpa freeze panel, sehingga ketika digulir horizontal pada layar sempit/mobile, kolom nama pelanggan tergulung hilang ke kiri.
+  - Form penyimpanan tagihan massal (`Simpan Tagihan Yang Dipilih`) bergantung pada array input `noservices[]`.
+- **Solusi yang Diterapkan**:
+  1. **Rekonstruksi Urutan Kolom Sesuai Paritas Jatuh Tempo**:
+     - Kolom 1: **No** (Nomor urut, 42px desktop / 36px mobile)
+     - Kolom 2: **Nama Pelanggan** (Langsung di sebelah kanan No, 220px desktop / 140px mobile)
+     - Kolom 3: **Checkbox** (Langsung di sebelah kanan Nama Pelanggan, 42px desktop / 38px mobile, 16×16px oranye brand `#f47b20`, terpusat simetris)
+     - Kolom 4: **No Layanan**
+     - Kolom 5: **Tagihan**
+     - Kolom 6: **Jatuh Tempo**
+     - Kolom 7: **Status**
+     - Kolom 8: **Aksi** (Simpan Satuan & Detail Paket)
+  2. **Sinkronisasi Backend Controller & Model**:
+     - Memperbarui array `$row[]` pada `Bill::getbilldraf()` dan `Bill::getfilterbilldraf()` agar urutan indeks data numerik mencocokkan `<thead>` (Indeks 0: No, Indeks 1: Name, Indeks 2: Checkbox, Indeks 3: No Layanan, dst.).
+     - Menambahkan pemetaan dinamis `$_POST['order']` pada `Customer_m::_get_data_queryactive()` dan `Customer_m::getfilterbydraf()` (Kolom 1: `name`, Kolom 3: `no_services`, Kolom 5: `due_date`).
+  3. **Implementasi Freeze Panel Berjenjang (.table-sticky-draf)**:
+     - Menerapkan kelas `.table-sticky-duedate.table-sticky-draf` pada `#example`.
+     - Penguncian `min-width == max-width == width` pada Kolom 1, Kolom 2, dan Kolom 3 menjamin **0 pixel gap** dan **0 pixel overlap**.
+     - Bayangan pemisah vertikal halus (`box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.12)`) di sisi kanan Kolom 3.
+     - Pembungkusan teks multi-baris otomatis (`white-space: normal`, `word-break: break-word`) pada nama pelanggan.
+  4. **Interaktivitas & DataTables Parity**:
+     - Mengubah listener `#selectAll` menjadi *delegated listener* `$(document).on('click', '#selectAll', ...)`.
+     - Mengatur `autoWidth: false` dan `columnDefs` (`targets: [0, 2, 4, 6, 7], orderable: false`, `targets: [0, 2, 7], className: "text-center text-nowrap"`).
+     - Paritas Dark Mode dengan latar belakang navy pekat `#111625`.
+
+---
+
 ## 📂 Berkas yang Diperbarui
 
 | No | Berkas | Deskripsi Perubahan |
 |:---|:---|:---|
-| 1 | `assets/backend/css/neumorphism.css` | Penambahan Bagian 11B (*Sticky Freeze Panes Menu Jatuh Tempo .table-sticky-duedate*), Bagian 12 (*Select2 Neumorphic Modern Styling & Mobile Overflow Protection*), Bagian 6.2 (*Sidebar Toggler Button Docked Beside Bantuan*), Bagian 11 (*Frozen / Sticky Customer Name Panel*), Bagian 6.1 (*Sidebar Minimized State Desktop*), perbaikan pembungkusan teks nama pelanggan (`white-space: normal`, `word-break: break-word`, lebar 220px), perbaikan simetri dan emblem melingkar logo wifi brand, perbaikan stacking drawer mobile, tombol close drawer, styling backdrop blur, perbaikan z-index Select2, dan transisi smooth. |
+| 1 | `assets/backend/css/neumorphism.css` | Penambahan Bagian 11B (*Sticky Freeze Panes Menu Jatuh Tempo & Draf Tagihan .table-sticky-duedate & .table-sticky-draf*), Bagian 12 (*Select2 Neumorphic Modern Styling & Mobile Overflow Protection*), Bagian 6.2 (*Sidebar Toggler Button Docked Beside Bantuan*), Bagian 11 (*Frozen / Sticky Customer Name Panel*), Bagian 6.1 (*Sidebar Minimized State Desktop*), perbaikan pembungkusan teks nama pelanggan (`white-space: normal`, `word-break: break-word`, lebar 220px), perbaikan simetri dan emblem melingkar logo wifi brand, perbaikan stacking drawer mobile, tombol close drawer, styling backdrop blur, perbaikan z-index Select2, dan transisi smooth. |
 | 2 | `assets/backend/js/sb-admin-2.js` | Logika kontrol mobile drawer (`toggleMobileSidebar`), event listener penutupan (backdrop, close btn, escape, link click), dynamic scroll listener untuk sticky topbar, auto-close Select2, dan inisialisasi hover tooltip (`initSidebarTooltips`). |
 | 3 | `application/views/backend.php` | Inisialisasi Select2 dengan `{ width: '100%' }`, pemindahan `#sidebarToggle` ke samping kanan menu Bantuan (`#navItemHelp`), penghapusan toggler lama di bawah sidebar, penyesuaian layout utama, penyisipan elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, perbaikan CSS responsif drawer & minimized brand header, penggantian `overflow-x` menjadi `clip`, dan pembersihan skrip toggle saat *document ready*. |
 | 4 | `application/views/backend/dashboard.php` | Pembungkusan kartu Pencarian Cepat Layanan dalam grid `<div class="row">` dan penambahan `style="width: 100% !important;"` pada `<select>` untuk mencegah overflow di mobile. |
 | 5 | `application/views/member/speedtest.php` | Penerapan pembungkus responsif `.speedtest-wrapper` dan `.speedtest-iframe` dengan tinggi adaptif (1000px di desktop, 1060px-1200px di tablet/mobile) agar gauge meteran dan deskripsi bagian bawah (*User Info* dan footer hak cipta) pas (*fit*) sempurna tanpa terpotong. |
 | 6 | `application/views/backend/bill/duedate.php` | Penyesuaian urutan kolom tabel (No -> Nama Pelanggan -> Checkbox -> Aksi -> No Layanan -> Periode - Jatuh Tempo -> Tagihan), penambahan kelas `table-sticky-duedate`, pengaturan `autoWidth: false`, sinkronisasi array `columns` dan `columnDefs` DataTables, serta event listener delegasi untuk `#selectAll`. |
-| 7 | `application/views/backend/bill/unpaid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox saat digulir ke kanan/kiri. |
-| 8 | `application/views/backend/bill/paid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 9 | `application/views/backend/bill/bill.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 10 | `application/views/backend/bill/get-data-bill.php` | Penambahan kelas `table-sticky-customer` pada tabel server-side `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 11 | `application/views/mikrotik.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
-| 12 | `application/views/olt.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
+| 7 | `application/views/backend/bill/draf.php` | Penyesuaian urutan kolom tabel (No -> Nama Pelanggan -> Checkbox -> No Layanan -> Tagihan -> Jatuh Tempo -> Status -> Aksi), penambahan kelas `table-sticky-duedate table-sticky-draf`, pengaturan `autoWidth: false`, sinkronisasi `columnDefs` DataTables, serta event listener delegasi untuk `#selectAll`. |
+| 8 | `application/controllers/Bill.php` | Penataan ulang urutan array `$row[]` pada `getbilldraf()` dan `getfilterbilldraf()` (0: no, 1: name, 2: select checkbox, 3: no_services, 4: tagihan, 5: due_date, 6: status, 7: action) agar presisi 1-to-1 dengan urutan `<thead>`. |
+| 9 | `application/models/Customer_m.php` | Penambahan logika pengurutan dinamis (`_get_data_queryactive()` dan `getfilterbydraf()`) sesuai urutan kolom baru DataTables (Col 1: `name`, Col 3: `no_services`, Col 5: `due_date`). |
+| 10 | `application/views/backend/bill/unpaid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox saat digulir ke kanan/kiri. |
+| 11 | `application/views/backend/bill/paid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 12 | `application/views/backend/bill/bill.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 13 | `application/views/backend/bill/get-data-bill.php` | Penambahan kelas `table-sticky-customer` pada tabel server-side `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 14 | `application/views/mikrotik.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
+| 15 | `application/views/olt.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
 
 ---
 

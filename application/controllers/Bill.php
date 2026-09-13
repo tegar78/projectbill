@@ -2464,6 +2464,7 @@ class Bill extends CI_Controller
             }
             $row = array();
             $row[] = ++$no;
+            $row[] = htmlspecialchars($resultRow->name, ENT_QUOTES, 'UTF-8');
 
             if (!empty($querying)) {
                 $row[] = '';
@@ -2472,7 +2473,6 @@ class Bill extends CI_Controller
             }
 
             $row[] = htmlspecialchars($resultRow->no_services, ENT_QUOTES, 'UTF-8');
-            $row[] = htmlspecialchars($resultRow->name, ENT_QUOTES, 'UTF-8');
             if (isset($resultRow->ppn) && $resultRow->ppn == 1) {
                 $ppn = $subtotal * ($company_ppn / 100);
                 $row[] = indo_currency($subtotal + $ppn);
@@ -2540,6 +2540,7 @@ class Bill extends CI_Controller
             }
             $row = array();
             $row[] = ++$no;
+            $row[] = htmlspecialchars($resultRow->name, ENT_QUOTES, 'UTF-8');
 
             if (!empty($querying)) {
                 $row[] = '';
@@ -2548,7 +2549,6 @@ class Bill extends CI_Controller
             }
 
             $row[] = htmlspecialchars($resultRow->no_services, ENT_QUOTES, 'UTF-8');
-            $row[] = htmlspecialchars($resultRow->name, ENT_QUOTES, 'UTF-8');
             if (isset($resultRow->ppn) && $resultRow->ppn == 1) {
                 $ppn = $subtotal * ($company_ppn / 100);
                 $row[] = indo_currency($subtotal + $ppn);
