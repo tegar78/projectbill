@@ -1,0 +1,909 @@
+/* ==========================================================================
+   NEUMORPHISM (SOFT UI) DESIGN SYSTEM FOR FRONTEND LANDING PAGE
+   PT. GAYUH MEDIA INFORMATIKA (BILL GAYUH)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* --- Canvas & Surface Colors --- */
+  --nm-bg: #e6ecf4;
+  --nm-surface: #e6ecf4;
+  --nm-surface-sunken: #dce4ef;
+  
+  /* --- Dual Box Shadow Tokens (Light Source: Top-Left -45deg) --- */
+  --nm-shadow-light: #ffffff;
+  --nm-shadow-dark: #b8c4d4;
+  
+  /* Extruded / Raised (Timbul 3D) */
+  --nm-raised-lg: 12px 12px 24px var(--nm-shadow-dark), 
+                  -12px -12px 24px var(--nm-shadow-light);
+  --nm-raised: 8px 8px 18px var(--nm-shadow-dark), 
+               -8px -8px 18px var(--nm-shadow-light);
+  --nm-raised-sm: 4px 4px 10px var(--nm-shadow-dark), 
+                  -4px -4px 10px var(--nm-shadow-light);
+  --nm-raised-xs: 2px 2px 5px var(--nm-shadow-dark), 
+                  -2px -2px 5px var(--nm-shadow-light);
+
+  /* Hover State (Elevasi Tambahan) */
+  --nm-raised-hover: 12px 12px 26px var(--nm-shadow-dark), 
+                    -12px -12px 26px var(--nm-shadow-light);
+
+  /* Inset / Debossed (Cekung / Tenggelam) */
+  --nm-inset: inset 4px 4px 8px var(--nm-shadow-dark), 
+              inset -4px -4px 8px var(--nm-shadow-light);
+  --nm-inset-sm: inset 2px 2px 5px var(--nm-shadow-dark), 
+                 inset -2px -2px 5px var(--nm-shadow-light);
+  --nm-inset-deep: inset 5px 5px 10px var(--nm-shadow-dark), 
+                   inset -5px -5px 10px var(--nm-shadow-light);
+
+  /* --- Typography & Text Colors --- */
+  --nm-text-main: #141d2b;       /* WCAG 2.2 AAA Contrast */
+  --nm-text-muted: #4b5b70;
+  --nm-text-subtle: #738499;
+
+  /* --- Brand Identity (Gayuh Net) --- */
+  --nm-brand: #f47b20;
+  --nm-brand-hover: #d86612;
+  --nm-brand-active: #c4570b;
+  --nm-brand-glow: rgba(244, 123, 32, 0.28);
+  
+  --nm-navy: #1f1754;
+  --nm-navy-light: #2d2278;
+
+  --nm-accent-blue: #2563eb;
+  --nm-accent-success: #10b981;
+  --nm-accent-danger: #ef4444;
+  --nm-accent-warning: #f59e0b;
+
+  /* --- Border Radius System --- */
+  --nm-radius-xl: 24px;
+  --nm-radius-lg: 18px;
+  --nm-radius-md: 12px;
+  --nm-radius-sm: 8px;
+  --nm-radius-pill: 9999px;
+}
+
+/* Base Canvas */
+html, body {
+  background-color: var(--nm-bg) !important;
+  color: var(--nm-text-main) !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   1. NEUMORPHIC TOP NAVBAR
+   ========================================================================== */
+.menu-bar {
+  background: var(--nm-bg) !important;
+  background-image: none !important;
+  box-shadow: 0 6px 18px var(--nm-shadow-dark), 0 -2px 6px var(--nm-shadow-light) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8) !important;
+  padding: 10px 0 !important;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  transition: all 0.3s ease;
+}
+
+/* Brand Logo Badge */
+.menu-bar .navbar-brand {
+  background: var(--nm-bg) !important;
+  padding: 6px 16px !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+.menu-bar .navbar-brand:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--nm-raised) !important;
+}
+
+.menu-bar .navbar-brand img {
+  max-height: 80px !important;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Navigation Links */
+.menu-bar .navbar-light .navbar-nav .nav-link,
+.navbar-light .navbar-nav .nav-link {
+  color: var(--nm-text-main) !important;
+  font-size: 0.93rem;
+  font-weight: 600 !important;
+  padding: 8px 16px !important;
+  border-radius: var(--nm-radius-pill) !important;
+  transition: all 0.25s ease !important;
+  margin: 2px 4px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.menu-bar .navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link:hover {
+  color: var(--nm-brand) !important;
+  background: rgba(244, 123, 32, 0.08) !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  transform: translateY(-1px);
+}
+
+.menu-bar .navbar-light .navbar-nav .nav-link.active,
+.navbar-light .navbar-nav .nav-link.active {
+  color: var(--nm-brand) !important;
+  background: var(--nm-bg) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  font-weight: 700 !important;
+}
+
+/* Navbar Toggler for Mobile */
+.menu-bar .navbar-toggler {
+  background: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  border-radius: var(--nm-radius-md) !important;
+  padding: 8px 12px !important;
+  outline: none !important;
+  transition: all 0.2s ease;
+}
+
+.menu-bar .navbar-toggler:focus,
+.menu-bar .navbar-toggler:active {
+  box-shadow: var(--nm-inset-sm) !important;
+}
+
+/* Login Button ("Masuk") */
+.btn-login {
+  background: linear-gradient(135deg, #f47b20, #e06912) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: var(--nm-radius-pill) !important;
+  padding: 8px 24px !important;
+  box-shadow: 4px 4px 10px rgba(244, 123, 32, 0.38), -3px -3px 8px var(--nm-shadow-light) !important;
+  letter-spacing: 0.5px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-login:hover {
+  background: linear-gradient(135deg, #d86612, #c4570b) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 14px rgba(244, 123, 32, 0.5), -4px -4px 10px var(--nm-shadow-light) !important;
+}
+
+.btn-login:active {
+  transform: translateY(0);
+  box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.3), inset -2px -2px 4px rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ==========================================================================
+   2. HERO / CAROUSEL FRAME
+   ========================================================================== */
+.nm-carousel-wrapper {
+  background: var(--nm-bg);
+  border-radius: var(--nm-radius-xl);
+  padding: 10px;
+  box-shadow: var(--nm-raised-lg);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.nm-carousel-wrapper:hover {
+  box-shadow: 14px 14px 28px var(--nm-shadow-dark), -14px -14px 28px var(--nm-shadow-light);
+}
+
+.nm-carousel-wrapper .carousel {
+  border-radius: calc(var(--nm-radius-xl) - 6px);
+  overflow: hidden;
+}
+
+.nm-carousel-wrapper .carousel-inner {
+  border-radius: calc(var(--nm-radius-xl) - 6px);
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.nm-carousel-wrapper .carousel-item {
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.nm-carousel-wrapper .carousel-item img {
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+  border-radius: calc(var(--nm-radius-xl) - 6px);
+}
+
+.nm-carousel-caption {
+  background: rgba(20, 29, 43, 0.65) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: var(--nm-radius-lg) !important;
+  padding: 16px 28px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 46px;
+  height: 46px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  border-radius: 50%;
+  margin: 0 16px;
+  opacity: 0.85;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  opacity: 1;
+  background: #ffffff;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1) grayscale(100);
+  width: 18px;
+  height: 18px;
+}
+
+/* Fallback Hero Banner */
+.nm-hero-banner {
+  background: linear-gradient(135deg, #1f1754 0%, #150d42 100%);
+  border-radius: var(--nm-radius-xl);
+  padding: 40px;
+  box-shadow: var(--nm-raised-lg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.nm-hero-banner::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(244, 123, 32, 0.25) 0%, rgba(244, 123, 32, 0) 70%);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   3. NEUMORPHIC CARDS & FORMS (Cek Tagihan & Info Kontak)
+   ========================================================================== */
+.nm-card {
+  background: var(--nm-bg) !important;
+  border-radius: var(--nm-radius-xl) !important;
+  box-shadow: var(--nm-raised) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nm-card:hover {
+  box-shadow: var(--nm-raised-hover) !important;
+}
+
+/* Seamless Neumorphic Header with Squircle Icon */
+.nm-card-header-clean {
+  background: rgba(255, 255, 255, 0.3) !important;
+  padding: 20px 24px !important;
+  border-bottom: 1px solid rgba(184, 196, 212, 0.4) !important;
+  color: var(--nm-text-main) !important;
+}
+
+.nm-icon-squircle {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--nm-bg);
+  box-shadow: var(--nm-raised-xs);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.nm-card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--nm-text-main);
+  letter-spacing: -0.2px;
+}
+
+.nm-card-body {
+  padding: 24px !important;
+}
+
+/* Neumorphic Inset / Debossed Input Fields */
+.nm-input,
+.nm-card .form-control {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(184, 196, 212, 0.5) !important;
+  box-shadow: var(--nm-inset) !important;
+  border-radius: var(--nm-radius-md) !important;
+  color: var(--nm-text-main) !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  height: 48px !important;
+  padding: 10px 16px !important;
+  transition: all 0.25s ease !important;
+}
+
+.nm-input:focus,
+.nm-card .form-control:focus {
+  border-color: var(--nm-brand) !important;
+  box-shadow: inset 3px 3px 6px var(--nm-shadow-dark), 
+              inset -3px -3px 6px var(--nm-shadow-light), 
+              0 0 0 3px var(--nm-brand-glow) !important;
+  outline: none !important;
+}
+
+.nm-input::placeholder,
+.nm-card .form-control::placeholder {
+  color: var(--nm-text-subtle) !important;
+  font-weight: 400 !important;
+}
+
+/* Custom Select Dropdowns */
+.nm-card select.form-control {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%234b5b70' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 1rem center !important;
+  background-size: 14px 10px !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  padding-right: 2.5rem !important;
+}
+
+/* Form Label */
+.nm-form-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--nm-text-muted);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ==========================================================================
+   4. NEUMORPHIC BUTTONS
+   ========================================================================== */
+.nm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  border-radius: var(--nm-radius-pill);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none !important;
+}
+
+/* Primary Brand Button (Orange) */
+.nm-btn-primary {
+  background: linear-gradient(135deg, #f47b20, #e06912) !important;
+  color: #ffffff !important;
+  box-shadow: 4px 4px 10px rgba(244, 123, 32, 0.38), -3px -3px 8px var(--nm-shadow-light) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+}
+
+.nm-btn-primary:hover {
+  background: linear-gradient(135deg, #d86612, #c4570b) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 14px rgba(244, 123, 32, 0.48), -4px -4px 10px var(--nm-shadow-light) !important;
+}
+
+.nm-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Soft Canvas Button */
+.nm-btn-soft {
+  background: var(--nm-bg) !important;
+  color: var(--nm-text-main) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+}
+
+.nm-btn-soft:hover {
+  color: var(--nm-brand) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--nm-raised) !important;
+}
+
+.nm-btn-soft:active {
+  transform: translateY(0);
+  box-shadow: var(--nm-inset-sm) !important;
+}
+
+/* ==========================================================================
+   5. NEUMORPHIC 3D SOCIAL SQUIRCLES (Info & Kontak)
+   ========================================================================== */
+.nm-social-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.nm-social-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none !important;
+}
+
+.nm-social-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  background: var(--nm-bg);
+  box-shadow: var(--nm-raised-sm);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 8px;
+}
+
+.nm-social-item:hover .nm-social-btn {
+  transform: translateY(-4px);
+  box-shadow: var(--nm-raised-hover);
+}
+
+.nm-social-item:active .nm-social-btn {
+  transform: translateY(0);
+  box-shadow: var(--nm-inset-sm);
+}
+
+.nm-social-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--nm-text-muted);
+  transition: color 0.2s ease;
+}
+
+/* Brand-specific icon colors & hover effects */
+.nm-social-item.instagram .nm-social-btn {
+  color: #e1306c;
+}
+.nm-social-item.instagram:hover .nm-social-btn {
+  box-shadow: 6px 6px 16px rgba(225, 48, 108, 0.3), -5px -5px 12px var(--nm-shadow-light);
+}
+.nm-social-item.instagram:hover .nm-social-label {
+  color: #e1306c;
+}
+
+.nm-social-item.facebook .nm-social-btn {
+  color: #1877f2;
+}
+.nm-social-item.facebook:hover .nm-social-btn {
+  box-shadow: 6px 6px 16px rgba(24, 119, 242, 0.3), -5px -5px 12px var(--nm-shadow-light);
+}
+.nm-social-item.facebook:hover .nm-social-label {
+  color: #1877f2;
+}
+
+.nm-social-item.whatsapp .nm-social-btn {
+  color: #25d366;
+}
+.nm-social-item.whatsapp:hover .nm-social-btn {
+  box-shadow: 6px 6px 16px rgba(37, 211, 102, 0.3), -5px -5px 12px var(--nm-shadow-light);
+}
+.nm-social-item.whatsapp:hover .nm-social-label {
+  color: #25d366;
+}
+
+.nm-social-item.email .nm-social-btn {
+  color: #ea4335;
+}
+.nm-social-item.email:hover .nm-social-btn {
+  box-shadow: 6px 6px 16px rgba(234, 67, 53, 0.3), -5px -5px 12px var(--nm-shadow-light);
+}
+.nm-social-item.email:hover .nm-social-label {
+  color: #ea4335;
+}
+
+/* ==========================================================================
+   6. LAYANAN KAMI (Product Cards)
+   ========================================================================== */
+.nm-section-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.nm-section-title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--nm-text-main);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  position: relative;
+  display: inline-block;
+}
+
+.nm-section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--nm-brand);
+  border-radius: var(--nm-radius-pill);
+  margin: 10px auto 0;
+  box-shadow: 0 2px 6px var(--nm-brand-glow);
+}
+
+.nm-section-subtitle {
+  font-size: 1.05rem;
+  color: var(--nm-text-muted);
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* Product Card */
+.nm-product-card {
+  background: var(--nm-bg) !important;
+  border-radius: var(--nm-radius-xl) !important;
+  box-shadow: var(--nm-raised) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.nm-product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--nm-raised-hover) !important;
+}
+
+/* Recessed / Inset Image Tray */
+.nm-product-media {
+  background: var(--nm-surface-sunken);
+  border-radius: var(--nm-radius-lg);
+  margin: 14px 14px 0 14px;
+  box-shadow: var(--nm-inset-sm);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 20px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  transition: all 0.3s ease;
+}
+
+.nm-product-card:hover .nm-product-media {
+  background: #d5dfea;
+}
+
+.nm-product-media img {
+  max-height: 110px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.nm-product-card:hover .nm-product-media img {
+  transform: scale(1.06);
+}
+
+.nm-product-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.nm-product-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--nm-text-main);
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.nm-product-desc {
+  font-size: 0.88rem;
+  color: var(--nm-text-muted);
+  line-height: 1.5;
+  text-align: center;
+  min-height: 48px;
+  margin-bottom: 16px;
+}
+
+.nm-product-card .btn-primary,
+.nm-product-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #1f1754 0%, #150d42 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: var(--nm-radius-pill) !important;
+  padding: 10px 18px !important;
+  box-shadow: 4px 4px 10px rgba(31, 23, 84, 0.35), -3px -3px 8px var(--nm-shadow-light) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  transition: all 0.25s ease !important;
+  text-align: center;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.nm-product-card .btn-primary:hover,
+.nm-product-btn:hover {
+  background: linear-gradient(135deg, #f47b20, #d86612) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 5px 5px 14px rgba(244, 123, 32, 0.45), -3px -3px 8px var(--nm-shadow-light) !important;
+  transform: translateY(-2px);
+}
+
+.nm-product-card .btn-primary:active,
+.nm-product-btn:active {
+  transform: translateY(0);
+  box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.3), inset -2px -2px 4px rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ==========================================================================
+   7. CEK BILL AJAX RESULT STYLING (Hasil Pencarian Tagihan)
+   ========================================================================== */
+.nm-bill-result,
+.info-tagihan .card {
+  background: var(--nm-bg) !important;
+  border-radius: var(--nm-radius-lg) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  padding: 20px !important;
+  margin-top: 20px;
+  animation: nmFadeIn 0.35s ease;
+}
+
+.info-tagihan .card h5 {
+  color: var(--nm-brand) !important;
+  font-weight: 800;
+  font-size: 1.15rem;
+  border-bottom: 2px dashed rgba(184, 196, 212, 0.5);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-tagihan .card .row {
+  margin-bottom: 8px;
+  font-size: 0.92rem;
+}
+
+.info-tagihan .card .col-3 {
+  color: var(--nm-text-muted);
+  font-weight: 600;
+}
+
+.info-tagihan .card .col-8 {
+  color: var(--nm-text-main);
+  font-weight: 700;
+}
+
+.info-tagihan .btn-primary {
+  background: linear-gradient(135deg, #f47b20, #e06912) !important;
+  color: #ffffff !important;
+  border-radius: var(--nm-radius-pill) !important;
+  padding: 8px 24px !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 4px 4px 10px rgba(244, 123, 32, 0.35), -3px -3px 8px var(--nm-shadow-light) !important;
+  transition: all 0.25s ease !important;
+}
+
+.info-tagihan .btn-primary:hover {
+  background: linear-gradient(135deg, #d86612, #c4570b) !important;
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 14px rgba(244, 123, 32, 0.45), -4px -4px 10px var(--nm-shadow-light) !important;
+}
+
+/* Alert / Status Cards in Bill Check */
+.card.border-danger,
+.nm-card .card.border-danger {
+  background: var(--nm-bg) !important;
+  border-radius: var(--nm-radius-lg) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+  padding: 12px;
+}
+
+.card.border-danger .card-title {
+  color: var(--nm-accent-danger) !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  margin: 0;
+}
+
+.card.border-warning,
+.nm-card .card.border-warning {
+  background: var(--nm-bg) !important;
+  border-radius: var(--nm-radius-lg) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+  padding: 12px;
+}
+
+.card.border-warning .card-title {
+  color: var(--nm-accent-warning) !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  margin: 0;
+}
+
+.card.border-success,
+.nm-card .card.border-success {
+  background: var(--nm-bg) !important;
+  border-radius: var(--nm-radius-lg) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  padding: 12px;
+}
+
+.card.border-success .card-title,
+.nm-card .card.border-success .card-title {
+  color: var(--nm-accent-success) !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  margin: 0;
+}
+
+/* ==========================================================================
+   8. ABOUT US & GENERAL PAGE STYLES
+   ========================================================================== */
+.nm-badge-primary {
+  background: var(--nm-bg) !important;
+  color: var(--nm-text-main) !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  padding: 7px 18px !important;
+  border-radius: var(--nm-radius-pill) !important;
+  font-size: 0.8rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.8px !important;
+  text-transform: uppercase !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nm-section-title-bar {
+  width: 60px;
+  height: 4px;
+  background: var(--nm-brand);
+  border-radius: var(--nm-radius-pill);
+  margin: 10px auto 14px;
+  box-shadow: 0 2px 6px var(--nm-brand-glow);
+}
+
+.nm-feature-card {
+  background: var(--nm-bg) !important;
+  border-radius: var(--nm-radius-xl) !important;
+  box-shadow: var(--nm-raised) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  padding: 28px 20px !important;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nm-feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--nm-raised-hover) !important;
+}
+
+.nm-feature-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+  background: var(--nm-surface-sunken);
+  box-shadow: var(--nm-inset-sm);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9rem;
+  margin-bottom: 18px;
+  transition: transform 0.3s ease;
+}
+
+.nm-feature-card:hover .nm-feature-icon {
+  transform: scale(1.08);
+}
+
+@keyframes nmFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   8. NEUMORPHIC FOOTER
+   ========================================================================== */
+.footer {
+  background: var(--nm-bg) !important;
+  box-shadow: 0 -6px 16px var(--nm-shadow-dark), inset 0 1px 0 var(--nm-shadow-light) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.8) !important;
+  color: var(--nm-text-muted) !important;
+  padding: 24px 0 !important;
+  margin-top: 3rem !important;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.footer a {
+  color: var(--nm-brand) !important;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background: var(--nm-bg) !important;
+    border-radius: var(--nm-radius-lg) !important;
+    box-shadow: var(--nm-raised) !important;
+    padding: 16px !important;
+    margin-top: 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .nm-card-body {
+    padding: 16px !important;
+  }
+  .nm-social-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.35rem;
+  }
+}

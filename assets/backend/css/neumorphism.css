@@ -1,0 +1,2060 @@
+/* ==========================================================================
+   NEUMORPHISM (SOFT UI) DESIGN SYSTEM FOR ISP BILLING (GAYUH NET)
+   ========================================================================== */
+
+:root {
+  /* --- Canvas & Surface Colors --- */
+  --nm-bg: #e6ecf4;
+  --nm-surface: #e6ecf4;
+  
+  /* --- Dual Box Shadow Tokens (Light Source: Top-Left -45deg) --- */
+  --nm-shadow-light: #ffffff;
+  --nm-shadow-dark: #b8c4d4;
+  
+  /* Extruded / Raised (Timbul) */
+  --nm-raised-lg: 12px 12px 24px var(--nm-shadow-dark), 
+                  -12px -12px 24px var(--nm-shadow-light);
+  --nm-raised: 8px 8px 16px var(--nm-shadow-dark), 
+               -8px -8px 16px var(--nm-shadow-light);
+  --nm-raised-sm: 4px 4px 8px var(--nm-shadow-dark), 
+                  -4px -4px 8px var(--nm-shadow-light);
+  --nm-raised-xs: 2px 2px 5px var(--nm-shadow-dark), 
+                  -2px -2px 5px var(--nm-shadow-light);
+
+  /* Hover State (Elevasi Tambahan) */
+  --nm-raised-hover: 10px 10px 20px var(--nm-shadow-dark), 
+                    -10px -10px 20px var(--nm-shadow-light);
+
+  /* Inset / Debossed (Cekung / Tenggelam) */
+  --nm-inset: inset 4px 4px 8px var(--nm-shadow-dark), 
+              inset -4px -4px 8px var(--nm-shadow-light);
+  --nm-inset-sm: inset 2px 2px 5px var(--nm-shadow-dark), 
+                 inset -2px -2px 5px var(--nm-shadow-light);
+  --nm-inset-deep: inset 6px 6px 12px var(--nm-shadow-dark), 
+                   inset -6px -6px 12px var(--nm-shadow-light);
+
+  /* --- High Contrast Typography (WCAG 2.2 AA/AAA) --- */
+  --nm-text-main: #141d2b;       /* Rasio kontras > 11:1 pada #e6ecf4 */
+  --nm-text-muted: #4b5b70;      /* Rasio kontras > 5.5:1 */
+  --nm-text-disabled: #8595a8;
+
+  /* --- Brand & Status ISP Colors --- */
+  --nm-brand: #f47b20;           /* Gayuh Net Brand Orange */
+  --nm-brand-hover: #d86612;
+  --nm-brand-glow: rgba(244, 123, 32, 0.25);
+  --nm-accent-blue: #2563eb;
+  --nm-accent-success: #10b981;  /* Aktif / Lunas */
+  --nm-accent-danger: #ef4444;   /* Isolir / Terlambat */
+  --nm-accent-warning: #f59e0b;  /* Jatuh Tempo / Tiket */
+  --nm-accent-info: #06b6d4;     /* ODP / Router */
+
+  /* --- Radius System --- */
+  --nm-radius-xl: 28px;
+  --nm-radius-lg: 20px;
+  --nm-radius-md: 14px;
+  --nm-radius-sm: 10px;
+  --nm-radius-pill: 9999px;
+}
+
+/* ==========================================================================
+   DARK MODE NEUMORPHISM (Soft Dark UI)
+   ========================================================================== */
+html.dark-mode,
+body.dark-mode,
+.dark-mode {
+  --nm-bg: #111625;
+  --nm-surface: #111625;
+  
+  --nm-shadow-light: #1a2238;
+  --nm-shadow-dark: #090c14;
+
+  --nm-raised-lg: 10px 10px 22px var(--nm-shadow-dark), 
+                  -10px -10px 22px var(--nm-shadow-light);
+  --nm-raised: 6px 6px 14px var(--nm-shadow-dark), 
+               -6px -6px 14px var(--nm-shadow-light);
+  --nm-raised-sm: 3px 3px 8px var(--nm-shadow-dark), 
+                  -3px -3px 8px var(--nm-shadow-light);
+  --nm-raised-xs: 2px 2px 4px var(--nm-shadow-dark), 
+                  -2px -2px 4px var(--nm-shadow-light);
+
+  --nm-raised-hover: 8px 8px 18px var(--nm-shadow-dark), 
+                    -8px -8px 18px var(--nm-shadow-light);
+
+  --nm-inset: inset 4px 4px 8px var(--nm-shadow-dark), 
+              inset -4px -4px 8px var(--nm-shadow-light);
+  --nm-inset-sm: inset 2px 2px 5px var(--nm-shadow-dark), 
+                 inset -2px -2px 5px var(--nm-shadow-light);
+  --nm-inset-deep: inset 6px 6px 12px var(--nm-shadow-dark), 
+                   inset -6px -6px 12px var(--nm-shadow-light);
+
+  --nm-text-main: #f8fafc;
+  --nm-text-muted: #cbd5e1;
+  --nm-text-disabled: #64748b;
+  
+  --nm-brand: #f47b20;
+  --nm-brand-hover: #ff9142;
+  --nm-accent-success: #34d399;
+  --nm-accent-danger: #f87171;
+  --nm-accent-warning: #fbbf24;
+}
+
+/* ==========================================================================
+   GLOBAL LAYOUT INTEGRATION
+   ========================================================================== */
+body {
+  background-color: var(--nm-bg) !important;
+  color: var(--nm-text-main);
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+#wrapper, 
+#content-wrapper, 
+#content {
+  background-color: var(--nm-bg) !important;
+}
+
+/* ==========================================================================
+   1. CARDS (KARTU RINGKASAN TIMBUL)
+   ========================================================================== */
+.nm-card {
+  background-color: var(--nm-bg);
+  border-radius: var(--nm-radius-lg);
+  box-shadow: var(--nm-raised);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 22px 24px;
+  position: relative;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+html.dark-mode .nm-card {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nm-card:hover {
+  box-shadow: var(--nm-raised-hover);
+  transform: translateY(-2px);
+}
+
+.nm-card-sm {
+  padding: 16px 18px;
+  border-radius: var(--nm-radius-md);
+  box-shadow: var(--nm-raised-sm);
+}
+
+/* Kartu Dalam Cekung (Inset Well untuk grouping data dalam card) */
+.nm-card-inner {
+  background-color: var(--nm-bg);
+  border-radius: var(--nm-radius-md);
+  box-shadow: var(--nm-inset);
+  padding: 14px 18px;
+}
+
+/* Label Komponen Neumorphism */
+.nm-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--nm-text-muted);
+}
+
+/* ==========================================================================
+   2. BUTTONS (TOMBOL AKSI DENGAN EFEK TACTILE: TIMBUL -> CEKUNG)
+   ========================================================================== */
+.nm-btn {
+  background-color: var(--nm-bg);
+  color: var(--nm-text-main);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--nm-radius-md);
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: var(--nm-raised-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  text-decoration: none !important;
+}
+
+html.dark-mode .nm-btn {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nm-btn:hover {
+  color: var(--nm-text-main);
+  box-shadow: var(--nm-raised);
+  transform: translateY(-1px);
+}
+
+/* State Ditekan: Tenggelam ke dalam canvas */
+.nm-btn:active,
+.nm-btn.active {
+  box-shadow: var(--nm-inset);
+  transform: translateY(1px);
+}
+
+/* Varian Warna Tombol Aksi */
+.nm-btn-primary {
+  color: var(--nm-brand) !important;
+}
+.nm-btn-primary:hover {
+  color: var(--nm-brand-hover) !important;
+}
+.nm-btn-primary:active,
+.nm-btn-primary.active {
+  color: var(--nm-brand-hover) !important;
+}
+
+.nm-btn-success {
+  color: var(--nm-accent-success) !important;
+}
+.nm-btn-success:hover,
+.nm-btn-success:focus {
+  color: #059669 !important;
+}
+.nm-btn-success:active,
+.nm-btn-success.active {
+  color: #047857 !important;
+}
+
+.nm-btn-danger {
+  color: var(--nm-accent-danger) !important;
+}
+.nm-btn-danger:hover,
+.nm-btn-danger:focus {
+  color: #dc2626 !important;
+}
+.nm-btn-danger:active,
+.nm-btn-danger.active {
+  color: #b91c1c !important;
+}
+
+.nm-btn-warning {
+  color: #d97706 !important;
+}
+.nm-btn-warning:hover,
+.nm-btn-warning:focus {
+  color: #b45309 !important;
+}
+.nm-btn-warning:active,
+.nm-btn-warning.active {
+  color: #b45309 !important;
+}
+
+/* Ukuran Tombol Neumorphic */
+.nm-btn-sm {
+  padding: 6px 14px !important;
+  font-size: 0.82rem !important;
+  border-radius: var(--nm-radius-sm) !important;
+}
+
+.nm-btn-xs {
+  padding: 4px 9px !important;
+  font-size: 0.74rem !important;
+  border-radius: var(--nm-radius-sm) !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  gap: 5px !important;
+  min-height: 26px !important;
+}
+
+.nm-btn-xs i {
+  font-size: 0.78rem !important;
+}
+
+/* Penegak styling Bootstrap .btn dengan .nm-btn */
+.btn.nm-btn {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  transition: all 0.15s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+html.dark-mode .btn.nm-btn {
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.btn.nm-btn:hover {
+  box-shadow: var(--nm-raised) !important;
+  transform: translateY(-1px);
+}
+
+.btn.nm-btn:active,
+.btn.nm-btn.active {
+  box-shadow: var(--nm-inset) !important;
+  transform: translateY(1px);
+}
+
+/* Tombol Lingkaran untuk Ikon */
+.nm-btn-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--nm-radius-pill);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nm-btn-circle-sm {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--nm-radius-pill);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+}
+
+/* ==========================================================================
+   3. INPUT FORMS (CEKUNG / INSET SEPERTI LUBANG PADA LAYAR)
+   ========================================================================== */
+.nm-input {
+  width: 100%;
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  outline: none !important;
+  border-radius: var(--nm-radius-md);
+  padding: 12px 18px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--nm-text-main) !important;
+  box-shadow: var(--nm-inset);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+html.dark-mode .nm-input {
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+.nm-input::placeholder {
+  color: var(--nm-text-disabled) !important;
+}
+
+.nm-input:focus {
+  box-shadow: var(--nm-inset-deep);
+  border-color: rgba(244, 123, 32, 0.4) !important;
+}
+
+/* Override default Bootstrap .form-control if inside .nm-form */
+.nm-form .form-control {
+  background-color: var(--nm-bg) !important;
+  color: var(--nm-text-main) !important;
+  box-shadow: var(--nm-inset) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: var(--nm-radius-md) !important;
+  height: calc(1.5em + 1.25rem + 2px);
+  padding: 0.625rem 1.1rem;
+}
+
+html.dark-mode .nm-form .form-control {
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.nm-form .form-control:focus {
+  box-shadow: var(--nm-inset-deep) !important;
+  border-color: rgba(244, 123, 32, 0.5) !important;
+}
+
+/* Select2 Neumorphism Container */
+.nm-form .select2-container--default .select2-selection--single {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: var(--nm-inset) !important;
+  border-radius: var(--nm-radius-md) !important;
+  height: calc(1.5em + 1.25rem + 2px) !important;
+  padding: 6px 12px;
+}
+
+.nm-form .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: var(--nm-text-main) !important;
+  line-height: 28px !important;
+}
+
+/* ==========================================================================
+   4. ICON WELL & BADGES
+   ========================================================================== */
+.nm-icon-well {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--nm-radius-pill);
+  background-color: var(--nm-bg);
+  box-shadow: var(--nm-raised-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+html.dark-mode .nm-icon-well {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nm-icon-well-inset {
+  box-shadow: var(--nm-inset);
+  border: none;
+}
+
+/* Neumorphic Badges */
+.nm-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: var(--nm-radius-pill);
+  text-decoration: none !important;
+}
+
+.nm-badge-raised {
+  background-color: var(--nm-bg);
+  box-shadow: var(--nm-raised-xs);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.nm-badge-inset {
+  background-color: var(--nm-bg);
+  box-shadow: var(--nm-inset-sm);
+}
+
+/* ==========================================================================
+   5. TOPBAR NAVBAR NEUMORPHISM
+   ========================================================================== */
+.nm-topbar {
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-raised-sm);
+  border-radius: var(--nm-radius-lg);
+  margin: 12px 20px 24px 20px;
+  padding: 12px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1030 !important;
+  transition: all 0.25s ease;
+}
+
+html.dark-mode .nm-topbar {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nm-user-pill {
+  background-color: var(--nm-bg);
+  box-shadow: var(--nm-inset-sm);
+  border-radius: var(--nm-radius-pill);
+  padding: 6px 16px 6px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ==========================================================================
+   6. SIDEBAR NEUMORPHISM
+   ========================================================================== */
+.sidebar.nm-sidebar {
+  background-color: var(--nm-bg) !important;
+  box-shadow: 4px 0 16px var(--nm-shadow-dark);
+  border-right: 1px solid rgba(255, 255, 255, 0.4) !important;
+  z-index: 10;
+}
+
+html.dark-mode .sidebar.nm-sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Sidebar Brand Typography & Icon */
+.sidebar.nm-sidebar .sidebar-brand,
+.sidebar-dark.nm-sidebar .sidebar-brand,
+.nm-sidebar .sidebar-brand {
+  height: 4.75rem;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 800;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  z-index: 1;
+  color: #1e293b !important;
+}
+
+.sidebar.nm-sidebar .sidebar-brand .sidebar-brand-icon,
+.sidebar-dark.nm-sidebar .sidebar-brand .sidebar-brand-icon,
+.nm-sidebar .sidebar-brand-icon {
+  font-size: 1.6rem;
+  color: #f47b20 !important;
+  filter: drop-shadow(0 2px 5px rgba(244, 123, 32, 0.4));
+}
+
+.sidebar.nm-sidebar .sidebar-brand .sidebar-brand-text,
+.sidebar-dark.nm-sidebar .sidebar-brand .sidebar-brand-text,
+.nm-sidebar .sidebar-brand-text {
+  color: #1e293b !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.25;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);
+  transition: color 0.25s ease;
+}
+
+/* Dark Mode Support for Sidebar Brand */
+html.dark-mode .sidebar.nm-sidebar .sidebar-brand,
+html.dark-mode .sidebar-dark.nm-sidebar .sidebar-brand,
+html.dark-mode .nm-sidebar .sidebar-brand,
+html.dark-mode .sidebar.nm-sidebar .sidebar-brand .sidebar-brand-text,
+html.dark-mode .sidebar-dark.nm-sidebar .sidebar-brand .sidebar-brand-text,
+html.dark-mode .nm-sidebar .sidebar-brand .sidebar-brand-text,
+body.dark-mode .sidebar.nm-sidebar .sidebar-brand,
+body.dark-mode .sidebar-dark.nm-sidebar .sidebar-brand,
+body.dark-mode .nm-sidebar .sidebar-brand,
+body.dark-mode .sidebar.nm-sidebar .sidebar-brand .sidebar-brand-text,
+body.dark-mode .sidebar-dark.nm-sidebar .sidebar-brand .sidebar-brand-text,
+body.dark-mode .nm-sidebar .sidebar-brand .sidebar-brand-text {
+  color: #ffffff !important;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.nm-sidebar .sidebar-heading {
+  color: #64748b !important;
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 0 1.25rem 0.5rem;
+}
+
+html.dark-mode .nm-sidebar .sidebar-heading,
+body.dark-mode .nm-sidebar .sidebar-heading {
+  color: #94a3b8 !important;
+}
+
+.nm-sidebar .nav-item {
+  margin: 4px 12px;
+}
+
+.nm-sidebar .nav-item .nav-link {
+  color: #334155 !important;
+  font-weight: 700;
+  border-radius: var(--nm-radius-md);
+  padding: 12px 16px !important;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  background-color: transparent;
+}
+
+.nm-sidebar .nav-item .nav-link i {
+  color: #475569 !important;
+  width: 22px;
+  text-align: center;
+  font-size: 1.05rem;
+  margin-right: 10px;
+  transition: color 0.2s ease;
+}
+
+.nm-sidebar .nav-item .nav-link span {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: inherit;
+}
+
+html.dark-mode .nm-sidebar .nav-item .nav-link,
+body.dark-mode .nm-sidebar .nav-item .nav-link {
+  color: #cbd5e1 !important;
+}
+
+html.dark-mode .nm-sidebar .nav-item .nav-link i,
+body.dark-mode .nm-sidebar .nav-item .nav-link i {
+  color: #94a3b8 !important;
+}
+
+/* Hover Menu: Timbul Ringan */
+.nm-sidebar .nav-item .nav-link:hover {
+  background-color: var(--nm-bg);
+  color: var(--nm-brand) !important;
+  box-shadow: var(--nm-raised-xs);
+}
+
+.nm-sidebar .nav-item .nav-link:hover i {
+  color: var(--nm-brand) !important;
+}
+
+/* Active Menu: Tenggelam / Inset Shadow */
+.nm-sidebar .nav-item.active .nav-link {
+  background-color: var(--nm-bg) !important;
+  color: var(--nm-brand) !important;
+  box-shadow: var(--nm-inset) !important;
+  font-weight: 700;
+}
+
+.nm-sidebar .nav-item.active .nav-link i {
+  color: var(--nm-brand) !important;
+}
+
+/* Submenu Collapse Chevron Arrow (Button >) */
+.sidebar.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]::after,
+.sidebar-dark.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]::after,
+.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]::after,
+.sidebar-dark .nav-item .nav-link[data-toggle="collapse"]::after {
+  margin-left: auto !important;
+  color: #475569 !important;
+  opacity: 1 !important;
+  font-size: 0.85rem !important;
+  font-weight: 900 !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 24px !important;
+  text-align: center !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  background-color: transparent !important;
+}
+
+/* Hover State pada Chevron > */
+.sidebar.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]:hover::after,
+.sidebar-dark.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]:hover::after,
+.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]:hover::after {
+  color: var(--nm-brand) !important;
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  transform: scale(1.1);
+}
+
+/* Expanded State saat Submenu Terbuka */
+.sidebar.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]:not(.collapsed)::after,
+.sidebar-dark.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]:not(.collapsed)::after,
+.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]:not(.collapsed)::after {
+  color: var(--nm-brand) !important;
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+}
+
+/* Dark Mode untuk Chevron > */
+html.dark-mode .sidebar.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]::after,
+html.dark-mode .sidebar-dark.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]::after,
+html.dark-mode .nm-sidebar .nav-item .nav-link[data-toggle="collapse"]::after,
+html.dark-mode .sidebar-dark .nav-item .nav-link[data-toggle="collapse"]::after,
+body.dark-mode .sidebar.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]::after,
+body.dark-mode .sidebar-dark.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]::after,
+body.dark-mode .nm-sidebar .nav-item .nav-link[data-toggle="collapse"]::after,
+body.dark-mode .sidebar-dark .nav-item .nav-link[data-toggle="collapse"]::after {
+  color: #94a3b8 !important;
+}
+
+html.dark-mode .sidebar.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]:hover::after,
+html.dark-mode .nm-sidebar .nav-item .nav-link[data-toggle="collapse"]:hover::after,
+body.dark-mode .sidebar.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]:hover::after,
+body.dark-mode .nm-sidebar .nav-item .nav-link[data-toggle="collapse"]:hover::after {
+  color: var(--nm-brand) !important;
+}
+
+/* Sidebar Toggler Button (Di Bawah Sidebar) */
+.sidebar.nm-sidebar #sidebarToggle,
+.sidebar-dark.nm-sidebar #sidebarToggle,
+.nm-sidebar #sidebarToggle,
+.sidebar-dark #sidebarToggle {
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  width: 2.6rem !important;
+  height: 2.6rem !important;
+  margin: 1.25rem auto !important;
+  transition: all 0.25s ease !important;
+  outline: none !important;
+}
+
+.sidebar.nm-sidebar #sidebarToggle::after,
+.sidebar-dark.nm-sidebar #sidebarToggle::after,
+.nm-sidebar #sidebarToggle::after,
+.sidebar-dark #sidebarToggle::after {
+  color: #475569 !important;
+  font-size: 0.95rem !important;
+  font-weight: 900 !important;
+  opacity: 1 !important;
+  transition: color 0.25s ease !important;
+}
+
+.sidebar.nm-sidebar #sidebarToggle:hover,
+.nm-sidebar #sidebarToggle:hover {
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-raised) !important;
+  transform: scale(1.06);
+}
+
+.sidebar.nm-sidebar #sidebarToggle:hover::after,
+.nm-sidebar #sidebarToggle:hover::after {
+  color: var(--nm-brand) !important;
+}
+
+.sidebar.nm-sidebar #sidebarToggle:active,
+.nm-sidebar #sidebarToggle:active {
+  box-shadow: var(--nm-inset-sm) !important;
+  transform: scale(0.96);
+}
+
+html.dark-mode .sidebar.nm-sidebar #sidebarToggle,
+html.dark-mode .sidebar-dark.nm-sidebar #sidebarToggle,
+html.dark-mode .nm-sidebar #sidebarToggle,
+html.dark-mode .sidebar-dark #sidebarToggle,
+body.dark-mode .sidebar.nm-sidebar #sidebarToggle,
+body.dark-mode .sidebar-dark.nm-sidebar #sidebarToggle,
+body.dark-mode .nm-sidebar #sidebarToggle,
+body.dark-mode .sidebar-dark #sidebarToggle {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark-mode .sidebar.nm-sidebar #sidebarToggle::after,
+html.dark-mode .sidebar-dark.nm-sidebar #sidebarToggle::after,
+html.dark-mode .nm-sidebar #sidebarToggle::after,
+html.dark-mode .sidebar-dark #sidebarToggle::after,
+body.dark-mode .sidebar.nm-sidebar #sidebarToggle::after,
+body.dark-mode .sidebar-dark.nm-sidebar #sidebarToggle::after,
+body.dark-mode .nm-sidebar #sidebarToggle::after,
+body.dark-mode .sidebar-dark #sidebarToggle::after {
+  color: #cbd5e1 !important;
+}
+
+/* ==========================================================================
+   6.1. SIDEBAR MINIMIZED / TOGGLED STATE (DESKTOP)
+   ========================================================================== */
+@media (min-width: 768px) {
+  .sidebar.nm-sidebar {
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .sidebar.toggled,
+  .sidebar.nm-sidebar.toggled,
+  #accordionSidebar.toggled {
+    width: 6.5rem !important;
+    overflow: visible !important;
+  }
+
+  /* Centered Brand in Toggled Mode */
+  .sidebar.toggled .sidebar-brand,
+  .sidebar.nm-sidebar.toggled .sidebar-brand,
+  #accordionSidebar.toggled .sidebar-brand {
+    height: 4.75rem !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .sidebar.toggled .sidebar-brand a,
+  .sidebar.nm-sidebar.toggled .sidebar-brand a,
+  #accordionSidebar.toggled .sidebar-brand a {
+    justify-content: center !important;
+    width: 100% !important;
+    padding: 0 !important;
+    text-align: center !important;
+  }
+
+  .sidebar.toggled .sidebar-brand .sidebar-brand-icon,
+  .sidebar.nm-sidebar.toggled .sidebar-brand .sidebar-brand-icon,
+  #accordionSidebar.toggled .sidebar-brand .sidebar-brand-icon {
+    margin: 0 auto !important;
+    margin-right: 0 !important;
+    font-size: 1.8rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .sidebar.toggled .sidebar-brand .sidebar-brand-text,
+  .sidebar.nm-sidebar.toggled .sidebar-brand .sidebar-brand-text,
+  #accordionSidebar.toggled .sidebar-brand .sidebar-brand-text {
+    display: none !important;
+  }
+
+  /* Headings & Dividers */
+  .sidebar.toggled .sidebar-heading,
+  .sidebar.nm-sidebar.toggled .sidebar-heading,
+  #accordionSidebar.toggled .sidebar-heading {
+    display: none !important;
+  }
+
+  .sidebar.toggled hr.sidebar-divider,
+  .sidebar.nm-sidebar.toggled hr.sidebar-divider,
+  #accordionSidebar.toggled hr.sidebar-divider {
+    margin: 0.5rem 0.85rem !important;
+  }
+
+  /* Nav Items & Nav Links (Vertical Stacked Layout) */
+  .sidebar.toggled .nav-item,
+  .sidebar.nm-sidebar.toggled .nav-item,
+  #accordionSidebar.toggled .nav-item {
+    margin: 6px 8px !important;
+    position: relative !important;
+    width: auto !important;
+    text-align: center !important;
+  }
+
+  .sidebar.toggled .nav-item .nav-link,
+  .sidebar.nm-sidebar.toggled .nav-item .nav-link,
+  #accordionSidebar.toggled .nav-item .nav-link {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 10px 4px !important;
+    width: 100% !important;
+    min-height: 58px !important;
+    border-radius: var(--nm-radius-md) !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
+  }
+
+  .sidebar.toggled .nav-item .nav-link i,
+  .sidebar.nm-sidebar.toggled .nav-item .nav-link i,
+  #accordionSidebar.toggled .nav-item .nav-link i {
+    font-size: 1.25rem !important;
+    margin-right: 0 !important;
+    margin-bottom: 5px !important;
+    width: auto !important;
+    text-align: center !important;
+    line-height: 1 !important;
+  }
+
+  .sidebar.toggled .nav-item .nav-link span,
+  .sidebar.nm-sidebar.toggled .nav-item .nav-link span,
+  #accordionSidebar.toggled .nav-item .nav-link span {
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    display: block !important;
+    text-align: center !important;
+    width: 100% !important;
+    max-width: 5.2rem !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  /* CRITICAL: HIDE chevron arrow completely in toggled mode */
+  .sidebar.toggled .nav-item .nav-link::after,
+  .sidebar.toggled .nav-item .nav-link[data-toggle="collapse"]::after,
+  .sidebar.nm-sidebar.toggled .nav-item .nav-link[data-toggle="collapse"]::after,
+  .nm-sidebar.toggled .nav-item .nav-link[data-toggle="collapse"]::after,
+  #accordionSidebar.toggled .nav-item .nav-link[data-toggle="collapse"]::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  /* Hover & Active States */
+  .sidebar.toggled .nav-item .nav-link:hover,
+  .sidebar.nm-sidebar.toggled .nav-item .nav-link:hover,
+  #accordionSidebar.toggled .nav-item .nav-link:hover {
+    background-color: var(--nm-bg) !important;
+    color: var(--nm-brand) !important;
+    box-shadow: var(--nm-raised-xs) !important;
+    transform: translateY(-1px);
+  }
+
+  .sidebar.toggled .nav-item.active .nav-link,
+  .sidebar.nm-sidebar.toggled .nav-item.active .nav-link,
+  #accordionSidebar.toggled .nav-item.active .nav-link {
+    background-color: var(--nm-bg) !important;
+    color: var(--nm-brand) !important;
+    box-shadow: var(--nm-inset-sm) !important;
+  }
+
+  html.dark-mode .sidebar.toggled .nav-item .nav-link:hover,
+  body.dark-mode .sidebar.toggled .nav-item .nav-link:hover,
+  html.dark-mode #accordionSidebar.toggled .nav-item .nav-link:hover {
+    background-color: #161c2e !important;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4), -2px -2px 6px rgba(255, 255, 255, 0.03) !important;
+  }
+
+  html.dark-mode .sidebar.toggled .nav-item.active .nav-link,
+  body.dark-mode .sidebar.toggled .nav-item.active .nav-link,
+  html.dark-mode #accordionSidebar.toggled .nav-item.active .nav-link {
+    background-color: #161c2e !important;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -1px -1px 3px rgba(255, 255, 255, 0.04) !important;
+  }
+
+  /* Submenu Collapse Popover in Toggled Mode */
+  .sidebar.toggled .nav-item .collapse,
+  .sidebar.nm-sidebar.toggled .nav-item .collapse,
+  #accordionSidebar.toggled .nav-item .collapse {
+    position: absolute !important;
+    left: calc(6.5rem + 8px) !important;
+    top: 2px !important;
+    z-index: 1060 !important;
+    width: auto !important;
+    min-width: 13rem !important;
+    float: none !important;
+    display: none;
+    animation: growIn 0.2s cubic-bezier(0.18, 1.25, 0.4, 1) !important;
+  }
+
+  .sidebar.toggled .nav-item .collapse.show,
+  .sidebar.nm-sidebar.toggled .nav-item .collapse.show,
+  #accordionSidebar.toggled .nav-item .collapse.show {
+    display: block !important;
+  }
+
+  .sidebar.toggled .nav-item .collapse .collapse-inner,
+  .sidebar.nm-sidebar.toggled .nav-item .collapse .collapse-inner,
+  #accordionSidebar.toggled .nav-item .collapse .collapse-inner {
+    background-color: var(--nm-bg) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18), var(--nm-raised) !important;
+    border-radius: var(--nm-radius-md) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    padding: 10px 8px !important;
+    min-width: 13rem !important;
+    margin: 0 !important;
+  }
+
+  html.dark-mode .sidebar.toggled .nav-item .collapse .collapse-inner,
+  body.dark-mode .sidebar.toggled .nav-item .collapse .collapse-inner,
+  html.dark-mode #accordionSidebar.toggled .nav-item .collapse .collapse-inner {
+    background-color: #161c2e !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .sidebar.toggled .nav-item .collapse .collapse-inner .collapse-item,
+  .sidebar.nm-sidebar.toggled .nav-item .collapse .collapse-inner .collapse-item,
+  #accordionSidebar.toggled .nav-item .collapse .collapse-inner .collapse-item {
+    text-align: left !important;
+    white-space: nowrap !important;
+    padding: 8px 14px !important;
+    font-size: 0.85rem !important;
+    display: block !important;
+  }
+}
+
+/* Dropdown Menu / Sub-menu Collapse Neumorphism */
+.sidebar .collapse-inner,
+.sidebar .collapse-inner.bg-white,
+.nm-sidebar .collapse-inner,
+.nm-sidebar .collapse-inner.bg-white,
+#accordionSidebar .collapse-inner,
+#accordionSidebar .collapse-inner.bg-white {
+  background-color: var(--nm-bg) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  padding: 10px 8px !important;
+  margin: 6px 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+html.dark-mode .sidebar .collapse-inner,
+html.dark-mode .sidebar .collapse-inner.bg-white,
+html.dark-mode .nm-sidebar .collapse-inner,
+html.dark-mode .nm-sidebar .collapse-inner.bg-white,
+html.dark-mode #accordionSidebar .collapse-inner,
+html.dark-mode #accordionSidebar .collapse-inner.bg-white {
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.sidebar .collapse-inner .collapse-item,
+.nm-sidebar .collapse-inner .collapse-item,
+#accordionSidebar .collapse-inner .collapse-item {
+  color: var(--nm-text-muted) !important;
+  border-radius: var(--nm-radius-sm) !important;
+  font-weight: 600 !important;
+  padding: 8px 14px !important;
+  margin-bottom: 4px;
+  display: block;
+  transition: all 0.15s ease !important;
+}
+
+.sidebar .collapse-inner .collapse-item:hover,
+.nm-sidebar .collapse-inner .collapse-item:hover,
+#accordionSidebar .collapse-inner .collapse-item:hover {
+  color: var(--nm-brand) !important;
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  transform: translateX(3px);
+}
+
+.sidebar .collapse-inner .collapse-item.active,
+.nm-sidebar .collapse-inner .collapse-item.active,
+#accordionSidebar .collapse-inner .collapse-item.active {
+  color: var(--nm-brand) !important;
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  font-weight: 700 !important;
+  border-left: 3px solid var(--nm-brand) !important;
+}
+
+/* ==========================================================================
+   7. DATATABLES & TABLE PERFORMANCE WRAPPER
+   ========================================================================== */
+.nm-table-wrapper {
+  background-color: var(--nm-bg);
+  border-radius: var(--nm-radius-lg);
+  box-shadow: var(--nm-raised);
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+html.dark-mode .nm-table-wrapper {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nm-table-wrapper table.table {
+  color: var(--nm-text-main);
+  background-color: transparent !important;
+}
+
+.nm-table-wrapper table.table thead th {
+  border-top: none;
+  border-bottom: 2px solid var(--nm-shadow-dark);
+  color: var(--nm-text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.nm-table-wrapper table.table td {
+  border-top: 1px solid var(--nm-shadow-dark);
+  vertical-align: middle;
+}
+
+/* Pagination Buttons Neumorphic */
+.dataTables_paginate .paginate_button {
+  background-color: var(--nm-bg) !important;
+  border: none !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  border-radius: var(--nm-radius-sm) !important;
+  margin: 0 4px !important;
+  color: var(--nm-text-main) !important;
+  font-weight: 600 !important;
+}
+
+.dataTables_paginate .paginate_button:hover {
+  box-shadow: var(--nm-raised-sm) !important;
+  color: var(--nm-brand) !important;
+}
+
+.dataTables_paginate .paginate_button.current,
+.dataTables_paginate .paginate_button.active {
+  box-shadow: var(--nm-inset-sm) !important;
+  color: var(--nm-brand) !important;
+  font-weight: 700 !important;
+}
+
+/* ==========================================================================
+   8. GLOBAL BOOTSTRAP TO NEUMORPHISM ADAPTATION (FOR ALL SUBMENUS)
+   ========================================================================== */
+
+/* Universal Cards */
+.card {
+  background-color: var(--nm-bg) !important;
+  border-radius: var(--nm-radius-lg) !important;
+  box-shadow: var(--nm-raised) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  transition: all 0.25s ease;
+}
+
+html.dark-mode .card {
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.card-header {
+  background-color: transparent !important;
+  border-bottom: 1px solid var(--nm-shadow-dark) !important;
+  padding: 16px 22px !important;
+}
+
+.card-header h6, 
+.card-header h5, 
+.card-header .m-0 {
+  color: var(--nm-text-main) !important;
+  font-weight: 700 !important;
+}
+
+.card-body {
+  padding: 20px 22px !important;
+  color: var(--nm-text-main) !important;
+  background-color: transparent !important;
+}
+
+/* DataTables Buttons (Copy, CSV, Excel, PDF, Print, Column visibility) */
+div.dt-buttons .dt-button,
+div.dt-buttons .btn,
+button.dt-button {
+  background-color: var(--nm-bg) !important;
+  background-image: none !important;
+  color: var(--nm-text-main) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  padding: 8px 16px !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  margin-right: 6px !important;
+  margin-bottom: 8px !important;
+  transition: all 0.15s ease !important;
+}
+
+html.dark-mode div.dt-buttons .dt-button,
+html.dark-mode div.dt-buttons .btn {
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+div.dt-buttons .dt-button:hover,
+div.dt-buttons .btn:hover {
+  box-shadow: var(--nm-raised-sm) !important;
+  color: var(--nm-brand) !important;
+  transform: translateY(-1px);
+}
+
+div.dt-buttons .dt-button:active,
+div.dt-buttons .btn:active {
+  box-shadow: var(--nm-inset-sm) !important;
+  transform: translateY(1px);
+}
+
+/* DataTables Search Filter & Length Entries */
+.dataTables_filter input {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  padding: 8px 14px !important;
+  color: var(--nm-text-main) !important;
+  outline: none !important;
+  font-weight: 500;
+  margin-left: 8px;
+  transition: all 0.2s ease;
+}
+
+.dataTables_filter input:focus {
+  box-shadow: var(--nm-inset-deep) !important;
+  border-color: rgba(244, 123, 32, 0.4) !important;
+}
+
+.dataTables_length select {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  padding: 6px 12px !important;
+  color: var(--nm-text-main) !important;
+  outline: none !important;
+}
+
+/* Universal Form Controls & Inputs */
+.form-control {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  color: var(--nm-text-main) !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark-mode .form-control {
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.form-control:focus {
+  box-shadow: var(--nm-inset-deep) !important;
+  border-color: rgba(244, 123, 32, 0.45) !important;
+}
+
+/* Select2 Global Elements */
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  height: calc(1.5em + 1.25rem + 2px) !important;
+  padding: 6px 12px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: var(--nm-text-main) !important;
+  line-height: 28px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 100% !important;
+  right: 10px !important;
+}
+
+.select2-dropdown {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: var(--nm-raised) !important;
+  border-radius: var(--nm-radius-md) !important;
+  overflow: hidden;
+  z-index: 9999 !important;
+}
+
+.select2-container {
+  z-index: 2;
+}
+
+.select2-container--open {
+  z-index: 9999 !important;
+}
+
+.select2-container--default .select2-results__option {
+  color: var(--nm-text-main) !important;
+  padding: 8px 12px !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: var(--nm-brand) !important;
+  color: #ffffff !important;
+}
+
+.select2-dropdown .select2-search__field {
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: var(--nm-radius-sm) !important;
+  color: var(--nm-text-main) !important;
+  padding: 6px 10px !important;
+}
+
+/* Action Buttons & Dropdowns */
+.btn-primary, 
+.btn-primary.shadow-sm,
+a.btn-primary {
+  background-color: var(--nm-brand) !important;
+  border: 1px solid var(--nm-brand) !important;
+  color: #ffffff !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  font-weight: 700 !important;
+  transition: all 0.15s ease !important;
+}
+
+.btn-primary:hover,
+a.btn-primary:hover,
+.btn-primary:focus,
+a.btn-primary:focus {
+  background-color: var(--nm-brand-hover) !important;
+  border-color: var(--nm-brand-hover) !important;
+  box-shadow: var(--nm-raised) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.btn-primary:active,
+a.btn-primary:active {
+  background-color: #c4570b !important;
+  border-color: #c4570b !important;
+  box-shadow: var(--nm-inset) !important;
+  color: #ffffff !important;
+  transform: translateY(1px);
+}
+
+.btn-primary i,
+.btn-primary span,
+a.btn-primary i,
+a.btn-primary span {
+  color: #ffffff !important;
+}
+
+.btn-outline-primary {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: var(--nm-brand) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  font-weight: 700 !important;
+  transition: all 0.15s ease !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary:focus {
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-inset) !important;
+  color: var(--nm-brand-hover) !important;
+}
+
+.btn-outline-success {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: var(--nm-accent-success) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  font-weight: 700 !important;
+  transition: all 0.15s ease !important;
+}
+
+.btn-outline-success:hover,
+.btn-outline-success:active,
+.btn-outline-success:focus {
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-inset) !important;
+  color: #059669 !important;
+}
+
+.btn-outline-danger {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: var(--nm-accent-danger) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  font-weight: 700 !important;
+  transition: all 0.15s ease !important;
+}
+
+.btn-outline-danger:hover,
+.btn-outline-danger:active,
+.btn-outline-danger:focus {
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-inset) !important;
+  color: #dc2626 !important;
+}
+
+.btn-outline-warning {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: #d97706 !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  font-weight: 700 !important;
+  transition: all 0.15s ease !important;
+}
+
+.btn-outline-warning:hover,
+.btn-outline-warning:active,
+.btn-outline-warning:focus {
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-inset) !important;
+  color: #b45309 !important;
+}
+
+.btn-outline-secondary {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: var(--nm-text-muted) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  font-weight: 700 !important;
+  transition: all 0.15s ease !important;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:active,
+.btn-outline-secondary:focus {
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-inset) !important;
+  color: var(--nm-text-main) !important;
+}
+
+html.dark-mode .btn-outline-primary,
+html.dark-mode .btn-outline-success,
+html.dark-mode .btn-outline-danger,
+html.dark-mode .btn-outline-warning,
+html.dark-mode .btn-outline-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.btn-secondary,
+a.btn-secondary {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: var(--nm-text-muted) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  font-weight: 600 !important;
+}
+
+.btn-secondary:hover {
+  box-shadow: var(--nm-raised-sm) !important;
+  color: var(--nm-text-main) !important;
+}
+
+.btn-secondary:active {
+  box-shadow: var(--nm-inset-sm) !important;
+}
+
+.btn-danger,
+a.btn-danger {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: var(--nm-accent-danger) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  font-weight: 700 !important;
+}
+
+.btn-danger:hover {
+  box-shadow: var(--nm-raised-sm) !important;
+}
+
+.btn-danger:active {
+  box-shadow: var(--nm-inset-sm) !important;
+}
+
+/* Dropdown Menu Neumorphism */
+.dropdown-menu {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised) !important;
+  padding: 8px !important;
+}
+
+.dropdown-item {
+  color: var(--nm-text-main) !important;
+  border-radius: var(--nm-radius-sm) !important;
+  padding: 10px 16px !important;
+  font-weight: 600 !important;
+  transition: all 0.15s ease !important;
+}
+
+.dropdown-item:hover {
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  color: var(--nm-brand) !important;
+}
+
+/* Modals */
+.modal-content {
+  background-color: var(--nm-bg) !important;
+  border-radius: var(--nm-radius-xl) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: var(--nm-raised-lg) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--nm-shadow-dark) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--nm-shadow-dark) !important;
+}
+
+/* Table Enhancements */
+table.dataTable thead th,
+.table thead th {
+  background-color: transparent !important;
+  border-bottom: 2px solid var(--nm-shadow-dark) !important;
+  color: var(--nm-text-muted) !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+}
+
+table.dataTable tbody td,
+.table tbody td {
+  border-color: var(--nm-shadow-dark) !important;
+  background-color: transparent !important;
+  color: var(--nm-text-main) !important;
+}
+
+.table-bordered {
+  border: 1px solid var(--nm-shadow-dark) !important;
+}
+
+/* Checkbox Neumorphic accent */
+input[type="checkbox"] {
+  accent-color: var(--nm-brand);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   TABLE ROW ACTION BUTTONS (NEUMORPHIC ICON BUTTONS)
+   ========================================================================== */
+.table td a i.fa,
+.table td a i.fas,
+.table td a i.fab,
+table.dataTable td a i.fa,
+table.dataTable td a i.fas,
+table.dataTable td a i.fab {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: var(--nm-radius-sm) !important;
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  font-size: 14px !important;
+  margin: 2px 3px !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  vertical-align: middle !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  text-decoration: none !important;
+}
+
+html.dark-mode .table td a i.fa,
+html.dark-mode .table td a i.fas,
+html.dark-mode .table td a i.fab,
+html.dark-mode table.dataTable td a i.fa,
+html.dark-mode table.dataTable td a i.fas,
+html.dark-mode table.dataTable td a i.fab {
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.table td a:hover i.fa,
+.table td a:hover i.fas,
+.table td a:hover i.fab,
+table.dataTable td a:hover i.fa,
+table.dataTable td a:hover i.fas,
+table.dataTable td a:hover i.fab {
+  box-shadow: var(--nm-raised-sm) !important;
+  transform: translateY(-2px) scale(1.05) !important;
+}
+
+.table td a:active i.fa,
+.table td a:active i.fas,
+.table td a:active i.fab,
+table.dataTable td a:active i.fa,
+table.dataTable td a:active i.fas,
+table.dataTable td a:active i.fab {
+  box-shadow: var(--nm-inset-sm) !important;
+  transform: translateY(1px) scale(0.96) !important;
+}
+
+/* Pengecualian: Ikon di dalam tombol tabel yang sudah bertipe .btn atau .nm-btn (seperti A4 dan Thermal) */
+.table td a.btn i.fa,
+.table td a.btn i.fas,
+.table td a.btn i.fab,
+.table td a.nm-btn i.fa,
+.table td a.nm-btn i.fas,
+.table td a.nm-btn i.fab,
+table.dataTable td a.btn i.fa,
+table.dataTable td a.btn i.fas,
+table.dataTable td a.btn i.fab,
+table.dataTable td a.nm-btn i.fa,
+table.dataTable td a.nm-btn i.fas,
+table.dataTable td a.nm-btn i.fab {
+  display: inline-block !important;
+  width: auto !important;
+  height: auto !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  margin: 0 !important;
+  transform: none !important;
+  vertical-align: baseline !important;
+}
+
+.table td a.btn:hover i,
+.table td a.nm-btn:hover i,
+table.dataTable td a.btn:hover i,
+table.dataTable td a.nm-btn:hover i,
+.table td a.btn:active i,
+.table td a.nm-btn:active i,
+table.dataTable td a.btn:active i,
+table.dataTable td a.nm-btn:active i {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* ==========================================================================
+   SOFT UI BADGES (STATUS PELANGGAN & GATEWAY)
+   ========================================================================== */
+.badge {
+  padding: 6px 14px !important;
+  border-radius: var(--nm-radius-pill) !important;
+  font-weight: 700 !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.03em !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.badge-success {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #059669 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+html.dark-mode .badge-success {
+  color: #34d399 !important;
+  background-color: rgba(52, 211, 153, 0.18) !important;
+}
+
+.badge-danger {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  color: #dc2626 !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+}
+
+html.dark-mode .badge-danger {
+  color: #f87171 !important;
+  background-color: rgba(248, 113, 113, 0.18) !important;
+}
+
+.badge-warning {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  color: #d97706 !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+
+html.dark-mode .badge-warning {
+  color: #fbbf24 !important;
+  background-color: rgba(251, 191, 36, 0.18) !important;
+}
+
+.badge-info {
+  background-color: rgba(6, 182, 212, 0.15) !important;
+  color: #0891b2 !important;
+  border: 1px solid rgba(6, 182, 212, 0.35) !important;
+}
+
+html.dark-mode .badge-info {
+  color: #22d3ee !important;
+  background-color: rgba(34, 211, 238, 0.18) !important;
+}
+
+/* ==========================================================================
+   INPUT GROUPS, TEXTAREAS & SELECT2 POLISH
+   ========================================================================== */
+.input-group-text {
+  background-color: var(--nm-bg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow: var(--nm-raised-xs) !important;
+  color: var(--nm-text-main) !important;
+  font-weight: 600 !important;
+  border-radius: var(--nm-radius-md) !important;
+}
+
+html.dark-mode .input-group-text {
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+textarea.form-control {
+  background-color: var(--nm-bg) !important;
+  box-shadow: var(--nm-inset-sm) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: var(--nm-radius-md) !important;
+  color: var(--nm-text-main) !important;
+  line-height: 1.5 !important;
+}
+
+textarea.form-control:focus {
+  box-shadow: var(--nm-inset-deep) !important;
+  border-color: rgba(244, 123, 32, 0.45) !important;
+}
+
+/* Alerts Soft UI */
+.alert {
+  background-color: var(--nm-bg) !important;
+  border-radius: var(--nm-radius-md) !important;
+  box-shadow: var(--nm-raised-sm) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: var(--nm-text-main) !important;
+}
+
+.alert-danger {
+  border-left: 5px solid var(--nm-accent-danger) !important;
+  color: #b91c1c !important;
+}
+
+html.dark-mode .alert-danger {
+  color: #fca5a5 !important;
+  border: 1px solid rgba(239, 68, 68, 0.25) !important;
+  border-left: 5px solid var(--nm-accent-danger) !important;
+}
+
+.alert-success {
+  border-left: 5px solid var(--nm-accent-success) !important;
+  color: #047857 !important;
+}
+
+html.dark-mode .alert-success {
+  color: #6ee7b7 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  border-left: 5px solid var(--nm-accent-success) !important;
+}
+
+/* ==========================================================================
+   STICKY FOOTER & COPYRIGHT NEUMORPHISM (SELALU DI BAWAH)
+   ========================================================================== */
+footer.sticky-footer,
+.sticky-footer,
+body footer.sticky-footer {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: auto !important;
+  padding: 24px 0 !important;
+  background-color: var(--nm-bg) !important;
+  color: var(--nm-text-muted) !important;
+  border-top: 1px solid var(--nm-shadow-dark) !important;
+  display: block !important;
+  clear: both !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+footer.sticky-footer .container {
+  width: 100% !important;
+  text-align: center !important;
+}
+
+footer.sticky-footer .copyright,
+.copyright {
+  color: var(--nm-text-muted) !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  line-height: 1.6 !important;
+  text-align: center !important;
+}
+
+footer.sticky-footer .copyright span {
+  display: inline-block;
+}
+
+footer.sticky-footer .copyright .text-gray-500 {
+  color: var(--nm-text-muted) !important;
+  opacity: 0.8;
+  font-size: 0.8rem !important;
+}
+
+html.dark-mode footer.sticky-footer,
+body.dark-mode footer.sticky-footer {
+  background-color: var(--nm-bg) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: var(--nm-text-muted) !important;
+}
+
+/* ==========================================================================
+   10. MOBILE RESPONSIVE OFFCANVAS SIDEBAR & FIX OVERLAP (< 768px)
+   ========================================================================== */
+@media (max-width: 767.98px) {
+  /* Prevent horizontal scrolling and let content take 100% width */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  body.sidebar-open {
+    overflow: hidden !important;
+  }
+
+  #wrapper {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: visible !important;
+    overflow-x: clip !important;
+  }
+
+  #content-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    overflow-x: visible !important;
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+  }
+
+  .container-fluid {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Offcanvas Drawer for Sidebar on Mobile */
+  .sidebar.nm-sidebar,
+  #accordionSidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    height: 100% !important;
+    height: 100dvh !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    min-height: 100vh !important;
+    z-index: 10005 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(120, 130, 150, 0.4) transparent !important;
+    margin: 0 !important;
+    padding-bottom: 90px !important;
+    box-shadow: 10px 0 35px rgba(0, 0, 0, 0.35) !important;
+    transform: translateX(-100%) !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .sidebar.nm-sidebar::-webkit-scrollbar,
+  #accordionSidebar::-webkit-scrollbar {
+    width: 4px !important;
+  }
+
+  .sidebar.nm-sidebar::-webkit-scrollbar-track,
+  #accordionSidebar::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+
+  .sidebar.nm-sidebar::-webkit-scrollbar-thumb,
+  #accordionSidebar::-webkit-scrollbar-thumb {
+    background: rgba(120, 130, 150, 0.35) !important;
+    border-radius: 4px !important;
+  }
+
+  .sidebar.nm-sidebar::-webkit-scrollbar-thumb:hover,
+  #accordionSidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(120, 130, 150, 0.6) !important;
+  }
+
+  /* When Mobile Drawer is Opened */
+  body.sidebar-open .sidebar.nm-sidebar,
+  body.sidebar-open #accordionSidebar {
+    transform: translateX(0) !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  /* Ensure closed select2 or page controls never overlay the mobile drawer */
+  body.sidebar-open .select2-container {
+    z-index: 1 !important;
+  }
+
+  /* Mobile Backdrop Overlay */
+  .sidebar-backdrop {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(15, 20, 35, 0.65) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    z-index: 10000 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: opacity 0.3s ease, visibility 0.3s ease !important;
+  }
+
+  body.sidebar-open .sidebar-backdrop {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  /* Brand Header on Mobile with Close Button */
+  .sidebar.nm-sidebar .sidebar-brand,
+  #accordionSidebar .sidebar-brand {
+    height: 4.5rem !important;
+    padding: 0.75rem 1.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .sidebar.nm-sidebar .sidebar-brand .sidebar-brand-text,
+  #accordionSidebar .sidebar-brand .sidebar-brand-text {
+    display: inline-block !important;
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  .nm-close-sidebar-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: var(--nm-bg) !important;
+    box-shadow: var(--nm-inset-sm) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    color: #e53e3e !important;
+    font-size: 1rem !important;
+    cursor: pointer !important;
+    outline: none !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  }
+
+  .nm-close-sidebar-btn:active {
+    transform: scale(0.92) !important;
+  }
+
+  html.dark-mode .nm-close-sidebar-btn,
+  body.dark-mode .nm-close-sidebar-btn {
+    background-color: #161c2e !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ff6b6b !important;
+  }
+
+  /* Nav Items in Mobile Drawer */
+  .sidebar.nm-sidebar .nav-item,
+  #accordionSidebar .nav-item {
+    width: 100% !important;
+    position: relative !important;
+  }
+
+  .sidebar.nm-sidebar .nav-item .nav-link,
+  #accordionSidebar .nav-item .nav-link {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    padding: 0.8rem 1.25rem !important;
+    font-size: 0.92rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .sidebar.nm-sidebar .nav-item .nav-link span,
+  #accordionSidebar .nav-item .nav-link span {
+    display: inline-block !important;
+    font-size: 0.92rem !important;
+    margin-left: 0.75rem !important;
+    font-weight: 600 !important;
+  }
+
+  .sidebar.nm-sidebar .nav-item .nav-link i,
+  #accordionSidebar .nav-item .nav-link i {
+    font-size: 1.05rem !important;
+    width: 24px !important;
+    text-align: center !important;
+    margin-right: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .sidebar.nm-sidebar .nav-item .nav-link[data-toggle="collapse"]::after,
+  #accordionSidebar .nav-item .nav-link[data-toggle="collapse"]::after {
+    display: inline-flex !important;
+    margin-left: auto !important;
+    float: none !important;
+  }
+
+  /* SUBMENUS IN MOBILE DRAWER: FIX ABSOLUTE OVERLAP */
+  .sidebar .nav-item .collapse,
+  .sidebar .nav-item .collapsing,
+  .sidebar.nm-sidebar .nav-item .collapse,
+  .sidebar.nm-sidebar .nav-item .collapsing,
+  #accordionSidebar .nav-item .collapse,
+  #accordionSidebar .nav-item .collapsing {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    float: none !important;
+    box-shadow: none !important;
+    z-index: auto !important;
+    animation: none !important;
+  }
+
+  .sidebar .collapse-inner,
+  .nm-sidebar .collapse-inner,
+  #accordionSidebar .collapse-inner {
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 4px 12px 10px 12px !important;
+    padding: 8px 10px !important;
+    border-radius: var(--nm-radius-md) !important;
+    box-shadow: var(--nm-inset-sm) !important;
+  }
+
+  .sidebar .collapse-inner .collapse-item,
+  .nm-sidebar .collapse-inner .collapse-item,
+  #accordionSidebar .collapse-inner .collapse-item {
+    padding: 0.55rem 0.9rem !important;
+    font-size: 0.85rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  /* Topbar Mobile Refinements: Fixed/Sticky on Scroll */
+  .topbar.nm-topbar {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    margin: 0 0 14px 0 !important;
+    padding: 8px 12px !important;
+    min-height: 54px !important;
+    border-radius: 0 0 18px 18px !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.45) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+    z-index: 1030 !important;
+  }
+
+  html.dark-mode .topbar.nm-topbar,
+  body.dark-mode .topbar.nm-topbar {
+    background-color: #1a2236 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .topbar.nm-topbar.topbar-scrolled {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.14) !important;
+  }
+
+  html.dark-mode .topbar.nm-topbar.topbar-scrolled,
+  body.dark-mode .topbar.nm-topbar.topbar-scrolled {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55) !important;
+  }
+
+  #sidebarToggleTop {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    background-color: var(--nm-bg) !important;
+    box-shadow: var(--nm-raised-sm) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    color: var(--nm-brand) !important;
+    font-size: 1.05rem !important;
+    text-decoration: none !important;
+    margin-right: 0.5rem !important;
+    transition: all 0.2s ease !important;
+  }
+
+  #sidebarToggleTop:active {
+    box-shadow: var(--nm-inset-sm) !important;
+    transform: scale(0.94) !important;
+  }
+
+  html.dark-mode #sidebarToggleTop,
+  body.dark-mode #sidebarToggleTop {
+    background-color: #161c2e !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4), -2px -2px 6px rgba(255, 255, 255, 0.03) !important;
+    color: #f47b20 !important;
+  }
+}
+
+
+
