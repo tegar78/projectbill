@@ -197,45 +197,78 @@ Pada pembaruan versi 2 (V2) ini, dilakukan perbaikan arsitektur tampilan antarmu
 
 ---
 
+### 13. Perbaikan Tampilan & Responsivitas Pencarian Cepat Layanan di Mode Mobile (*Select2 Neumorphic Overhaul*)
+- **Kondisi Awal / Masalah**:
+  - Pada tampilan mobile di Dashboard (`/dashboard`), kotak pencarian cepat layanan (*Select2*) mengalami **horizontal overflow parah** (lebar elemen mencapai ~1000px).
+  - Hal ini menyebabkan kotak pencarian meluap menembus batas kartu (`.nm-card`) hingga ke luar layar kanan, dan seluruh halaman mobile terdorong memiliki scroll horizontal yang merusak tata letak topbar, header, dan kartu.
+  - Bidang input pencarian dropdown (`.select2-search__field`) memiliki border hitam tebal yang kasar dan tidak selaras dengan tema Neumorphism.
+  - Dropdown daftar hasil pencarian tidak memiliki batas lebar maksimal (`max-width`), sehingga melebar tanpa kontrol.
+- **Akar Masalah Teknis**:
+  - Kartu pencarian cepat di `application/views/backend/dashboard.php` ditempatkan langsung di dalam `.container-fluid` tanpa pembungkus `<div class="row">`.
+  - Inisialisasi Select2 di `backend.php` tidak menyertakan opsi `{ width: '100%' }`, sehingga Select2 mengukur lebar dari opsi teks terpanjang (~1000px).
+  - File `neumorphism.css` belum memiliki aturan khusus untuk mempercantik dan mengontrol komponen Select2.
+- **Solusi yang Diterapkan**:
+  1. **Pembungkus Grid Responsif**:
+     - Membungkus kartu pencarian dalam `<div class="row"><div class="col-12 col-md-6 col-lg-4 mb-4">` pada `application/views/backend/dashboard.php`.
+     - Memberikan `style="width: 100% !important;"` pada elemen `<select>`.
+  2. **Inisialisasi Select2 Responsif**:
+     - Mengubah pemanggilan di `backend.php` menjadi `$('.select2').select2({ width: '100%' });`.
+  3. **Desain Neumorphic Menyeluruh untuk Select2 (Bagian 12 di `neumorphism.css`)**:
+     - `.select2-container`: Diberikan `width: 100% !important; max-width: 100% !important;`.
+     - `.select2-selection--single`: Didesain cekung (*inset*) elegan dengan tinggi 44px, radius 12px, teks elipsis rapi, dan panah chevron bersih.
+     - `.select2-dropdown`: Diberikan radius 14px, bayangan timbul halus (*soft floating shadow*), dan `max-width: 100% !important;`.
+     - `.select2-search__field`: Border hitam tebal dihilangkan, diganti dengan input cekung Neumorphic dengan border oranye saat fokus.
+     - Mendukung penuh **Dark Mode** dengan warna latar navy gelap (`#1a2236`), input cekung `#131927`, dan kontras teks yang nyaman.
+     - Eliminasi total scroll horizontal pada mobile (`document.documentElement.scrollWidth == clientWidth`).
+
+---
+
 ## 📂 Berkas yang Diperbarui
 
 | No | Berkas | Deskripsi Perubahan |
 |:---|:---|:---|
-| 1 | `assets/backend/css/neumorphism.css` | Penambahan Bagian 6.2 (*Sidebar Toggler Button Docked Beside Bantuan*), Bagian 11 (*Frozen / Sticky Customer Name Panel*), Bagian 6.1 (*Sidebar Minimized State Desktop*), perbaikan pembungkusan teks nama pelanggan (`white-space: normal`, `word-break: break-word`, lebar 220px), perbaikan simetri dan emblem melingkar logo wifi brand, perbaikan stacking drawer mobile, tombol close drawer, styling backdrop blur, perbaikan z-index Select2, dan transisi smooth. |
+| 1 | `assets/backend/css/neumorphism.css` | Penambahan Bagian 12 (*Select2 Neumorphic Modern Styling & Mobile Overflow Protection*), Bagian 6.2 (*Sidebar Toggler Button Docked Beside Bantuan*), Bagian 11 (*Frozen / Sticky Customer Name Panel*), Bagian 6.1 (*Sidebar Minimized State Desktop*), perbaikan pembungkusan teks nama pelanggan (`white-space: normal`, `word-break: break-word`, lebar 220px), perbaikan simetri dan emblem melingkar logo wifi brand, perbaikan stacking drawer mobile, tombol close drawer, styling backdrop blur, perbaikan z-index Select2, dan transisi smooth. |
 | 2 | `assets/backend/js/sb-admin-2.js` | Logika kontrol mobile drawer (`toggleMobileSidebar`), event listener penutupan (backdrop, close btn, escape, link click), dynamic scroll listener untuk sticky topbar, auto-close Select2, dan inisialisasi hover tooltip (`initSidebarTooltips`). |
-| 3 | `application/views/backend.php` | Pemindahan `#sidebarToggle` ke samping kanan menu Bantuan (`#navItemHelp`), penghapusan toggler lama di bawah sidebar, penyesuaian layout utama, penyisipan elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, perbaikan CSS responsif drawer & minimized brand header, penggantian `overflow-x` menjadi `clip`, dan pembersihan skrip toggle saat *document ready*. |
-| 4 | `application/views/member/speedtest.php` | Penerapan pembungkus responsif `.speedtest-wrapper` dan `.speedtest-iframe` dengan tinggi adaptif (1000px di desktop, 1060px-1200px di tablet/mobile) agar gauge meteran dan deskripsi bagian bawah (*User Info* dan footer hak cipta) pas (*fit*) sempurna tanpa terpotong. |
-| 5 | `application/views/backend/bill/unpaid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox saat digulir ke kanan/kiri. |
-| 6 | `application/views/backend/bill/paid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 7 | `application/views/backend/bill/bill.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 8 | `application/views/backend/bill/get-data-bill.php` | Penambahan kelas `table-sticky-customer` pada tabel server-side `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
-| 9 | `application/views/mikrotik.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
-| 10 | `application/views/olt.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
+| 3 | `application/views/backend.php` | Inisialisasi Select2 dengan `{ width: '100%' }`, pemindahan `#sidebarToggle` ke samping kanan menu Bantuan (`#navItemHelp`), penghapusan toggler lama di bawah sidebar, penyesuaian layout utama, penyisipan elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, perbaikan CSS responsif drawer & minimized brand header, penggantian `overflow-x` menjadi `clip`, dan pembersihan skrip toggle saat *document ready*. |
+| 4 | `application/views/backend/dashboard.php` | Pembungkusan kartu Pencarian Cepat Layanan dalam grid `<div class="row">` dan penambahan `style="width: 100% !important;"` pada `<select>` untuk mencegah overflow di mobile. |
+| 5 | `application/views/member/speedtest.php` | Penerapan pembungkus responsif `.speedtest-wrapper` dan `.speedtest-iframe` dengan tinggi adaptif (1000px di desktop, 1060px-1200px di tablet/mobile) agar gauge meteran dan deskripsi bagian bawah (*User Info* dan footer hak cipta) pas (*fit*) sempurna tanpa terpotong. |
+| 6 | `application/views/backend/bill/unpaid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox saat digulir ke kanan/kiri. |
+| 7 | `application/views/backend/bill/paid.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 8 | `application/views/backend/bill/bill.php` | Penambahan kelas `table-sticky-customer` pada tabel `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 9 | `application/views/backend/bill/get-data-bill.php` | Penambahan kelas `table-sticky-customer` pada tabel server-side `#example` untuk pembekuan panel nama pelanggan, nomor, dan checkbox. |
+| 10 | `application/views/mikrotik.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
+| 11 | `application/views/olt.php` | Penambahan link stylesheet `neumorphism.css`, elemen `#sidebarBackdrop`, tombol `#sidebarCloseBtn`, kelas `sticky-top`, paritas layout brand `justify-content-md-center`, dan skrip inisialisasi reset mobile drawer. |
 
 ---
 
 ## 🔍 Panduan Verifikasi & Pengujian
 
-1. **Pengujian Halaman Speedtest Landing Page:**
+1. **Pengujian Pencarian Cepat Layanan (Mode Mobile):**
+   * Buka Dashboard (`http://billtest.gayuh.net.id.test/dashboard`) di layar ponsel (viewport ≤ 480px).
+   * Perhatikan bahwa kartu **Pencarian Cepat Layanan** dan kotak input Select2 berada pas di dalam batas layar tanpa meluap ke kanan.
+   * Pastikan tidak ada scroll horizontal liar pada halaman mobile.
+   * Ketuk kotak pencarian: dropdown terbuka rapi selebar kartu dengan kotak input neumorphic (tanpa border hitam kasar).
+   * Coba ketik kata kunci dan pilih pelanggan: fungsi pencarian bekerja instan.
+2. **Pengujian Halaman Speedtest Landing Page:**
    * Buka halaman Speedtest (`http://billtest.gayuh.net.id.test/front/speedtest`).
    * Gulir ke bawah: perhatikan bahwa meteran Download dan Upload tampil utuh tanpa terpotong bar gelap.
    * Perhatikan deskripsi **User Info** di bagian bawah (IP, ASN, ISP, Lokasi, User Agent, Browser, OS) tampil lengkap dan terbaca dengan jelas.
    * Perhatikan bahwa bar gelap hak cipta berada di bawah User Info dan tepat di atas footer utama situs tanpa saling bertumpukan.
-2. **Pengujian Posisi Tombol Minimize Sidebar (Desktop):**
+3. **Pengujian Posisi Tombol Minimize Sidebar (Desktop):**
    * Buka Dashboard (`http://billtest.gayuh.net.id.test/dashboard`).
    * Perhatikan posisi tombol toggle berbentuk lingkaran neumorphic kecil di tepi kanan menu **Bantuan** pada jarak aman (`right: -24px`).
    * Klik tombol tersebut: sidebar akan menyusut (*minimize*) dengan mulus, dan ikon tombol berubah dari `<` menjadi `>`.
    * Perhatikan bahwa tombol tetap menempel simetris di sisi kanan menu Bantuan pada status sidebar mini.
    * Klik kembali tombol `>` untuk memperluas sidebar ke ukuran normal.
-3. **Pengujian Batas & Pembungkusan Teks Nama Pelanggan:**
+4. **Pengujian Batas & Pembungkusan Teks Nama Pelanggan:**
    * Buka halaman tagihan (contoh: `http://billtest.gayuh.net.id.test/bill/paid` atau `/bill/unpaid`).
    * Cari baris dengan nama pelanggan panjang (contoh: baris ke-5 `YOGA FACHRUDIN PERDANA-(Q14B)`).
    * Verifikasi bahwa teks terbungkus rapi menjadi 2 baris di dalam batas sel Kolom 3 tanpa menembus atau menabrak tombol WhatsApp / Nomor Telepon di Kolom 4.
-4. **Pengujian Freeze Panel Nama Pelanggan (Desktop & Mobile):**
+5. **Pengujian Freeze Panel Nama Pelanggan (Desktop & Mobile):**
    * Buka halaman tagihan (contoh: `http://billtest.gayuh.net.id.test/bill/unpaid`).
    * Gulung (*scroll*) tabel ke kanan untuk melihat kolom *Total*, *Status*, *Coverage*, atau *Aksi*.
    * Pastikan kolom **No**, **Checkbox**, dan **Nama Pelanggan** tetap diam terkunci (*sticky*) di sisi kiri layar dengan bayangan pembatas yang rapi.
-5. **Pengujian Mobile Drawer & Sticky Topbar:**
+6. **Pengujian Mobile Drawer & Sticky Topbar:**
    * Verifikasi drawer menu hamburger dan sticky topbar tetap berfungsi mulus dan tidak terganggu oleh scrolling tabel.
-6. **Pengujian Dark Mode:**
-   * Aktifkan mode gelap: tombol toggle sidebar di samping Bantuan beradaptasi serasi dengan tema gelap `#1a2236`, border halus, dan bayangan pekat.
+7. **Pengujian Dark Mode:**
+   * Aktifkan mode gelap: tombol toggle sidebar di samping Bantuan dan komponen Select2 beradaptasi serasi dengan tema gelap `#1a2236`, border halus, dan bayangan pekat.
