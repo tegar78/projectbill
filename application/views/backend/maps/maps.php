@@ -350,30 +350,56 @@
         z-index: 9999 !important;
     }
 
-    /* Custom Marker Clustering Colors */
+    /* Custom Marker Clustering Colors & Safe Inner Transform (Coordinates Never Shift!) */
+    .marker-cluster {
+        background-clip: padding-box;
+        border-radius: 50%;
+        cursor: pointer !important;
+    }
+    .marker-cluster div {
+        width: 30px;
+        height: 30px;
+        margin-left: 5px;
+        margin-top: 5px;
+        text-align: center;
+        border-radius: 50%;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 30px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+        transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease;
+        cursor: pointer !important;
+    }
+    .marker-cluster span {
+        cursor: pointer !important;
+        user-select: none;
+    }
+    /* Hover scale is applied ONLY to the inner circle div so Leaflet's translate3d coordinates never get overridden */
+    .marker-cluster:hover div {
+        transform: scale(1.15);
+        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.35);
+    }
     .marker-cluster-small {
-        background-color: rgba(16, 185, 129, 0.3) !important;
+        background-color: rgba(16, 185, 129, 0.28) !important;
     }
     .marker-cluster-small div {
-        background-color: rgba(16, 185, 129, 0.9) !important;
+        background-color: #10b981 !important;
         color: #fff !important;
-        font-weight: bold;
     }
     .marker-cluster-medium {
-        background-color: rgba(245, 158, 11, 0.3) !important;
+        background-color: rgba(245, 158, 11, 0.28) !important;
     }
     .marker-cluster-medium div {
-        background-color: rgba(245, 158, 11, 0.9) !important;
+        background-color: #f59e0b !important;
         color: #fff !important;
-        font-weight: bold;
     }
     .marker-cluster-large {
-        background-color: rgba(59, 130, 246, 0.3) !important;
+        background-color: rgba(59, 130, 246, 0.28) !important;
     }
     .marker-cluster-large div {
-        background-color: rgba(59, 130, 246, 0.9) !important;
+        background-color: #3b82f6 !important;
         color: #fff !important;
-        font-weight: bold;
     }
 
     /* ==========================================================================
@@ -1198,28 +1224,30 @@
                                                 <span class="text-muted">-</span>
                                             <?php } ?>
                                         </td>
-                                        <td class="text-center" data-search="<?= htmlspecialchars($data->c_status) ?>" data-order="<?= htmlspecialchars($data->c_status) ?>">
-                                            <?php
-                                            $st = strtolower(trim($data->c_status));
-                                            $badgeClass = 'nm-pill-badge-menunggu';
-                                            $dotColor = '#64748b';
-                                            if ($st === 'aktif' || $st === 'active') {
-                                                $badgeClass = 'nm-pill-badge-aktif';
-                                                $dotColor = '#10b981';
-                                            } elseif ($st === 'isolir') {
-                                                $badgeClass = 'nm-pill-badge-isolir';
-                                                $dotColor = '#f59e0b';
-                                            } elseif ($st === 'non-aktif' || $st === 'non-active') {
-                                                $badgeClass = 'nm-pill-badge-nonaktif';
-                                                $dotColor = '#ef4444';
-                                            } elseif ($st === 'free') {
-                                                $badgeClass = 'nm-pill-badge-free';
-                                                $dotColor = '#06b6d4';
-                                            }
-                                            ?>
+                                        <?php
+                                        $is_isolir = ((int)($data->connection ?? 0) === 1 || strtolower(trim($data->c_status ?? '')) === 'isolir');
+                                        $display_status = $is_isolir ? 'Isolir' : ($data->c_status ?? 'Aktif');
+                                        $st = strtolower(trim($display_status));
+                                        $badgeClass = 'nm-pill-badge-menunggu';
+                                        $dotColor = '#64748b';
+                                        if ($st === 'isolir') {
+                                            $badgeClass = 'nm-pill-badge-isolir';
+                                            $dotColor = '#f59e0b';
+                                        } elseif ($st === 'aktif' || $st === 'active') {
+                                            $badgeClass = 'nm-pill-badge-aktif';
+                                            $dotColor = '#10b981';
+                                        } elseif ($st === 'non-aktif' || $st === 'non-active') {
+                                            $badgeClass = 'nm-pill-badge-nonaktif';
+                                            $dotColor = '#ef4444';
+                                        } elseif ($st === 'free') {
+                                            $badgeClass = 'nm-pill-badge-free';
+                                            $dotColor = '#06b6d4';
+                                        }
+                                        ?>
+                                        <td class="text-center" data-search="<?= htmlspecialchars($display_status) ?>" data-order="<?= htmlspecialchars($display_status) ?>">
                                             <span class="nm-pill-badge <?= $badgeClass ?>">
                                                 <span class="chip-dot" style="background: <?= $dotColor ?>; width: 6px; height: 6px;"></span>
-                                                <?= $data->c_status ?>
+                                                <?= htmlspecialchars($display_status) ?>
                                             </span>
                                         </td>
                                         <td data-search="<?= !empty($data->coverage_name) ? htmlspecialchars($data->coverage_name) : '' ?>" data-order="<?= !empty($data->coverage_name) ? htmlspecialchars($data->coverage_name) : '' ?>">
@@ -1477,6 +1505,7 @@
         var initialLayer = isDark ? darkMatter : googleHybrid;
 
         mymap = L.map('map', {
+            preferCanvas: true,
             center: [defaultLat, defaultLng],
             zoom: 13,
             layers: [initialLayer],
@@ -1486,13 +1515,39 @@
         // Layer Control
         L.control.layers(baseLayers, null, { position: 'topright' }).addTo(mymap);
 
-        // Marker Cluster Group
+        // Marker Cluster Group (Optimized for 1000+ pins with chunked loading)
         clusterGroup = L.markerClusterGroup({
             showCoverageOnHover: false,
-            maxClusterRadius: 45,
+            maxClusterRadius: 75,
             spiderfyOnMaxZoom: true,
-            zoomToBoundsOnClick: true
+            zoomToBoundsOnClick: true,
+            chunkedLoading: true,
+            chunkInterval: 150,
+            chunkDelay: 30,
+            removeOutsideVisibleBounds: true,
+            disableClusteringAtZoom: 19
         });
+
+        // Handle cluster click: zoom to bounds, or spiderfy if all markers are at identical coordinates
+        clusterGroup.on('clusterclick', function(a) {
+            var childMarkers = a.layer.getAllChildMarkers();
+            if (childMarkers && childMarkers.length > 1) {
+                var firstLat = childMarkers[0].getLatLng().lat;
+                var firstLng = childMarkers[0].getLatLng().lng;
+                var allSameLoc = true;
+                for (var i = 1; i < childMarkers.length; i++) {
+                    if (Math.abs(childMarkers[i].getLatLng().lat - firstLat) > 0.00003 ||
+                        Math.abs(childMarkers[i].getLatLng().lng - firstLng) > 0.00003) {
+                        allSameLoc = false;
+                        break;
+                    }
+                }
+                if (allSameLoc) {
+                    a.layer.spiderfy();
+                }
+            }
+        });
+
         mymap.addLayer(clusterGroup);
 
         // Coverage Overlay Group
@@ -1535,7 +1590,7 @@
         });
     }
 
-    // Render Markers with optional filter
+    // Render Markers with optional filter (High-Performance Bulk Addition)
     function renderMarkers(filter) {
         currentFilter = filter;
         clusterGroup.clearLayers();
@@ -1546,15 +1601,15 @@
         }
 
         var bounds = [];
-        var searchLayer = L.layerGroup();
+        var markersToAdd = [];
+        var filterLower = (filter || 'all').toLowerCase().trim();
 
         for (var i = 0; i < allCustomersData.length; i++) {
             var item = allCustomersData[i];
 
             // Filter check
-            if (filter !== 'all') {
-                var itemStatus = (item.c_status || '').toLowerCase();
-                var filterLower = filter.toLowerCase();
+            if (filterLower !== 'all') {
+                var itemStatus = (item.c_status || '').toLowerCase().trim();
                 if (itemStatus !== filterLower) {
                     continue;
                 }
@@ -1568,15 +1623,19 @@
             }
 
             var marker = createCustomerMarker(item);
-            clusterGroup.addLayer(marker);
-            searchLayer.addLayer(marker);
+            markersToAdd.push(marker);
             bounds.push([lat, lng]);
         }
 
-        // Attach Search Control if library available
+        // Bulk layer addition: 50x-100x faster than addLayer() in a loop
+        if (markersToAdd.length > 0) {
+            clusterGroup.addLayers(markersToAdd);
+        }
+
+        // Attach Search Control directly to clusterGroup
         if (typeof L.control.search === 'function') {
             searchControl = new L.control.search({
-                layer: searchLayer,
+                layer: clusterGroup,
                 propertyName: 'search_title',
                 initial: false,
                 hideMarkerOnCollapse: true,
@@ -1587,8 +1646,14 @@
             });
 
             searchControl.on('search:locationfound', function(e) {
-                if (e.layer && e.layer.openPopup) {
-                    e.layer.openPopup();
+                if (e.layer) {
+                    if (clusterGroup.hasLayer(e.layer)) {
+                        clusterGroup.zoomToShowLayer(e.layer, function() {
+                            e.layer.openPopup();
+                        });
+                    } else if (e.layer.openPopup) {
+                        e.layer.openPopup();
+                    }
                 }
             });
 
@@ -1603,7 +1668,7 @@
         }
     }
 
-    // Create SVG DivIcon Pin Marker (High-DPI Razor Sharp Vector)
+    // Create SVG DivIcon Pin Marker (High-DPI Razor Sharp Vector + Lazy Popup)
     function createCustomerMarker(item) {
         var statusKey = (item.c_status || 'aktif').toLowerCase().trim();
         var color = statusColors[statusKey] || '#10b981';
@@ -1633,9 +1698,10 @@
             search_title: item.no_services + ' - ' + item.name
         });
 
-        // Popup Content
-        var popupHtml = buildCustomerPopupHtml(item);
-        marker.bindPopup(popupHtml, { maxWidth: 310 });
+        // Lazy Popup Content: only rendered and parsed into DOM when the pin is clicked!
+        marker.bindPopup(function() {
+            return buildCustomerPopupHtml(item);
+        }, { maxWidth: 310 });
 
         return marker;
     }

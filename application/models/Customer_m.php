@@ -776,7 +776,7 @@ class Customer_m extends CI_Model
     }
     public function getmaps_detail()
     {
-        $this->db->select('customer.customer_id, customer.name, customer.no_services, customer.no_wa, customer.address, customer.latitude, customer.longitude, customer.mode_user, customer.user_mikrotik, customer.c_status, customer.no_port_odp, customer.coverage as coverage_id, coverage.c_name as coverage_name, m_odc.code_odc, m_odp.code_odp');
+        $this->db->select('customer.customer_id, customer.name, customer.no_services, customer.no_wa, customer.address, customer.latitude, customer.longitude, customer.mode_user, customer.user_mikrotik, customer.c_status, customer.connection, customer.no_port_odp, customer.coverage as coverage_id, coverage.c_name as coverage_name, m_odc.code_odc, m_odp.code_odp');
         $this->db->from('customer');
         $this->db->join('coverage', 'coverage.coverage_id = customer.coverage', 'left');
         $this->db->join('m_odc', 'm_odc.id_odc = customer.id_odc', 'left');
@@ -788,7 +788,7 @@ class Customer_m extends CI_Model
     }
     public function unmaps()
     {
-        $this->db->select('customer.customer_id, customer.name, customer.no_services, customer.no_wa, customer.c_status, customer.address, coverage.c_name as coverage_name');
+        $this->db->select('customer.customer_id, customer.name, customer.no_services, customer.no_wa, customer.c_status, customer.connection, customer.address, coverage.c_name as coverage_name');
         $this->db->from('customer');
         $this->db->join('coverage', 'coverage.coverage_id = customer.coverage', 'left');
         $this->db->where("(customer.latitude IS NULL OR customer.latitude = '' OR customer.latitude = '0' OR customer.longitude IS NULL OR customer.longitude = '' OR customer.longitude = '0')", NULL, FALSE);
