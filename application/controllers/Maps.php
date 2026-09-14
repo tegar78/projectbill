@@ -30,20 +30,30 @@ class Maps extends CI_Controller
             'unmapped' => count($data['customer'])
         ];
 
-        $mapped_rows = $this->customer_m->getmaps()->result();
-        $stats['total'] = count($mapped_rows);
-        foreach ($mapped_rows as $row) {
-            $st = strtolower(trim($row->c_status));
-            if ($st === 'aktif' || $st === 'active') {
-                $stats['aktif']++;
-            } elseif ($st === 'isolir') {
-                $stats['isolir']++;
+        // Optimized SQL aggregation for mapped customer counts (drastically reduces WAN query latency & memory)
+        $mapped_counts = $this->db->select('c_status, connection, COUNT(*) as cnt')
+            ->from('customer')
+            ->where("latitude IS NOT NULL AND latitude != '' AND latitude != '0'", NULL, FALSE)
+            ->where("longitude IS NOT NULL AND longitude != '' AND longitude != '0'", NULL, FALSE)
+            ->group_by(['c_status', 'connection'])
+            ->get()->result();
+
+        foreach ($mapped_counts as $row) {
+            $count = (int)$row->cnt;
+            $stats['total'] += $count;
+            $st = strtolower(trim($row->c_status ?? ''));
+            $is_isolir = ((int)($row->connection ?? 0) === 1 || $st === 'isolir');
+
+            if ($is_isolir) {
+                $stats['isolir'] += $count;
+            } elseif ($st === 'aktif' || $st === 'active') {
+                $stats['aktif'] += $count;
             } elseif ($st === 'non-aktif' || $st === 'non-active') {
-                $stats['non_aktif']++;
+                $stats['non_aktif'] += $count;
             } elseif ($st === 'menunggu' || $st === 'waiting') {
-                $stats['menunggu']++;
+                $stats['menunggu'] += $count;
             } elseif ($st === 'free') {
-                $stats['free']++;
+                $stats['free'] += $count;
             }
         }
         $data['stats'] = $stats;
@@ -58,11 +68,13 @@ class Maps extends CI_Controller
             'free' => 0
         ];
         foreach ($data['customer'] as $cust) {
-            $st = strtolower(trim($cust->c_status));
-            if ($st === 'aktif' || $st === 'active') {
-                $unmapped_stats['aktif']++;
-            } elseif ($st === 'isolir') {
+            $st = strtolower(trim($cust->c_status ?? ''));
+            $is_isolir = ((int)($cust->connection ?? 0) === 1 || $st === 'isolir');
+
+            if ($is_isolir) {
                 $unmapped_stats['isolir']++;
+            } elseif ($st === 'aktif' || $st === 'active') {
+                $unmapped_stats['aktif']++;
             } elseif ($st === 'non-aktif' || $st === 'non-active') {
                 $unmapped_stats['non_aktif']++;
             } elseif ($st === 'menunggu' || $st === 'waiting') {
@@ -117,6 +129,10 @@ class Maps extends CI_Controller
         $dataa = [];
 
         foreach ($customers as $data) {
+            $raw_status = $data->c_status ?? 'Aktif';
+            $is_isolir = ((int)($data->connection ?? 0) === 1 || strtolower(trim($raw_status)) === 'isolir');
+            $effective_status = $is_isolir ? 'Isolir' : $raw_status;
+
             $dataa[] = [
                 'customer_id' => $data->customer_id,
                 'name' => htmlspecialchars($data->name ?? '', ENT_QUOTES, 'UTF-8'),
@@ -127,7 +143,8 @@ class Maps extends CI_Controller
                 'longitude' => (float)$data->longitude,
                 'mode_user' => $data->mode_user ?? '-',
                 'user_mikrotik' => $data->user_mikrotik ?? '-',
-                'c_status' => $data->c_status ?? 'Aktif',
+                'c_status' => $effective_status,
+                'connection' => (int)($data->connection ?? 0),
                 'coverage' => $data->coverage_name ?? 'Tanpa Coverage',
                 'odc' => $data->code_odc ?? '-',
                 'odp' => (!empty($data->code_odp) ? ($data->code_odp . (!empty($data->no_port_odp) ? ' | Port ' . $data->no_port_odp : '')) : '-'),
