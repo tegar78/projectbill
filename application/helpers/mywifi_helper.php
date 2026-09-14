@@ -36,6 +36,21 @@ function indo_tlp($nohp)
     return (string)$nohp;
 }
 
+function format_whatsapp_number($number)
+{
+    $number = preg_replace('/[^0-9]/', '', (string)$number);
+    if (empty($number)) {
+        return '';
+    }
+    if (substr($number, 0, 1) === '0') {
+        return '62' . substr($number, 1);
+    }
+    if (substr($number, 0, 2) === '62') {
+        return $number;
+    }
+    return '62' . $number;
+}
+
 function get_google_maps_route($lat_raw, $lng_raw, $address = '')
 {
     $combined = (string)$lat_raw . ' ' . (string)$lng_raw;

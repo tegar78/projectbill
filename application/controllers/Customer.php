@@ -2110,18 +2110,11 @@ foreach ($result as $result) {
     // MAPS
     public function maps()
     {
-        $data['title'] = 'Maps';
-        $data['company'] = $this->db->get('company')->row_array();
-        $data['tes'] = $this->customer_m->getMaps()->result();
-        $data['customer'] = $this->customer_m->unmaps()->result();
-        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
-        $this->template->load('backend', 'backend/customer/maps', $data);
-        // $this->load->view('backend/customer/maps', $data);
+        redirect('maps');
     }
     public function getmaps()
     {
-        $maps = $this->customer_m->getmaps()->result();
-        echo json_encode($maps);
+        redirect('maps/getmaps');
     }
 
 
