@@ -1,3 +1,20 @@
+<?php
+/**
+ * @var array $stats
+ * @var array $unmapped_stats
+ * @var array $customer
+ * @var array $coverage
+ */
+$stats = isset($stats) && is_array($stats) ? $stats : [
+    'total' => 0,
+    'aktif' => 0,
+    'isolir' => 0,
+    'non_aktif' => 0,
+    'menunggu' => 0,
+    'free' => 0,
+    'unmapped' => isset($customer) && is_array($customer) ? count($customer) : 0
+];
+?>
 <!-- Load Leaflet Plugins -->
 <link rel="stylesheet" href="<?= base_url('assets/backend/leaflet-search/leaflet-search.css') ?>" />
 <link rel="stylesheet" href="<?= base_url('assets/backend/leaflet-markercluster/MarkerCluster.css') ?>" />
@@ -255,6 +272,26 @@
         border-color: rgba(244, 123, 32, 0.4);
     }
 
+    /* Harmonized Tool Icons */
+    .map-tool-btn .map-tool-icon {
+        font-size: 0.85rem;
+        color: var(--nm-text-muted, #64748b);
+        transition: color 0.15s ease, transform 0.15s ease;
+    }
+
+    html.dark-mode .map-tool-btn .map-tool-icon {
+        color: #94a3b8;
+    }
+
+    .map-tool-btn:hover .map-tool-icon {
+        color: var(--nm-brand, #f47b20);
+        transform: scale(1.12);
+    }
+
+    .map-tool-btn.active-tool .map-tool-icon {
+        color: var(--nm-brand, #f47b20) !important;
+    }
+
     /* Map Screen Console Bezel Frame */
     .map-screen-frame {
         padding: 14px 18px 18px 18px;
@@ -338,6 +375,7 @@
         filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.38));
         transform: translateZ(0);
         -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
     }
 
     .custom-svg-pin svg {
@@ -1072,26 +1110,30 @@
                     </div>
                 </div>
 
-                <!-- Map Action Buttons -->
+                <!-- Map Action Buttons (Clean & Grouped) -->
                 <div class="d-flex align-items-center flex-wrap" style="gap: 6px;">
-                    <button type="button" class="map-tool-btn" id="btn-sync-toggle" onclick="toggleSyncFilter()" title="Sinkronkan Filter Status Peta & Tabel">
-                        <i class="fas fa-link text-warning"></i>
-                        <span>Sync Tabel</span>
-                    </button>
-                    <button type="button" class="map-tool-btn" id="btn-coverage-toggle" onclick="toggleCoverageOverlay()" title="Tampilkan/Sembunyikan Radius Coverage Area">
-                        <i class="fas fa-broadcast-tower text-info"></i>
-                        <span>Coverage</span>
-                    </button>
-                    <button type="button" class="map-tool-btn" onclick="fitAllMarkers()" title="Pusatkan Tampilan ke Seluruh Marker Pelanggan">
-                        <i class="fas fa-expand-arrows-alt text-primary"></i>
-                        <span>Pusatkan</span>
-                    </button>
-                    <button type="button" class="map-tool-btn" onclick="locateUserPosition()" title="Deteksi Lokasi GPS Saya Saat Ini">
-                        <i class="fas fa-crosshairs text-success"></i>
-                        <span>Lokasi Saya</span>
-                    </button>
-                    <button type="button" class="map-tool-btn" onclick="reloadMapData(true)" title="Muat Ulang Data Maps">
-                        <i class="fas fa-sync-alt text-muted"></i>
+                    <div class="d-inline-flex align-items-center" style="gap: 6px;" role="group" aria-label="Navigasi Peta">
+                        <button type="button" class="map-tool-btn" onclick="fitAllMarkers()" title="Pusatkan Tampilan ke Seluruh Marker Pelanggan">
+                            <i class="fas fa-expand-arrows-alt map-tool-icon"></i>
+                            <span>Pusatkan</span>
+                        </button>
+                        <button type="button" class="map-tool-btn" onclick="locateUserPosition()" title="Deteksi Lokasi GPS Saya Saat Ini">
+                            <i class="fas fa-crosshairs map-tool-icon"></i>
+                            <span>Lokasi Saya</span>
+                        </button>
+                    </div>
+                    <div class="d-inline-flex align-items-center" style="gap: 6px;" role="group" aria-label="Layer Peta">
+                        <button type="button" class="map-tool-btn" id="btn-coverage-toggle" onclick="toggleCoverageOverlay()" title="Tampilkan/Sembunyikan Radius Coverage Area">
+                            <i class="fas fa-broadcast-tower map-tool-icon"></i>
+                            <span>Coverage</span>
+                        </button>
+                        <button type="button" class="map-tool-btn" id="btn-sync-toggle" onclick="toggleSyncFilter()" title="Sinkronkan Filter Status Peta & Tabel">
+                            <i class="fas fa-link map-tool-icon"></i>
+                            <span>Sync Tabel</span>
+                        </button>
+                    </div>
+                    <button type="button" class="map-tool-btn px-2" onclick="reloadMapData(true)" title="Muat Ulang Data Maps">
+                        <i class="fas fa-sync-alt map-tool-icon"></i>
                     </button>
                 </div>
             </div>
@@ -1509,8 +1551,27 @@
             center: [defaultLat, defaultLng],
             zoom: 13,
             layers: [initialLayer],
-            fullscreenControl: true
+            fullscreenControl: false
         });
+
+        // Add single Fullscreen Control explicitly
+        if (typeof L.control.fullscreen === 'function') {
+            mymap.addControl(L.control.fullscreen({
+                position: 'topleft',
+                title: {
+                    'false': 'Layar Penuh',
+                    'true': 'Keluar Layar Penuh'
+                }
+            }));
+        } else if (typeof L.Control.Fullscreen === 'function') {
+            mymap.addControl(new L.Control.Fullscreen({
+                position: 'topleft',
+                title: {
+                    'false': 'Layar Penuh',
+                    'true': 'Keluar Layar Penuh'
+                }
+            }));
+        }
 
         // Layer Control
         L.control.layers(baseLayers, null, { position: 'topright' }).addTo(mymap);

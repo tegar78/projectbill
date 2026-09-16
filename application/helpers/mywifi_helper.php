@@ -1,10 +1,18 @@
 <?php
+/**
+ * @param float|int|string $nominal
+ * @return string
+ */
 function indo_currency($nominal)
 {
     $result = number_format($nominal, 0, ',', '.');
     return $result;
 }
 
+/**
+ * @param string|int|null $nohp
+ * @return string
+ */
 function indo_tlp($nohp)
 {
     static $company = null;
@@ -36,6 +44,10 @@ function indo_tlp($nohp)
     return (string)$nohp;
 }
 
+/**
+ * @param string|int $number
+ * @return string
+ */
 function format_whatsapp_number($number)
 {
     $number = preg_replace('/[^0-9]/', '', (string)$number);
@@ -51,6 +63,12 @@ function format_whatsapp_number($number)
     return '62' . $number;
 }
 
+/**
+ * @param float|string|null $lat_raw
+ * @param float|string|null $lng_raw
+ * @param string $address
+ * @return array
+ */
 function get_google_maps_route($lat_raw, $lng_raw, $address = '')
 {
     $combined = (string)$lat_raw . ' ' . (string)$lng_raw;
@@ -109,6 +127,10 @@ function get_google_maps_route($lat_raw, $lng_raw, $address = '')
     ];
 }
 
+/**
+ * @param string $date
+ * @return string
+ */
 function indo_date($date)
 {
     $d = substr($date, 8, 2);
@@ -155,6 +177,10 @@ function indo_date($date)
     }
     return $d . ' ' . $bulan . ' ' . $y;
 }
+/**
+ * @param int|string $month
+ * @return string
+ */
 function indo_month($month)
 {
     $bulan = Date($month);
@@ -214,6 +240,11 @@ function maps()
         return $query->row_array();
     }
 }
+/**
+ * @param string|int $target
+ * @param string $message
+ * @return mixed
+ */
 function sendmsg($target, $message)
 {
     $ci = get_instance();
@@ -388,6 +419,12 @@ function sendmsg($target, $message)
         // }
     }
 }
+/**
+ * @param string|int $target
+ * @param string $message
+ * @param string|int $invoice
+ * @return mixed
+ */
 function sendmsgbill($target, $message, $invoice)
 {
     $ci = get_instance();
@@ -564,6 +601,12 @@ function sendmsgbill($target, $message, $invoice)
         }
     }
 }
+/**
+ * @param string|int $target
+ * @param string $message
+ * @param string|int $invoice
+ * @return mixed
+ */
 function sendmsgpaid($target, $message, $invoice)
 {
     $ci = get_instance();
@@ -741,6 +784,13 @@ function sendmsgpaid($target, $message, $invoice)
         }
     }
 }
+/**
+ * @param string|int $target
+ * @param string $message
+ * @param int|string $time
+ * @param string|int $invoice
+ * @return mixed
+ */
 function sendmsgschbill($target, $message, $time, $invoice)
 {
     $ci = get_instance();
@@ -1045,6 +1095,13 @@ function sendmsgschbill($target, $message, $time, $invoice)
         }
     }
 }
+/**
+ * @param string|int $target
+ * @param string $message
+ * @param int|string $time
+ * @param string|int $invoice
+ * @return mixed
+ */
 function sendmsgschbillpaid($target, $message, $time, $invoice)
 {
     $ci = get_instance();
@@ -1349,6 +1406,12 @@ function sendmsgschbillpaid($target, $message, $time, $invoice)
         }
     }
 }
+/**
+ * @param string|int $target
+ * @param string $message
+ * @param int|string $time
+ * @return mixed
+ */
 function sendmsgsch($target, $message, $time)
 {
     $ci = get_instance();
@@ -1611,6 +1674,13 @@ function sendmsgsch($target, $message, $time)
     }
 }
 
+/**
+ * @param string|int $target
+ * @param string $message
+ * @param int|string $time
+ * @param string|int $invoice
+ * @return mixed
+ */
 function sendmsgschduedate($target, $message, $time, $invoice)
 {
     $ci = get_instance();
@@ -1907,6 +1977,13 @@ function sendmsgschduedate($target, $message, $time, $invoice)
         }
     }
 }
+/**
+ * @param string|int $target
+ * @param string $message
+ * @param int|string $time
+ * @param string|int $invoice
+ * @return mixed
+ */
 function sendmsgschbeforedue($target, $message, $time, $invoice)
 {
     $ci = get_instance();

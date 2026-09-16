@@ -531,6 +531,7 @@ class Customer_m extends CI_Model
         $role_id = $this->session->userdata('role_id');
         $role = $this->db->get_where('role_management', ['role_id' => $role_id])->row_array();
         if ($this->session->userdata('role_id') == 3 && $role['coverage_operator'] == 1) {
+            $row = [];
             $operator = $this->db->get_where('cover_operator', ['operator' => $this->session->userdata('id')])->result();
 
             foreach ($operator as $roww) {
@@ -573,6 +574,7 @@ class Customer_m extends CI_Model
         $role_id = $this->session->userdata('role_id');
         $role = $this->db->get_where('role_management', ['role_id' => $role_id])->row_array();
         if ($this->session->userdata('role_id') == 3 && $role['coverage_operator'] == 1) {
+            $row = [];
             $operator = $this->db->get_where('cover_operator', ['operator' => $this->session->userdata('id')])->result();
 
             foreach ($operator as $roww) {
@@ -644,6 +646,7 @@ class Customer_m extends CI_Model
         $role_id = $this->session->userdata('role_id');
         $role = $this->db->get_where('role_management', ['role_id' => $role_id])->row_array();
         if ($this->session->userdata('role_id') == 3 && $role['coverage_operator'] == 1) {
+            $row = [];
             $operator = $this->db->get_where('cover_operator', ['operator' => $this->session->userdata('id')])->result();
 
             foreach ($operator as $roww) {
@@ -691,6 +694,7 @@ class Customer_m extends CI_Model
         $role_id = $this->session->userdata('role_id');
         $role = $this->db->get_where('role_management', ['role_id' => $role_id])->row_array();
         if ($this->session->userdata('role_id') == 3 && $role['coverage_operator'] == 1) {
+            $row = [];
             $operator = $this->db->get_where('cover_operator', ['operator' => $this->session->userdata('id')])->result();
 
             foreach ($operator as $roww) {
@@ -814,6 +818,7 @@ class Customer_m extends CI_Model
     public function getcapeloperator()
     {
 
+        $row = [];
         $operator = $this->db->get_where('cover_operator', ['operator' => $this->session->userdata('id')])->result();
 
         foreach ($operator as $roww) {
@@ -845,6 +850,7 @@ class Customer_m extends CI_Model
         $role_id = $this->session->userdata('role_id');
         $role = $this->db->get_where('role_management', ['role_id' => $role_id])->row_array();
         if ($this->session->userdata('role_id') == 3 && $role['coverage_operator'] == 1) {
+            $row = [];
             $operator = $this->db->get_where('cover_operator', ['operator' => $this->session->userdata('id')])->result();
 
             foreach ($operator as $roww) {
@@ -900,6 +906,7 @@ class Customer_m extends CI_Model
         $role_id = $this->session->userdata('role_id');
         $role = $this->db->get_where('role_management', ['role_id' => $role_id])->row_array();
         if ($this->session->userdata('role_id') == 3 && $role['coverage_operator'] == 1) {
+            $row = [];
             $operator = $this->db->get_where('cover_operator', ['operator' => $this->session->userdata('id')])->result();
 
             foreach ($operator as $roww) {
@@ -1096,6 +1103,7 @@ class Customer_m extends CI_Model
         $this->db->from($this->table);
 
         if ($role['coverage_operator'] == 1) {
+            $row = [];
             $operator = $this->db->get_where('cover_operator', ['operator' => $this->session->userdata('id')])->result();
             foreach ($operator as $roww) {
                 $row[] = $roww->coverage_id;
@@ -1133,6 +1141,7 @@ class Customer_m extends CI_Model
             $this->db->like('name', $_POST['search']['value']);
             $this->db->or_like('no_services', $_POST['search']['value']);
             if ($role['coverage_operator'] == 1) {
+                $row = [];
                 $operator = $this->db->get_where('cover_operator', ['operator' => $this->session->userdata('id')])->result();
                 foreach ($operator as $roww) {
                     $row[] = $roww->coverage_id;
@@ -1177,6 +1186,7 @@ class Customer_m extends CI_Model
         $this->db->select('*');
         $this->db->from('customer');
         if ($role['coverage_operator'] == 1) {
+            $row = [];
             $operator = $this->db->get_where('cover_operator', ['operator' => $this->session->userdata('id')])->result();
             foreach ($operator as $roww) {
                 $row[] = $roww->coverage_id;

@@ -9,7 +9,7 @@
         <?php $rolemitra = $this->db->get_where('role_management', ['role_id' => 4])->row_array() ?>
         <?php $rolekolektor = $this->db->get_where('role_management', ['role_id' => 7])->row_array() ?>
         <?php $rolefinance = $this->db->get_where('role_management', ['role_id' => 8])->row_array() ?>
-        <?php $roleoperator = $this->db->get_where('role_management', ['role_id' => 3])->row_array() ?>
+        <?php $package = isset($package) && is_array($package) ? $package : $this->db->get('package')->row_array() ?>
 
         <div class="row">
             <div class="col-lg-6">
@@ -36,7 +36,7 @@
 
                     <div id="operator" style="display: block">
                         <?php echo form_open_multipart('role/updateoperator') ?>
-                        <?php if ($package['coverage_operator'] == 1) { ?>
+                        <?php if (!empty($package['coverage_operator']) && $package['coverage_operator'] == 1) { ?>
                             <div class="row mb-2">
                                 <div class="col">
 

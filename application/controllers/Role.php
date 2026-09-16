@@ -21,6 +21,7 @@ class Role extends CI_Controller
             $data['title'] = 'Role';
             $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
             $data['company'] = $this->db->get('company')->row_array();
+            $data['package'] = $this->db->get('package')->row_array();
             $this->template->load('backend', 'backend/role/role', $data);
         } else {
             $this->session->set_flashdata('error-sweet', 'Akses dilarang');
@@ -285,6 +286,7 @@ class Role extends CI_Controller
             $data['title'] = 'Role Menu';
             $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
             $data['company'] = $this->db->get('company')->row_array();
+            $data['package'] = $this->db->get('package')->row_array();
             $this->template->load('backend', 'backend/role/menu', $data);
         } else {
             $this->session->set_flashdata('error-sweet', 'Akses dilarang');

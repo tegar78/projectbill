@@ -1879,10 +1879,8 @@
     <script src="https://cdn.datatables.net/fixedheader/3.2.2/js/dataTables.fixedHeader.min.js"></script>
     <script src="<?= base_url('assets/backend/') ?>vendor/datatables/dataTables.responsive.min.js"></script>
     <script src="<?= base_url('assets/backend/') ?>vendor/datatables/responsive.bootstrap4.min.js"></script>
-    <!-- bootstrap datepicker -->
     <script src="<?= base_url('assets/backend') ?>/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
-    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
+
 
 
     <script>

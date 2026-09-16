@@ -1,6 +1,7 @@
 <style>
     .list-group.list-group-tree {
         padding: 0;
+        margin-bottom: 12px;
     }
 
     .list-group.list-group-tree .list-group {
@@ -27,13 +28,29 @@
         padding-left: 90px;
     }
 
+    .list-group-item {
+        background-color: var(--nm-bg, #f0f3f8);
+        color: var(--nm-text-main, #2d3748) !important;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+    }
 
+    html.dark-mode .list-group-item,
+    body.dark-mode .list-group-item {
+        background-color: #1a2236 !important;
+        color: #f1f5f9 !important;
+        border-color: rgba(255, 255, 255, 0.06) !important;
+    }
 
+    .list-group-item .fa,
+    .list-group-item .fas {
+        margin-right: 8px;
+    }
 
-
-
-    .list-group-item .fa {
-        margin-right: 5px;
+    .fa-chevron {
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        display: inline-block;
+        transition: transform 0.2s ease;
     }
 
     .fa-chevron:before {
@@ -237,7 +254,7 @@
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuoperator['setting_company'] == 1 ? 'checked' : ''; ?> name="setting_company"> Perusahaan</a>
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuoperator['setting_about_company'] == 1 ? 'checked' : ''; ?> name="setting_about_company"> Tentang Perusahaan </a>
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuoperator['setting_bank_account'] == 1 ? 'checked' : ''; ?> name="setting_bank_account"> Rekening Bank </a>
-                                <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuoperator['setting_terms_conditions'] == 1 ? 'checked' : ''; ?> name="setting_terms_conditions"> Syarat & Ketentuan </a>
+                                <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= (isset($menuoperator['setting_terms_condition']) && $menuoperator['setting_terms_condition'] == 1) ? 'checked' : ''; ?> name="setting_terms_condition"> Syarat & Ketentuan </a>
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuoperator['setting_privacy_policy'] == 1 ? 'checked' : ''; ?> name="setting_privacy_policy"> Kebijakan Privasi </a>
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuoperator['setting_logs'] == 1 ? 'checked' : ''; ?> name="setting_logs"> Logs </a>
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuoperator['setting_backup'] == 1 ? 'checked' : ''; ?> name="setting_backup"> Backup </a>
@@ -421,7 +438,7 @@
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuteknisi['setting_company'] == 1 ? 'checked' : ''; ?> name="setting_company"> Perusahaan</a>
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuteknisi['setting_about_company'] == 1 ? 'checked' : ''; ?> name="setting_about_company"> Tentang Perusahaan </a>
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuteknisi['setting_bank_account'] == 1 ? 'checked' : ''; ?> name="setting_bank_account"> Rekening Bank </a>
-                                <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuteknisi['setting_terms_conditions'] == 1 ? 'checked' : ''; ?> name="setting_terms_conditions"> Syarat & Ketentuan </a>
+                                <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= (isset($menuteknisi['setting_terms_condition']) && $menuteknisi['setting_terms_condition'] == 1) ? 'checked' : ''; ?> name="setting_terms_condition"> Syarat & Ketentuan </a>
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuteknisi['setting_privacy_policy'] == 1 ? 'checked' : ''; ?> name="setting_privacy_policy"> Kebijakan Privasi </a>
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuteknisi['setting_logs'] == 1 ? 'checked' : ''; ?> name="setting_logs"> Logs </a>
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menuteknisi['setting_backup'] == 1 ? 'checked' : ''; ?> name="setting_backup"> Backup </a>
@@ -603,7 +620,7 @@
                                 <!-- <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menumitra['setting_company'] == 1 ? 'checked' : ''; ?> name="setting_company"> Perusahaan</a> -->
                                 <!-- <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menumitra['setting_about_company'] == 1 ? 'checked' : ''; ?> name="setting_about_company"> Tentang Perusahaan </a> -->
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menumitra['setting_bank_account'] == 1 ? 'checked' : ''; ?> name="setting_bank_account"> Rekening Bank </a>
-                                <!-- <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menumitra['setting_terms_conditions'] == 1 ? 'checked' : ''; ?> name="setting_terms_conditions"> Syarat & Ketentuan </a> -->
+                                <!-- <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= (isset($menumitra['setting_terms_condition']) && $menumitra['setting_terms_condition'] == 1) ? 'checked' : ''; ?> name="setting_terms_condition"> Syarat & Ketentuan </a> -->
                                 <!-- <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menumitra['setting_privacy_policy'] == 1 ? 'checked' : ''; ?> name="setting_privacy_policy"> Kebijakan Privasi </a> -->
                                 <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menumitra['setting_logs'] == 1 ? 'checked' : ''; ?> name="setting_logs"> Logs </a>
                                 <!-- <a href="javascript:void(0);" class="list-group-item" style="text-decoration: none; color:black"><input type="checkbox" <?= $menumitra['setting_backup'] == 1 ? 'checked' : ''; ?> name="setting_backup"> Backup </a> -->
@@ -631,6 +648,7 @@
             </div>
         </div>
     </div>
+</div>
     <script>
         function select_template(sel) {
             var template = $("#role_id").val();

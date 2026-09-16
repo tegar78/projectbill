@@ -39,6 +39,7 @@ class customer extends CI_Controller
     {
         $role = $this->_role();
         if ($role['role_id'] != 1 && $role['coverage_operator'] == 1) {
+            $row = [];
             $operator = $this->db->get_where('cover_operator', ['operator' => $this->session->userdata('id'), 'role_id' => $this->session->userdata('role_id')])->result();
             if ($this->session->userdata('role_id') != 1 && count($operator) == 0) {
                 echo "<script> alert ('Tidak ada coverage untuk akun anda')</script>";
@@ -258,6 +259,10 @@ class customer extends CI_Controller
             echo '<br>';
         };
     }
+    /**
+     * @param string $status
+     * @return void
+     */
     public function setstatus($status)
     {
 
@@ -305,6 +310,7 @@ class customer extends CI_Controller
                     $this->session->set_flashdata('error-sweet', 'Tidak ada daftar Coverage untuk akun anda');
                     redirect($_SERVER['HTTP_REFERER']);
                 }
+                $row = [];
                 foreach ($operator as $roww) {
                     $row[] = $roww->coverage_id;
                 };
@@ -807,6 +813,10 @@ class customer extends CI_Controller
         }
     }
 
+    /**
+     * @param int|string $customer_id
+     * @return void
+     */
     public function edit($customer_id)
     {
         is_logged_in();
@@ -836,6 +846,7 @@ class customer extends CI_Controller
                         $this->session->set_flashdata('error-sweet', 'Tidak ada daftar Coverage untuk akun anda');
                         redirect($_SERVER['HTTP_REFERER']);
                     }
+                    $row = [];
                     foreach ($operator as $roww) {
                         $row[] = $roww->coverage_id;
                     };
@@ -1158,6 +1169,10 @@ class customer extends CI_Controller
         }
         redirect('customer');
     }
+    /**
+     * @param int|string $day
+     * @return void
+     */
     public function setmaxisolir($day)
     {
 
@@ -1169,6 +1184,10 @@ class customer extends CI_Controller
         }
         redirect('customer');
     }
+    /**
+     * @param string $mode
+     * @return void
+     */
     public function setmode($mode)
     {
 
@@ -1235,6 +1254,10 @@ class customer extends CI_Controller
         }
         redirect('customer');
     }
+    /**
+     * @param int|string $id
+     * @return void
+     */
     public function setidmikrotik($id)
     {
 
@@ -1261,6 +1284,10 @@ class customer extends CI_Controller
         }
         redirect('customer');
     }
+    /**
+     * @param int|string $date
+     * @return void
+     */
     public function setdue($date)
     {
 
@@ -2120,7 +2147,11 @@ foreach ($result as $result) {
 
 
 
-    // Sinkron profile
+    /**
+     * Sinkron profile
+     * @param int|string $id
+     * @return void
+     */
     public function sinkron($id)
     {
         $customer = $this->db->get_where('customer', ['customer_id' => $id])->row_array();
@@ -2839,6 +2870,10 @@ foreach ($result as $result) {
         }
     }
 
+    /**
+     * @param string $no_services
+     * @return void
+     */
     public function print($no_services)
     {
 
