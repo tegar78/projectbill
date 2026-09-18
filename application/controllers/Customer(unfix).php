@@ -972,23 +972,7 @@ class customer extends CI_Controller
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_exec($ch);
             curl_close($ch);
-            // SEND KE OFFICIAL MY-WIFI
-            $token = 'REDACTED_TELEGRAM_BOT_TOKEN';
-            $send = "https://api.telegram.org/bot" . $token;
-            $filetelegramofficial  = [
-                'chat_id' => 'REDACTED_CHAT_ID',
-                'document' => base_url('assets/' . $filename),
-                'caption' => 'Backup My-Wifi Sebelum Hapus data Pelanggan ' . $no_services . ' A/N ' . $customername . ' ' . date('d-m-Y H:i:s') . ' - ' . base_url(),
-                'parse_mode' => 'html',
-            ];
-            $ch = curl_init($send . '/sendDocument');
-            curl_setopt($ch, CURLOPT_HEADER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, ($filetelegramofficial));
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_exec($ch);
-            curl_close($ch);
+
             // PHP program to delete all
             // file from a folder
             // Folder path to be flushed

@@ -2796,23 +2796,7 @@ class Bill extends CI_Controller
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_exec($ch);
             curl_close($ch);
-            // SEND KE OFFICIAL MY-WIFI
-            $token = 'REDACTED_TELEGRAM_BOT_TOKEN';
-            $send = "https://api.telegram.org/bot" . $token;
-            $params  = [
-                'chat_id' => 'REDACTED_CHAT_ID',
-                'document' => base_url('assets/' . $filename),
-                'caption' => 'Backup My-Wifi Sebelum Hapus semua data tagihan ' . $status . ' bulan ' . $month . ' tahun ' . $year . ' ' . date('d-m-Y H:i:s') .  ' Oleh ' . $action  . ' ' . $server,
-                'parse_mode' => 'html',
-            ];
-            $ch = curl_init($send . '/sendDocument');
-            curl_setopt($ch, CURLOPT_HEADER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, ($params));
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_exec($ch);
-            curl_close($ch);
+
             // PHP program to delete all
             // file from a folder
             // Folder path to be flushed

@@ -175,31 +175,90 @@ $stats = isset($stats) && is_array($stats) ? $stats : [
 
     .filter-chip.chip-aktif.active {
         color: #059669 !important;
+        border-color: rgba(16, 185, 129, 0.35) !important;
+    }
+    .filter-chip.chip-aktif.active .chip-count {
+        color: #059669 !important;
     }
 
     .filter-chip.chip-isolir.active {
+        color: #d97706 !important;
+        border-color: rgba(245, 158, 11, 0.35) !important;
+    }
+    .filter-chip.chip-isolir.active .chip-count {
         color: #d97706 !important;
     }
 
     .filter-chip.chip-nonaktif.active {
         color: #dc2626 !important;
+        border-color: rgba(239, 68, 68, 0.35) !important;
+    }
+    .filter-chip.chip-nonaktif.active .chip-count {
+        color: #dc2626 !important;
     }
 
     .filter-chip.chip-menunggu.active {
-        color: #4b5563 !important;
+        color: #64748b !important;
+        border-color: rgba(100, 116, 139, 0.35) !important;
+    }
+    .filter-chip.chip-menunggu.active .chip-count {
+        color: #64748b !important;
     }
 
     .filter-chip.chip-free.active {
         color: #0891b2 !important;
+        border-color: rgba(6, 182, 212, 0.35) !important;
+    }
+    .filter-chip.chip-free.active .chip-count {
+        color: #0891b2 !important;
+    }
+
+    html.dark-mode .filter-chip.chip-aktif.active {
+        color: #34d399 !important;
+        border-color: rgba(52, 211, 153, 0.4) !important;
+    }
+    html.dark-mode .filter-chip.chip-aktif.active .chip-count {
+        color: #34d399 !important;
+    }
+
+    html.dark-mode .filter-chip.chip-isolir.active {
+        color: #fbbf24 !important;
+        border-color: rgba(251, 191, 36, 0.4) !important;
+    }
+    html.dark-mode .filter-chip.chip-isolir.active .chip-count {
+        color: #fbbf24 !important;
+    }
+
+    html.dark-mode .filter-chip.chip-nonaktif.active {
+        color: #f87171 !important;
+        border-color: rgba(248, 113, 113, 0.4) !important;
+    }
+    html.dark-mode .filter-chip.chip-nonaktif.active .chip-count {
+        color: #f87171 !important;
+    }
+
+    html.dark-mode .filter-chip.chip-menunggu.active {
+        color: #94a3b8 !important;
+        border-color: rgba(148, 163, 184, 0.4) !important;
+    }
+    html.dark-mode .filter-chip.chip-menunggu.active .chip-count {
+        color: #94a3b8 !important;
+    }
+
+    html.dark-mode .filter-chip.chip-free.active {
+        color: #22d3ee !important;
+        border-color: rgba(34, 211, 238, 0.4) !important;
+    }
+    html.dark-mode .filter-chip.chip-free.active .chip-count {
+        color: #22d3ee !important;
     }
 
     .filter-chip .chip-dot {
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
         display: inline-block;
         flex-shrink: 0;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
 
     .filter-chip .chip-count {
@@ -1061,22 +1120,22 @@ $stats = isset($stats) && is_array($stats) ? $stats : [
                     </div>
                 </div>
 
-                <!-- Quick Counter Badges -->
+                <!-- Quick Counter Badges (Clean & Elegant Metric Display) -->
                 <div class="d-flex align-items-center flex-wrap" style="gap: 8px;">
                     <div class="nm-stat-pill" title="Total Pelanggan Ditandai">
-                        <i class="fas fa-map-pin text-primary"></i>
-                        <strong id="stat-total"><?= $stats['total'] ?></strong> Ditandai
+                        <span class="text-muted mr-1" style="font-size: 0.78rem; font-weight: 600;">Ditandai:</span>
+                        <strong id="stat-total" class="text-primary" style="font-size: 0.88rem;"><?= $stats['total'] ?></strong>
                     </div>
                     <div class="nm-stat-pill" title="Pelanggan Belum Ada Koordinat">
-                        <i class="fas fa-exclamation-circle text-warning"></i>
-                        <strong id="stat-unmapped"><?= $stats['unmapped'] ?></strong> Belum Ditandai
+                        <span class="text-muted mr-1" style="font-size: 0.78rem; font-weight: 600;">Belum Ditandai:</span>
+                        <strong id="stat-unmapped" class="text-warning" style="font-size: 0.88rem;"><?= $stats['unmapped'] ?></strong>
                     </div>
                 </div>
             </div>
 
             <!-- Toolbar: Status Filters & Map Actions -->
             <div class="maps-toolbar">
-                <!-- Filter Status Chips -->
+                <!-- Filter Status Chips (Clean & Professional) -->
                 <div class="filter-chips-group">
                     <span class="text-muted mr-1 d-none d-md-inline" style="font-size: 0.8rem; font-weight: 600;">Status:</span>
                     <div class="filter-chip active" data-filter="all" onclick="filterByStatus('all')">
@@ -1084,27 +1143,22 @@ $stats = isset($stats) && is_array($stats) ? $stats : [
                         <span class="chip-count" id="count-all"><?= $stats['total'] ?></span>
                     </div>
                     <div class="filter-chip chip-aktif" data-filter="Aktif" onclick="filterByStatus('Aktif')">
-                        <span class="chip-dot" style="background: #10b981;"></span>
                         <span>Aktif</span>
                         <span class="chip-count" id="count-aktif"><?= $stats['aktif'] ?></span>
                     </div>
                     <div class="filter-chip chip-isolir" data-filter="Isolir" onclick="filterByStatus('Isolir')">
-                        <span class="chip-dot" style="background: #f59e0b;"></span>
                         <span>Isolir</span>
                         <span class="chip-count" id="count-isolir"><?= $stats['isolir'] ?></span>
                     </div>
                     <div class="filter-chip chip-nonaktif" data-filter="Non-Aktif" onclick="filterByStatus('Non-Aktif')">
-                        <span class="chip-dot" style="background: #ef4444;"></span>
                         <span>Non-Aktif</span>
                         <span class="chip-count" id="count-non_aktif"><?= $stats['non_aktif'] ?></span>
                     </div>
                     <div class="filter-chip chip-menunggu" data-filter="Menunggu" onclick="filterByStatus('Menunggu')">
-                        <span class="chip-dot" style="background: #64748b;"></span>
                         <span>Menunggu</span>
                         <span class="chip-count" id="count-menunggu"><?= $stats['menunggu'] ?></span>
                     </div>
                     <div class="filter-chip chip-free" data-filter="Free" onclick="filterByStatus('Free')">
-                        <span class="chip-dot" style="background: #06b6d4;"></span>
                         <span>Free</span>
                         <span class="chip-count" id="count-free"><?= $stats['free'] ?></span>
                     </div>
@@ -1124,7 +1178,7 @@ $stats = isset($stats) && is_array($stats) ? $stats : [
                     </div>
                     <div class="d-inline-flex align-items-center" style="gap: 6px;" role="group" aria-label="Layer Peta">
                         <button type="button" class="map-tool-btn" id="btn-coverage-toggle" onclick="toggleCoverageOverlay()" title="Tampilkan/Sembunyikan Radius Coverage Area">
-                            <i class="fas fa-broadcast-tower map-tool-icon"></i>
+                            <i class="fas fa-wifi map-tool-icon"></i>
                             <span>Coverage</span>
                         </button>
                         <button type="button" class="map-tool-btn" id="btn-sync-toggle" onclick="toggleSyncFilter()" title="Sinkronkan Filter Status Peta & Tabel">
@@ -1176,7 +1230,7 @@ $stats = isset($stats) && is_array($stats) ? $stats : [
                 <!-- Table Filter Toolbar: Status & Coverage -->
                 <div class="maps-toolbar">
                     <div class="d-flex align-items-center flex-wrap justify-content-between w-100" style="gap: 10px;">
-                        <!-- Status Filter Chips for Table -->
+                        <!-- Status Filter Chips for Table (Clean) -->
                         <div class="filter-chips-group">
                             <span class="text-muted mr-1 d-none d-sm-inline" style="font-size: 0.8rem; font-weight: 600;">
                                 <i class="fas fa-filter text-primary mr-1"></i> Filter Status:
@@ -1186,27 +1240,22 @@ $stats = isset($stats) && is_array($stats) ? $stats : [
                                 <span class="chip-count" id="tbl-count-all"><?= $unmapped_stats['total'] ?? count($customer) ?></span>
                             </div>
                             <div class="filter-chip tbl-filter-chip chip-aktif" data-status="Aktif" onclick="filterTableByStatus('Aktif')">
-                                <span class="chip-dot" style="background: #10b981;"></span>
                                 <span>Aktif</span>
                                 <span class="chip-count" id="tbl-count-aktif"><?= $unmapped_stats['aktif'] ?? 0 ?></span>
                             </div>
                             <div class="filter-chip tbl-filter-chip chip-isolir" data-status="Isolir" onclick="filterTableByStatus('Isolir')">
-                                <span class="chip-dot" style="background: #f59e0b;"></span>
                                 <span>Isolir</span>
                                 <span class="chip-count" id="tbl-count-isolir"><?= $unmapped_stats['isolir'] ?? 0 ?></span>
                             </div>
                             <div class="filter-chip tbl-filter-chip chip-nonaktif" data-status="Non-Aktif" onclick="filterTableByStatus('Non-Aktif')">
-                                <span class="chip-dot" style="background: #ef4444;"></span>
                                 <span>Non-Aktif</span>
                                 <span class="chip-count" id="tbl-count-nonaktif"><?= $unmapped_stats['non_aktif'] ?? 0 ?></span>
                             </div>
                             <div class="filter-chip tbl-filter-chip chip-menunggu" data-status="Menunggu" onclick="filterTableByStatus('Menunggu')">
-                                <span class="chip-dot" style="background: #64748b;"></span>
                                 <span>Menunggu</span>
                                 <span class="chip-count" id="tbl-count-menunggu"><?= $unmapped_stats['menunggu'] ?? 0 ?></span>
                             </div>
                             <div class="filter-chip tbl-filter-chip chip-free" data-status="Free" onclick="filterTableByStatus('Free')">
-                                <span class="chip-dot" style="background: #06b6d4;"></span>
                                 <span>Free</span>
                                 <span class="chip-count" id="tbl-count-free"><?= $unmapped_stats['free'] ?? 0 ?></span>
                             </div>
@@ -1215,7 +1264,7 @@ $stats = isset($stats) && is_array($stats) ? $stats : [
                         <!-- Coverage Filter Dropdown & Reset -->
                         <div class="d-flex align-items-center flex-wrap" style="gap: 8px;">
                             <span class="text-muted d-none d-md-inline" style="font-size: 0.8rem; font-weight: 600;">
-                                <i class="fas fa-broadcast-tower text-info mr-1"></i> Area:
+                                <i class="fas fa-wifi text-info mr-1"></i> Area:
                             </span>
                             <select id="filter-table-coverage" class="form-control form-control-sm" style="width: auto; min-width: 160px; font-weight: 600; font-size: 0.82rem;" onchange="filterTableByCoverage(this.value)">
                                 <option value="">Semua Area Coverage</option>
@@ -1816,7 +1865,7 @@ $stats = isset($stats) && is_array($stats) ? $stats : [
                     <span class="val">${escapeHtml(item.mode_user)} (${escapeHtml(item.user_mikrotik)})</span>
                 </div>
                 <div class="cust-popup-row">
-                    <span class="label"><i class="fas fa-broadcast-tower mr-1"></i> Area:</span>
+                    <span class="label"><i class="fas fa-wifi mr-1"></i> Area:</span>
                     <span class="val">${escapeHtml(item.coverage)}</span>
                 </div>
                 <div class="cust-popup-row">
@@ -2016,7 +2065,7 @@ $stats = isset($stats) && is_array($stats) ? $stats : [
 
                     circle.bindPopup(`
                         <div style="font-size: 0.85rem; padding: 4px;">
-                            <strong><i class="fas fa-broadcast-tower text-primary mr-1"></i> ${escapeHtml(cov.c_name)}</strong><br>
+                            <strong><i class="fas fa-wifi text-primary mr-1"></i> ${escapeHtml(cov.c_name)}</strong><br>
                             <span class="text-muted">Radius: ${cov.radius} meter</span><br>
                             <small class="text-muted">${escapeHtml(cov.address)}</small>
                         </div>

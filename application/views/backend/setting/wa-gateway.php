@@ -1,7 +1,11 @@
 <?php
 
 // Pull messages (for push messages please go to settings of the number)
-$my_apikey = "REDACTED_RAPIWHA_KEY";
+$my_apikey = !empty($sms['sms_token']) ? $sms['sms_token'] : "";
+if (empty($my_apikey)) {
+    echo "<div class='alert alert-warning'>API Key WhatsApp Gateway belum dikonfigurasi di pengaturan SMS/WA Gateway.</div>";
+    return;
+}
 // $number = "DESTINATION";
 $type = "OUT";
 $markaspulled = "1 or 0";

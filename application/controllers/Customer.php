@@ -888,7 +888,12 @@ class customer extends CI_Controller
     function email_check()
     {
         $post = $this->input->post(null, TRUE);
-        $query = $this->db->query("SELECT * FROM customer WHERE email = '$post[email]' AND customer_id != '$post[customer_id]'");
+        $customerId = isset($post['customer_id']) ? $post['customer_id'] : 0;
+        $email = isset($post['email']) ? $post['email'] : '';
+        $query = $this->db->get_where('customer', [
+            'email' => $email,
+            'customer_id !=' => $customerId
+        ]);
         if ($query->num_rows() > 0) {
             $this->form_validation->set_message('email_check', '%s Ini sudah dipakai, Silahkan ganti !');
             return FALSE;
@@ -900,7 +905,12 @@ class customer extends CI_Controller
     function no_wa_check()
     {
         $post = $this->input->post(null, TRUE);
-        $query = $this->db->query("SELECT * FROM customer WHERE no_wa = '$post[no_wa]' AND customer_id != '$post[customer_id]'");
+        $customerId = isset($post['customer_id']) ? $post['customer_id'] : 0;
+        $noWa = isset($post['no_wa']) ? $post['no_wa'] : '';
+        $query = $this->db->get_where('customer', [
+            'no_wa' => $noWa,
+            'customer_id !=' => $customerId
+        ]);
         if ($query->num_rows() > 0) {
             $this->form_validation->set_message('no_wa_check', '%s Ini sudah dipakai, Silahkan ganti !');
             return FALSE;
@@ -911,7 +921,12 @@ class customer extends CI_Controller
     function no_services_check()
     {
         $post = $this->input->post(null, TRUE);
-        $query = $this->db->query("SELECT * FROM customer WHERE no_services = '$post[no_services]' AND customer_id != '$post[customer_id]'");
+        $customerId = isset($post['customer_id']) ? $post['customer_id'] : 0;
+        $noServices = isset($post['no_services']) ? $post['no_services'] : '';
+        $query = $this->db->get_where('customer', [
+            'no_services' => $noServices,
+            'customer_id !=' => $customerId
+        ]);
         if ($query->num_rows() > 0) {
             $this->form_validation->set_message('no_services_check', '%s Ini sudah dipakai, Silahkan ganti !');
             return FALSE;
@@ -923,7 +938,12 @@ class customer extends CI_Controller
     function no_ktp_check()
     {
         $post = $this->input->post(null, TRUE);
-        $query = $this->db->query("SELECT * FROM customer WHERE no_ktp = '$post[no_ktp]' AND customer_id != '$post[customer_id]'");
+        $customerId = isset($post['customer_id']) ? $post['customer_id'] : 0;
+        $noKtp = isset($post['no_ktp']) ? $post['no_ktp'] : '';
+        $query = $this->db->get_where('customer', [
+            'no_ktp' => $noKtp,
+            'customer_id !=' => $customerId
+        ]);
         if ($query->num_rows() > 0) {
             $this->form_validation->set_message('no_ktp_check', '%s Ini sudah dipakai, Silahkan ganti !');
             return FALSE;
@@ -985,23 +1005,7 @@ class customer extends CI_Controller
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_exec($ch);
             curl_close($ch);
-            // SEND KE OFFICIAL MY-WIFI
-            $token = 'REDACTED_TELEGRAM_BOT_TOKEN';
-            $send = "https://api.telegram.org/bot" . $token;
-            $filetelegramofficial  = [
-                'chat_id' => 'REDACTED_CHAT_ID',
-                'document' => base_url('assets/' . $filename),
-                'caption' => 'Backup My-Wifi Sebelum Hapus data Pelanggan ' . $no_services . ' A/N ' . $customername . ' ' . date('d-m-Y H:i:s') . ' - ' . base_url(),
-                'parse_mode' => 'html',
-            ];
-            $ch = curl_init($send . '/sendDocument');
-            curl_setopt($ch, CURLOPT_HEADER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, ($filetelegramofficial));
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_exec($ch);
-            curl_close($ch);
+
             // PHP program to delete all
             // file from a folder
             // Folder path to be flushed

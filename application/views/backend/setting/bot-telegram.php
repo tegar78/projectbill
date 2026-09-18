@@ -48,4 +48,4 @@
         </div>
     </div>
 </div>
-<!-- https://api.telegram.org/botREDACTED_TELEGRAM_BOT_TOKEN/sendlocation?chat_id=965476866&latitude=-7.205516294225202&longitude=107.82041430473329 -->
+<!-- Format endpoint Telegram Bot: https://api.telegram.org/bot<TOKEN_BOT>/sendlocation?chat_id=<CHAT_ID>&latitude=<LATITUDE>&longitude=<LONGITUDE> -->

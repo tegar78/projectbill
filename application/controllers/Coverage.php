@@ -137,7 +137,12 @@ class Coverage extends CI_Controller
     function codearea_check()
     {
         $post = $this->input->post(null, TRUE);
-        $query = $this->db->query("SELECT * FROM coverage WHERE code_area = '$post[code_area]' AND coverage_id != '$post[coverage_id]'");
+        $coverageId = isset($post['coverage_id']) ? $post['coverage_id'] : 0;
+        $codeArea = isset($post['code_area']) ? $post['code_area'] : '';
+        $query = $this->db->get_where('coverage', [
+            'code_area' => $codeArea,
+            'coverage_id !=' => $coverageId
+        ]);
         if ($query->num_rows() > 0) {
             $this->form_validation->set_message('codearea_check', '%s Ini sudah dipakai, Silahkan ganti !');
             return FALSE;

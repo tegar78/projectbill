@@ -18,9 +18,9 @@
             echo $datenow . ' ' . $timeex;
             var_dump($datenow, $timenow, $timeex);
             die;
-            $username = 'btranscb';
-            $APIkey = 'REDACTED_AUTONOTIF_KEY';
-            $target = '6282337481227';
+            $username = isset($sms['sms_user']) ? $sms['sms_user'] : '';
+            $APIkey = isset($sms['sms_token']) ? $sms['sms_token'] : '';
+            $target = isset($data->no_wa) ? $data->no_wa : '';
             $message = 'TEST_MESSAGE TIME';
             // $send_on =  '2021-04-26 16:55:00'; //Format YYYY-MM-DD HH:MM:SS
             $send_on =  $datenow . '' . $timeex; //Format YYYY-MM-DD HH:MM:SS

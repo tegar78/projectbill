@@ -252,20 +252,18 @@ class Odc extends CI_Controller
     }
 
     function codeodc_check()
-
     {
-
         $post = $this->input->post(null, TRUE);
-
-        $query = $this->db->query("SELECT * FROM m_odc WHERE code_odc = '$post[code_odc]' AND id_odc != '$post[id_odc]'");
-
+        $idOdc = isset($post['id_odc']) ? $post['id_odc'] : 0;
+        $codeOdc = isset($post['code_odc']) ? $post['code_odc'] : '';
+        $query = $this->db->get_where('m_odc', [
+            'code_odc' => $codeOdc,
+            'id_odc !=' => $idOdc
+        ]);
         if ($query->num_rows() > 0) {
-
             $this->form_validation->set_message('codeodc_check', '%s Ini sudah dipakai, Silahkan ganti !');
-
             return FALSE;
         } else {
-
             return TRUE;
         }
     }

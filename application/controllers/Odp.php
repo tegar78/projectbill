@@ -248,20 +248,18 @@ class Odp extends CI_Controller
     }
 
     function codeodp_check()
-
     {
-
         $post = $this->input->post(null, TRUE);
-
-        $query = $this->db->query("SELECT * FROM m_odp WHERE code_odp = '$post[code_odp]' AND id_odp != '$post[id_odp]'");
-
+        $idOdp = isset($post['id_odp']) ? $post['id_odp'] : 0;
+        $codeOdp = isset($post['code_odp']) ? $post['code_odp'] : '';
+        $query = $this->db->get_where('m_odp', [
+            'code_odp' => $codeOdp,
+            'id_odp !=' => $idOdp
+        ]);
         if ($query->num_rows() > 0) {
-
             $this->form_validation->set_message('codeodp_check', '%s Ini sudah dipakai, Silahkan ganti !');
-
             return FALSE;
         } else {
-
             return TRUE;
         }
     }
