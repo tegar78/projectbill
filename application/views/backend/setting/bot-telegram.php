@@ -1,4 +1,8 @@
-<?php $this->view('messages') ?>
+<?php
+/** @var array $bot */
+$bot = isset($bot) && is_array($bot) ? $bot : [];
+$this->view('messages');
+?>
 <div class="col-lg-12">
     <div class="card shadow mb-4">
         <div class="card-header py-3">

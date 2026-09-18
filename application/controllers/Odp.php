@@ -133,6 +133,9 @@ class Odp extends CI_Controller
         }
     }
 
+    /**
+     * @param int|string $id
+     */
     public function edit($id)
 
     {
@@ -355,6 +358,9 @@ class Odp extends CI_Controller
 
     // DOKUMEN
 
+    /**
+     * @param int|string $id_odp
+     */
     public function doc($id_odp)
 
     {
