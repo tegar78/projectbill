@@ -40,7 +40,7 @@ Pembaruan Versi 3.1 (V3.1) merupakan rilis penguatan keamanan menyeluruh (*secur
    - Menambahkan metadata parameter `@param int|string` pada method `edit()` dan `doc()` di [Odp.php](file:///c:/PROJECT-TEGAR/billingtest.gayuh.net.id/application/controllers/Odp.php).
 
 8. **Refinement Antarmuka Maps Pelanggan (UI/UX Decluttering)**:
-   - Menghapus bulatan-bulatan warna status (`.chip-dot`) pada filter status chips (Semua, Aktif, Isolir, Non-Aktif, Menunggu, Free) baik di toolbar atas maupun toolbar tabel bawah di `/maps` dan `/customer/maps`.
+   - Menghapus bulatan-bulatan warna status (`.chip-dot`) yang sebelumnya menyerupai deretan emoji lingkaran warna-warni pada toolbar peta dan tabel bawah di `/maps` dan `/customer/maps`.
    - Merestrukturisasi badge counter header menjadi metrik eksekutif bersih (`Ditandai: 757` dan `Belum Ditandai: 299`).
    - Memperbaiki glitch karakter fallback huruf `'A'` pada tombol Coverage dengan mengganti class icon menjadi `fa-wifi`.
 
