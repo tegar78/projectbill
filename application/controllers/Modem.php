@@ -10,7 +10,6 @@ class Modem extends CI_Controller
     }
     public function index()
     {
-       \
         $role_id = $this->session->userdata('role_id');
         $role = $this->db->get_where('role_management', ['role_id' => $role_id])->row_array();
         if ($role_id != 1 && $role['show_modem'] == 0) {
