@@ -268,16 +268,22 @@
                                         </svg>
                                         <!-- <i class="fas fa-circle"></i> -->
                                     </div>
-                                    <?php $createby = $this->db->get_where('user', ['id' => $help['create_by']])->row_array(); ?>
-                                    <?php if ($createby['role_id'] == 1) {
-                                        $level = 'Administrator';
-                                    } elseif ($createby['role_id'] == 2) {
-                                        $level = 'Pelanggan';
-                                    } elseif ($createby['role_id'] == 3) {
-                                        $level = 'Operator';
-                                    } ?>
+                                    <?php 
+                                    $createby = !empty($help['create_by']) ? $this->db->get_where('user', ['id' => $help['create_by']])->row_array() : null; 
+                                    $level = 'Administrator';
+                                    if (!empty($createby['role_id'])) {
+                                        if ($createby['role_id'] == 1) {
+                                            $level = 'Administrator';
+                                        } elseif ($createby['role_id'] == 2) {
+                                            $level = 'Pelanggan';
+                                        } elseif ($createby['role_id'] == 3) {
+                                            $level = 'Operator';
+                                        }
+                                    }
+                                    $creatorName = !empty($createby['name']) ? $createby['name'] : 'Central Ticket System';
+                                    ?>
                                     <div class="tracking-date"> <?= date('d', $help['date_created']); ?> <?= indo_month(date('m', $help['date_created'])); ?> <?= date('Y', $help['date_created']); ?> <span><?= date('H:i:s', $help['date_created']); ?></span></div>
-                                    <div class="tracking-content">Tiket dibuat oleh <?= $createby['name']; ?> (<?= $level; ?>)<span> </span></div>
+                                    <div class="tracking-content">Tiket dibuat oleh <?= $creatorName; ?> (<?= $level; ?>)<span> </span></div>
                                     <img src="<?= base_url('assets/images/help/' . $help['picture']) ?>" alt="" style="width: 250px;">
                                 </div>
                             </div>
@@ -299,18 +305,31 @@
                                             </svg>
                                             <!-- <i class="fas fa-circle"></i> -->
                                         </div>
-                                        <?php $users = $this->db->get_where('user', ['id' => $data->teknisi])->row_array() ?>
-                                        <?php if ($users['role_id'] == 1) {
-                                            $roleid = "Administrator";
-                                        } elseif ($users['role_id'] == 2) {
-                                            $roleid = "Pelanggan";
-                                        } elseif ($users['role_id'] == 3) {
-                                            $roleid = "Operator";
-                                        } elseif ($users['role_id'] == 5) {
-                                            $roleid = "Teknisi";
-                                        } ?>
+                                        <?php 
+                                        $users = !empty($data->teknisi) ? $this->db->get_where('user', ['id' => $data->teknisi])->row_array() : null; 
+                                        if (!empty($users)) {
+                                            $userName = $users['name'];
+                                            if ($users['role_id'] == 1) {
+                                                $roleid = "Administrator";
+                                            } elseif ($users['role_id'] == 2) {
+                                                $roleid = "Pelanggan";
+                                            } elseif ($users['role_id'] == 3) {
+                                                $roleid = "Operator";
+                                            } elseif ($users['role_id'] == 5) {
+                                                $roleid = "Teknisi";
+                                            } else {
+                                                $roleid = "Staff";
+                                            }
+                                            $userPhone = !empty($users['phone']) ? ' - ' . $users['phone'] : '';
+                                            $updateByText = "Update by {$userName} ({$roleid}){$userPhone}";
+                                        } else {
+                                            // Update berasal dari Central Ticket System
+                                            $actionLabel = !empty($data->action) ? $data->action : 'Central Ticket System';
+                                            $updateByText = "Update by " . $actionLabel;
+                                        }
+                                        ?>
                                         <div class="tracking-date"> <?= date('d', $data->date_update); ?> <?= indo_month(date('m', $data->date_update)); ?> <?= date('Y', $data->date_update); ?> <span><?= date('H:i:s', $data->date_update); ?></span></div>
-                                        <div class="tracking-content">Update by <?= $users['name']; ?> (<?= $roleid; ?>) - <?= $users['phone']; ?><span><?= $data->remark; ?></span></div>
+                                        <div class="tracking-content"><?= $updateByText; ?><span><?= $data->remark; ?></span></div>
                                         <!-- <img src="<?= base_url('assets/images/help/' . $help['picture']) ?>" alt=""> -->
                                     </div>
                                 </div>
