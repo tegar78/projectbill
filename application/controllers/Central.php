@@ -1,41 +1,97 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
  * Fallback stub untuk IDE / Intelephense saat file dibuka di luar environment CodeIgniter 3
  */
 if (!class_exists('CI_Controller')) {
-    class CI_Loader {
+    class CI_Loader
+    {
         public function database($params = '', $return = FALSE, $query_builder = NULL) {}
         public function model($model, $name = '', $db_conn = FALSE) {}
         public function view($view, $vars = array(), $return = FALSE) {}
     }
-    class CI_DB_query_builder {
-        public function select($select = '*', $escape = NULL) { return $this; }
-        public function from($from) { return $this; }
-        public function join($table, $cond, $type = '', $escape = NULL) { return $this; }
-        public function where($key, $value = NULL, $escape = NULL) { return $this; }
-        public function get($table = '', $limit = NULL, $offset = NULL) { return $this; }
-        public function get_where($table = '', $where = NULL, $limit = NULL, $offset = NULL) { return $this; }
-        public function result_array() { return array(); }
-        public function row_array() { return array(); }
-        public function insert($table = '', $set = NULL, $escape = NULL) { return TRUE; }
-        public function update($table = '', $set = NULL, $where = NULL, $limit = NULL) { return TRUE; }
-        public function insert_id() { return 0; }
-        public function table_exists($table_name) { return TRUE; }
+    class CI_DB_query_builder
+    {
+        public function select($select = '*', $escape = NULL)
+        {
+            return $this;
+        }
+        public function from($from)
+        {
+            return $this;
+        }
+        public function join($table, $cond, $type = '', $escape = NULL)
+        {
+            return $this;
+        }
+        public function where($key, $value = NULL, $escape = NULL)
+        {
+            return $this;
+        }
+        public function get($table = '', $limit = NULL, $offset = NULL)
+        {
+            return $this;
+        }
+        public function get_where($table = '', $where = NULL, $limit = NULL, $offset = NULL)
+        {
+            return $this;
+        }
+        public function result_array()
+        {
+            return array();
+        }
+        public function row_array()
+        {
+            return array();
+        }
+        public function insert($table = '', $set = NULL, $escape = NULL)
+        {
+            return TRUE;
+        }
+        public function update($table = '', $set = NULL, $where = NULL, $limit = NULL)
+        {
+            return TRUE;
+        }
+        public function insert_id()
+        {
+            return 0;
+        }
+        public function table_exists($table_name)
+        {
+            return TRUE;
+        }
     }
-    class CI_Input {
+    class CI_Input
+    {
         /** @var string|null */
         public $raw_input_stream;
-        public function post($index = NULL, $xss_clean = NULL) { return NULL; }
-        public function get($index = NULL, $xss_clean = NULL) { return NULL; }
+        public function post($index = NULL, $xss_clean = NULL)
+        {
+            return NULL;
+        }
+        public function get($index = NULL, $xss_clean = NULL)
+        {
+            return NULL;
+        }
     }
-    class CI_Output {
-        public function set_content_type($mime_type, $charset = NULL) { return $this; }
-        public function set_output($output) { return $this; }
-        public function set_status_header($code = 200, $text = '') { return $this; }
+    class CI_Output
+    {
+        public function set_content_type($mime_type, $charset = NULL)
+        {
+            return $this;
+        }
+        public function set_output($output)
+        {
+            return $this;
+        }
+        public function set_status_header($code = 200, $text = '')
+        {
+            return $this;
+        }
     }
-    class CI_Controller {
+    class CI_Controller
+    {
         /** @var CI_Loader */
         public $load;
         /** @var CI_DB_query_builder */
@@ -65,7 +121,7 @@ if (!class_exists('CI_Controller')) {
 class Central extends CI_Controller
 {
     // Konfigurasi Central Ticket System
-    private $central_url = 'http://central-ticket-system.test/api/v1';
+    private $central_url = 'https://central-ticketing.test/api/v1';
     private $api_key     = 'key-bill-001-secret-12345'; // Sesuaikan dengan api_key billing Anda di Central
 
     public function __construct()
@@ -93,6 +149,7 @@ class Central extends CI_Controller
             'c.user_profile as package_name',
             'c.cust_amount as monthly_fee',
             'c.c_status as status',
+            'c.connection',
             'o.code_odp as odp_name'
         ]);
         $this->db->from('customer c');
@@ -101,13 +158,21 @@ class Central extends CI_Controller
 
         // Normalisasi status ke format Central
         foreach ($customers as &$cust) {
-            $status = strtolower($cust['status'] ?? '');
-            if (strpos($status, 'aktif') !== false || strpos($status, 'active') !== false) {
-                $cust['status'] = 'active';
-            } elseif (strpos($status, 'isolir') !== false) {
+            $raw_status  = strtolower(trim($cust['status'] ?? ''));
+            $conn_status = (int)($cust['connection'] ?? 0);
+
+            if ($conn_status == 1 || strpos($raw_status, 'isolir') !== false) {
                 $cust['status'] = 'isolated';
-            } else {
+            } elseif (strpos($raw_status, 'non') !== false || strpos($raw_status, 'inactive') !== false) {
                 $cust['status'] = 'inactive';
+            } elseif (strpos($raw_status, 'free') !== false || strpos($raw_status, 'gratis') !== false) {
+                $cust['status'] = 'free';
+            } elseif (strpos($raw_status, 'menunggu') !== false || strpos($raw_status, 'waiting') !== false) {
+                $cust['status'] = 'inactive';
+            } elseif (strpos($raw_status, 'aktif') !== false || strpos($raw_status, 'active') !== false) {
+                $cust['status'] = 'active';
+            } else {
+                $cust['status'] = 'active';
             }
         }
 
@@ -254,7 +319,7 @@ class Central extends CI_Controller
                     $action_text = 'Update Status: ' . strtoupper($status);
                 }
             } else {
-                // INSERT tiket baru yang dibuat dari Central
+                // INSERT tiket baru yang dibuat dari Central (create_by = 0 menandakan dari Central Hub)
                 $insert_data = [
                     'no_ticket'       => !empty($ticket_number) ? $ticket_number : (!empty($remote_id) ? $remote_id : 'TKT-' . date('Ymd') . '-' . rand(100, 999)),
                     'no_services'     => !empty($no_services) ? $no_services : '',
@@ -263,8 +328,8 @@ class Central extends CI_Controller
                     'status'          => $status,
                     'help_type'       => 1,
                     'help_solution'   => 1,
-                    'teknisi'         => $create_by_id,
-                    'create_by'       => $create_by_id,
+                    'teknisi'         => 0,
+                    'create_by'       => 0,
                     'action'          => 0,
                     'estimation'      => 0,
                     'picture'         => '',
