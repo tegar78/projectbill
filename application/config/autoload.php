@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'login_helper', 'mywifi_helper');
+$autoload['helper'] = array('url', 'login_helper', 'mywifi_helper', 'telegram_helper');
 
 /*
 | -------------------------------------------------------------------

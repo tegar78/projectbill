@@ -37,6 +37,10 @@ if (!class_exists('CI_Controller')) {
         {
             return $this;
         }
+        public function result()
+        {
+            return array();
+        }
         public function result_array()
         {
             return array();
@@ -44,6 +48,38 @@ if (!class_exists('CI_Controller')) {
         public function row_array()
         {
             return array();
+        }
+        public function row()
+        {
+            return null;
+        }
+        public function affected_rows()
+        {
+            return 0;
+        }
+        public function set($key = '', $value = '', $escape = NULL)
+        {
+            return $this;
+        }
+        public function delete($table = '', $where = '')
+        {
+            return TRUE;
+        }
+        public function query($sql = '', $binds = FALSE, $return_object = NULL)
+        {
+            return $this;
+        }
+        public function order_by($orderby = '', $direction = '', $escape = NULL)
+        {
+            return $this;
+        }
+        public function limit($value = NULL, $offset = 0)
+        {
+            return $this;
+        }
+        public function num_rows()
+        {
+            return 0;
         }
         public function insert($table = '', $set = NULL, $escape = NULL)
         {

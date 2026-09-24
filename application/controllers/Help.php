@@ -1,5 +1,20 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * Controller Help (Lapor Gangguan & Manajemen Tiket)
+ *
+ * @property CI_Loader $load
+ * @property CI_DB_query_builder $db
+ * @property CI_Session $session
+ * @property CI_Input $input
+ * @property CI_Upload $upload
+ * @property Help_m $help_m
+ * @property Customer_m $customer_m
+ * @property Logs_m $logs_m
+ * @property Member_m $member_m
+ * @property User_m $user_m
+ * @property Template $template
+ */
 class Help extends CI_Controller
 {
     function __construct()
@@ -314,6 +329,9 @@ class Help extends CI_Controller
         redirect('help/setting');
     }
 
+    /**
+     * @param int|string $id
+     */
     public function deltype($id)
     {
         $solution = $this->db->get_where('help_solution', ['hs_help_id' => $id])->row_array();
@@ -330,6 +348,9 @@ class Help extends CI_Controller
         redirect('help/setting');
     }
 
+    /**
+     * @param int|string $id
+     */
     public function editsolution($id)
     {
         is_logged_in();
@@ -357,6 +378,9 @@ class Help extends CI_Controller
         redirect('help/setting');
     }
 
+    /**
+     * @param int|string $id
+     */
     public function delsolution($id)
     {
 
@@ -371,6 +395,9 @@ class Help extends CI_Controller
         redirect('help/setting');
     }
 
+    /**
+     * @param int|string $id
+     */
     public function showsolution($id)
     {
         is_logged_in();
@@ -452,6 +479,9 @@ class Help extends CI_Controller
         $data['customertiket'] = $this->customer_m->getCustomertiket()->result();
         $this->template->load('backend', 'backend/help/data', $data);
     }
+    /**
+     * @param int|string $id
+     */
     public function detail($id)
     {
         is_logged_in();
@@ -493,36 +523,28 @@ class Help extends CI_Controller
             ];
             $this->db->insert('help_timeline', $params);
             if ($this->db->affected_rows() > 0) {
-                $bot = $this->db->get('bot_telegram')->row_array();
-                if (!empty($bot['token']) && !empty($bot['id_group_teknisi'])) {
-                    $tokens = $bot['token']; // token bot
-                    $createby = $this->session->userdata('name');
-                    if ($this->session->userdata('role_id') == 1) {
-                        $level = 'Administrator';
-                    } elseif ($this->session->userdata('role_id') == 2) {
-                        $level = 'Pelanggan';
-                    } elseif ($this->session->userdata('role_id') == 3) {
-                        $level = 'Operator';
-                    } elseif ($this->session->userdata('role_id') == 4) {
-                        $level = 'Mitra';
-                    } else {
-                        $level = 'User';
-                    }
-                    $type = $this->db->get_where('help_type', ['help_id' => $cek['help_type']])->row_array();
-                    $solution = $this->db->get_where('help_solution', ['hs_id' => $cek['help_solution']])->row_array();
-                    $idgroupteknisi = $bot['id_group_teknisi'];
-                    $sendmessage = [
-                        'reply_markup' => json_encode([
-                            'inline_keyboard' => []
-                        ]),
-                        'resize_keyboard' => true,
-                        'parse_mode' => 'html',
-                        'text' => "<b>UPDATE TIKET </b>\nNo Tiket : {$cek['no_ticket']}\nNama : {$customer['name']}\nEmail : {$customer['email']}\nNo WA : {$customer['no_wa']}\nAlamat : {$customer['address']}\nTopik Gangguan : {$type['help_type']}\nLaporan : {$solution['hs_name']}\nKeterangan : {$post['remark']}\nStatus : {$post['status']}\nKeterangan : {$post['description']}\nCreate By : $createby ($level)",
-                        'chat_id' => $idgroupteknisi
+                $type = $this->db->get_where('help_type', ['help_id' => $cek['help_type']])->row_array();
+                $solution = $this->db->get_where('help_solution', ['hs_id' => $cek['help_solution']])->row_array();
+                $user_teknisi = $this->db->get_where('user', ['id' => $this->session->userdata('id')])->row_array();
 
-                    ];
-                    @file_get_contents("https://api.telegram.org/bot$tokens/sendMessage?" . http_build_query($sendmessage));
+                if (function_exists('notify_telegram_ticket')) {
+                    notify_telegram_ticket([
+                        'no_ticket'       => $cek['no_ticket'],
+                        'name'            => $customer['name'] ?? '',
+                        'no_services'     => $customer['no_services'] ?? '',
+                        'no_wa'           => $customer['no_wa'] ?? '',
+                        'address'         => $customer['address'] ?? '',
+                        'latitude'        => $customer['latitude'] ?? '',
+                        'longitude'       => $customer['longitude'] ?? '',
+                        'topic'           => $type['help_type'] ?? 'Gangguan Umum',
+                        'laporan'         => $solution['hs_name'] ?? ($cek['description'] ?? '-'),
+                        'remark'          => $post['description'] ?? '',
+                        'status'          => $post['status'],
+                        'technician_name' => $user_teknisi['name'] ?? ($this->session->userdata('name') ?: 'Teknisi'),
+                        'actor'           => ($this->session->userdata('name') ?: 'Teknisi') . ' (Ambil Tiket)',
+                    ], 'assigned');
                 }
+
                 $this->session->set_flashdata('success-sweet', 'Tiket berhasil diperbaharui');
             }
             redirect($_SERVER['HTTP_REFERER']);
@@ -549,37 +571,28 @@ class Help extends CI_Controller
         ];
         $this->db->insert('help_timeline', $params);
         if ($this->db->affected_rows() > 0) {
-            $bot = $this->db->get('bot_telegram')->row_array();
-            if (!empty($bot['token']) && !empty($bot['id_group_teknisi'])) {
-                $tokens = $bot['token']; // token bot
-                $createby = $this->session->userdata('name');
-                if ($this->session->userdata('role_id') == 1) {
-                    $level = 'Administrator';
-                } elseif ($this->session->userdata('role_id') == 2) {
-                    $level = 'Pelanggan';
-                } elseif ($this->session->userdata('role_id') == 3) {
-                    $level = 'Operator';
-                } elseif ($this->session->userdata('role_id') == 5) {
-                    $level = 'Teknisi';
-                } elseif ($this->session->userdata('role_id') == 4) {
-                    $level = 'Mitra';
-                } else {
-                    $level = 'User';
-                }
-                $type = $this->db->get_where('help_type', ['help_id' => $cek['help_type']])->row_array();
-                $solution = $this->db->get_where('help_solution', ['hs_id' => $cek['help_solution']])->row_array();
-                $idgroupteknisi = $bot['id_group_teknisi'];
-                $sendmessage = [
-                    'reply_markup' => json_encode([
-                        'inline_keyboard' => []
-                    ]),
-                    'resize_keyboard' => true,
-                    'parse_mode' => 'html',
-                    'text' => "<b>UPDATE TIKET {$type['help_type']}</b>\nNo Tiket : {$cek['no_ticket']}\nNama : {$customer['name']}\nEmail : {$customer['email']}\nNo WA : {$customer['no_wa']}\nAlamat : {$customer['address']}\nTopik Gangguan : {$type['help_type']}\nLaporan : {$solution['hs_name']}\nKeterangan : {$post['remark']}\nStatus : {$post['status']}\nKeterangan : {$post['description']}\nCreate By : $createby ($level)",
-                    'chat_id' => $idgroupteknisi
-                ];
-                @file_get_contents("https://api.telegram.org/bot$tokens/sendMessage?" . http_build_query($sendmessage));
+            $type = $this->db->get_where('help_type', ['help_id' => $cek['help_type']])->row_array();
+            $solution = $this->db->get_where('help_solution', ['hs_id' => $cek['help_solution']])->row_array();
+            $user_teknisi = !empty($cek['teknisi']) ? $this->db->get_where('user', ['id' => $cek['teknisi']])->row_array() : null;
+
+            if (function_exists('notify_telegram_ticket')) {
+                notify_telegram_ticket([
+                    'no_ticket'       => $cek['no_ticket'],
+                    'name'            => $customer['name'] ?? '',
+                    'no_services'     => $customer['no_services'] ?? '',
+                    'no_wa'           => $customer['no_wa'] ?? '',
+                    'address'         => $customer['address'] ?? '',
+                    'latitude'        => $customer['latitude'] ?? '',
+                    'longitude'       => $customer['longitude'] ?? '',
+                    'topic'           => $type['help_type'] ?? 'Gangguan Umum',
+                    'laporan'         => $solution['hs_name'] ?? ($cek['description'] ?? '-'),
+                    'remark'          => $post['description'] ?? '',
+                    'status'          => $post['status'],
+                    'technician_name' => $user_teknisi['name'] ?? ($this->session->userdata('name') ?: 'Teknisi'),
+                    'actor'           => ($this->session->userdata('name') ?: 'Petugas') . ' (' . ($this->session->userdata('role_id') == 5 ? 'Teknisi' : 'Admin') . ')',
+                ], 'status_updated');
             }
+
             $this->session->set_flashdata('success-sweet', 'Tiket berhasil diperbaharui');
         }
         redirect($_SERVER['HTTP_REFERER']);
@@ -607,6 +620,29 @@ class Help extends CI_Controller
             ];
             $this->db->insert('help_timeline', $params);
             if ($this->db->affected_rows() > 0) {
+                $customer = $this->db->get_where('customer', ['no_services' => $cek['no_services']])->row_array();
+                $type = $this->db->get_where('help_type', ['help_id' => $cek['help_type']])->row_array();
+                $solution = $this->db->get_where('help_solution', ['hs_id' => $cek['help_solution']])->row_array();
+                $user_teknisi = !empty($cek['teknisi']) ? $this->db->get_where('user', ['id' => $cek['teknisi']])->row_array() : null;
+
+                if (function_exists('notify_telegram_ticket')) {
+                    notify_telegram_ticket([
+                        'no_ticket'       => $cek['no_ticket'],
+                        'name'            => $customer['name'] ?? '',
+                        'no_services'     => $customer['no_services'] ?? '',
+                        'no_wa'           => $customer['no_wa'] ?? '',
+                        'address'         => $customer['address'] ?? '',
+                        'latitude'        => $customer['latitude'] ?? '',
+                        'longitude'       => $customer['longitude'] ?? '',
+                        'topic'           => $type['help_type'] ?? 'Gangguan Umum',
+                        'laporan'         => $solution['hs_name'] ?? ($cek['description'] ?? '-'),
+                        'remark'          => !empty($post['description']) ? $post['description'] : 'Tiket telah diselesaikan.',
+                        'status'          => 'close',
+                        'technician_name' => $user_teknisi['name'] ?? ($this->session->userdata('name') ?: 'Teknisi'),
+                        'actor'           => ($this->session->userdata('name') ?: 'Petugas/Pelanggan') . ' (Selesai Tiket)',
+                    ], 'closed');
+                }
+
                 $this->session->set_flashdata('success-sweet', 'Tiket berhasil diperbaharui');
             }
         }
