@@ -1,3 +1,11 @@
+<?php
+$subtotal = 0;
+if (isset($invoice_detail) && is_object($invoice_detail)) {
+    foreach ($invoice_detail->result() as $c => $data) {
+        $subtotal += (int) $data->total;
+    }
+}
+?>
 <link rel="stylesheet" href="<?= base_url('assets/') ?>frontend/libraries/bootstrap/css/bootstrap.css">
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 
@@ -127,8 +135,10 @@
     <title><?= $title ?> - <?= $bill['invoice'] ?> a/n <?= $bill['name'] ?> Periode <?= indo_month($bill['month']) ?> <?= $bill['year'] ?></title>
     <div class="page">
         <div class="title">
-            <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="">
-            <br>
+            <?php if (!empty($company['logo']) && file_exists(FCPATH . 'assets/images/' . $company['logo'])) { ?>
+                <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="">
+                <br>
+            <?php } ?>
             <?= $company['company_name']; ?>
             <br>
             <i> <?= $company['address'] ?></i>
@@ -180,14 +190,14 @@
                         <div class="col-12">Tanggal Cetak : <?= date('d M Y H:i:s') ?></div>
 
                     </div>
-                    <?php if ($bill['create_by'] != 0) { ?>
+                    <?php if (!empty($bill['create_by'])) { ?>
                         <?php
                         $user_id =  $bill['create_by'];
                         $query = "SELECT *
                             FROM `user` WHERE `user`.`id` =  $user_id";
                         $kolektor = $this->db->query($query)->row_array(); ?>
                         <div class="row">
-                            <div class="col-12">Diterima Oleh : <?= $kolektor['name'] ?></div>
+                            <div class="col-12">Diterima Oleh : <?= isset($kolektor['name']) ? $kolektor['name'] : '-' ?></div>
 
                         </div>
 
@@ -250,7 +260,7 @@
                         <div class="col-6">Tanggal Cetak</div>
                         <div class="col-6 left-content">: <?= date('d M Y H:i:s') ?></div>
                     </div>
-                    <?php if ($bill['create_by'] != 0) { ?>
+                    <?php if (!empty($bill['create_by'])) { ?>
                         <?php
                         $user_id =  $bill['create_by'];
                         $query = "SELECT *
@@ -258,7 +268,7 @@
                         $kolektor = $this->db->query($query)->row_array(); ?>
                         <div class="row">
                             <div class="col-6">Diterima Oleh</div>
-                            <div class="col-6 left-content">: <?= $kolektor['name'] ?></div>
+                            <div class="col-6 left-content">: <?= isset($kolektor['name']) ? $kolektor['name'] : '-' ?></div>
                         </div>
 
                     <?php } ?>

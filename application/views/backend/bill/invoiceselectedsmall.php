@@ -235,7 +235,9 @@
                         <div class="col-8 verticalLine">
                             <div class="row invoice">
                                 <div class="col-5 text-center">
-                                    <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="logo">
+                                    <?php if (!empty($company['logo']) && file_exists(FCPATH . 'assets/images/' . $company['logo'])) { ?>
+                                        <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="logo">
+                                    <?php } ?>
 
                                 </div>
                                 <div class="col">

@@ -1,3 +1,18 @@
+<?php
+if (!isset($package) || !is_array($package)) {
+    $package = $this->db->get('package')->row_array();
+}
+if (empty($package)) {
+    $package = ['invoice_no' => 0];
+}
+
+$subtotal = 0;
+if (isset($invoice_detail) && is_object($invoice_detail)) {
+    foreach ($invoice_detail->result() as $c => $data) {
+        $subtotal += (int) $data->total;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -129,7 +144,9 @@
                         <span>No HP : <?= $company['whatsapp'] ?> email : <?= $company['email'] ?></span>
                     </div>
                     <div class="col-4 text-right">
-                        <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="logo">
+                        <?php if (!empty($company['logo']) && file_exists(FCPATH . 'assets/images/' . $company['logo'])) { ?>
+                            <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="logo">
+                        <?php } ?>
 
                     </div>
                 </div>
@@ -300,7 +317,7 @@
                         </tr>
                     </tfoot>
                 </table>
-                <?php if ($company['watermark'] == 1) { ?>
+                <?php if (!empty($company['watermark']) && $company['watermark'] == 1 && !empty($company['logo']) && file_exists(FCPATH . 'assets/images/' . $company['logo'])) { ?>
                     <div class="watermark-img" style="text-align: center;">
                         <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="" style="width: 450px;">
                     </div>
@@ -386,15 +403,15 @@
                             </div>
 
                         </div>
-                        <?php if ($bill['create_by'] != 0) { ?>
+                        <?php if (!empty($bill['create_by'])) { ?>
                             <?php
                             $user_id =  $bill['create_by'];
                             $query = "SELECT *
                             FROM `user` WHERE `user`.`id` =  $user_id";
                             $operator = $this->db->query($query)->row_array(); ?>
                             <div class="row mt-2">
-                                <div class="col"> Diterima Oleh : <?= $operator['name'] ?> </div>
-                                <div class="col">Pada Tanggal <?= date('d M Y', $bill['date_payment']) ?></div>
+                                <div class="col"> Diterima Oleh : <?= isset($operator['name']) ? $operator['name'] : '-' ?> </div>
+                                <div class="col">Pada Tanggal <?= !empty($bill['date_payment']) ? date('d M Y', $bill['date_payment']) : '-' ?></div>
                             </div>
                         <?php } ?>
                     </footer>
@@ -406,10 +423,12 @@
             <div class="page">
                 <div class="row">
                     <div class="col-6">
-                        <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="logo" style="width: 200px;">
+                        <?php if (!empty($company['logo']) && file_exists(FCPATH . 'assets/images/' . $company['logo'])) { ?>
+                            <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="logo" style="width: 200px;">
+                        <?php } ?>
                     </div>
                     <div class="col-6 text-right">
-                        <?php $link = "www.$_SERVER[HTTP_HOST]"; ?>
+                        <?php $link = isset($_SERVER['HTTP_HOST']) ? "www." . $_SERVER['HTTP_HOST'] : ''; ?>
                         <span> <?= $link; ?> <i class="fa fa-globe"></i></span> <br>
                         <span> <?= $company['email'] ?> <i class="fa fa-envelope"></i></span> <br>
                         <span> <?= $company['phonecode'] ?><?= $company['whatsapp'] ?> <i class="fa fa-phone"></i></span> <br>

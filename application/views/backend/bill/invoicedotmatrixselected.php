@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?> - <?= $data['invoice'] ?> a/n <?= $data['name'] ?> Periode <?= indo_month($data->month) ?> <?= $data->year ?></title>
+    <title><?= $title ?> - Cetak <?= date('d M Y') ?></title>
     <link rel="stylesheet" href="<?= base_url('assets/') ?>frontend/libraries/bootstrap/css/bootstrap.css">
 </head>
 
@@ -133,7 +133,9 @@
                 <div class="subpage">
                     <div class="row invoice">
                         <div class="col-5 text-center">
-                            <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="logo">
+                            <?php if (!empty($company['logo']) && file_exists(FCPATH . 'assets/images/' . $company['logo'])) { ?>
+                                <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="logo">
+                            <?php } ?>
                             <h4><?= $company['company_name']; ?></h4>
                             <span><?= $company['address']; ?></span><br>
                             <span><?= $company['whatsapp']; ?></span>

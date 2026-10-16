@@ -1,3 +1,11 @@
+<?php
+$subtotal = 0;
+if (isset($invoice_detail) && is_object($invoice_detail)) {
+    foreach ($invoice_detail->result() as $c => $data) {
+        $subtotal += (int) $data->total;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -244,7 +252,9 @@
                     <div class="col-8 verticalLine">
                         <div class="row invoice">
                             <div class="col-5 text-center">
-                                <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="logo">
+                                <?php if (!empty($company['logo']) && file_exists(FCPATH . 'assets/images/' . $company['logo'])) { ?>
+                                    <img src="<?= base_url('assets/images/' . $company['logo']) ?>" alt="logo">
+                                <?php } ?>
 
                             </div>
                             <div class="col">
@@ -400,7 +410,7 @@
                                     <h6 style="font-weight:   bold;  font-size: 14;letter-spacing: 2px; color:green">LUNAS</h6>
                                     <span style=" font-size: 14;letter-spacing: 2px;">Pembayaran : <?= $bill['metode_payment']; ?></span>
                                     <br>
-                                    <span style=" font-size: 14;letter-spacing: 2px;"> <?= date('d M Y h:i:s', $bill['date_payment']); ?></span>
+                                    <span style=" font-size: 14;letter-spacing: 2px;"> <?= !empty($bill['date_payment']) ? date('d M Y h:i:s', $bill['date_payment']) : '-'; ?></span>
                                     <br>
                                     <?php $create_by = $bill['create_by'];
                                     $query = "SELECT *
@@ -409,7 +419,7 @@
                                     $create = $this->db->query($query)->row_array();
                                     ?>
                                     <?php if ($bill['create_by'] > 0) { ?>
-                                        <span><?= $create['name'] ?></span>
+                                        <span><?= isset($create['name']) ? $create['name'] : '-' ?></span>
                                     <?php } ?>
 
                                     <br>

@@ -186,6 +186,7 @@ class Central extends CI_Controller
             'c.cust_amount as monthly_fee',
             'c.c_status as status',
             'c.connection',
+            'c.no_port_odp',
             'o.code_odp as odp_name'
         ]);
         $this->db->from('customer c');

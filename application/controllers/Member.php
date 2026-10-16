@@ -285,6 +285,7 @@ class Member extends CI_Controller
         $data['other'] = $this->db->get('other')->row_array();
         $data['bank'] = $this->setting_m->getBank()->result();
         $data['p_item'] = $this->package_m->getPItem()->result();
+        $data['package'] = $this->db->get('package')->row_array();
         $this->load->library('ciqrcode'); //pemanggilan library QR CODE
         $config['cacheable']    = true; //boolean, the default is true
         $config['cachedir']     = './assets/'; //string, the default is application/cache/

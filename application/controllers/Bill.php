@@ -1427,6 +1427,7 @@ class Bill extends CI_Controller
         $data['bank'] = $this->setting_m->getBank()->result();
         $data['p_item'] = $this->package_m->getPItem()->result();
         $data['other'] = $this->db->get('other')->row_array();
+        $data['package'] = $this->db->get('package')->row_array();
         $this->load->library('ciqrcode'); //pemanggilan library QR CODE
         $config['cacheable']    = true; //boolean, the default is true
         $config['cachedir']     = './assets/'; //string, the default is application/cache/
@@ -1531,6 +1532,7 @@ class Bill extends CI_Controller
 
         $data['p_item'] = $this->package_m->getPItem()->result();
         $data['other'] = $this->db->get('other')->row_array();
+        $data['package'] = $this->db->get('package')->row_array();
         $filename = 'INVOICE-' . $invoice . '-' . $no_services;
         $other = $this->db->get('other')->row_array();
         if ($other['inv_thermal'] == 1) {
@@ -1631,6 +1633,7 @@ class Bill extends CI_Controller
             }
             $data['bill'] = $this->bill_m->getInvoiceSelected($invoice)->result();
             $data['other'] = $this->db->get('other')->row_array();
+            $data['package'] = $this->db->get('package')->row_array();
             $data['bank'] = $this->setting_m->getBank()->result();
             $data['p_item'] = $this->package_m->getPItem()->result();
             $this->load->view('backend/bill/invoiceselectedsmall', $data);
@@ -2993,6 +2996,7 @@ class Bill extends CI_Controller
         $data['p_item'] = $this->package_m->getPItem()->result();
 
         $data['other'] = $this->db->get('other')->row_array();
+        $data['package'] = $this->db->get('package')->row_array();
         $this->load->view('backend/bill/invoicedotmatrix', $data);
     }
     public function printinvoicesmall($invoice, $a = null, $b = null, $c = null, $d = null)
@@ -3075,6 +3079,7 @@ class Bill extends CI_Controller
         $data['p_item'] = $this->package_m->getPItem()->result();
 
         $data['other'] = $this->db->get('other')->row_array();
+        $data['package'] = $this->db->get('package')->row_array();
         $this->load->view('backend/bill/invoicesmall', $data);
     }
     public function printinvoicedotmatrixselected()
@@ -3102,6 +3107,7 @@ class Bill extends CI_Controller
             }
             $data['bill'] = $this->bill_m->getInvoiceSelected($invoice)->result();
             $data['other'] = $this->db->get('other')->row_array();
+            $data['package'] = $this->db->get('package')->row_array();
             $data['bank'] = $this->setting_m->getBank()->result();
             $data['p_item'] = $this->package_m->getPItem()->result();
 
