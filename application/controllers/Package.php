@@ -96,67 +96,68 @@ class Package extends CI_Controller
 
     public function addPItem()
     {
-        $config['upload_path']          = './assets/images/package';
-        $config['allowed_types']        = 'gif|jpg|png|jpeg';
-        $config['max_size']             = 10048; // 10 Mb
-        $config['file_name']             = 'package-' . date('ymd') . '-' . substr(md5(rand()), 0, 10);
-        $this->load->library('upload', $config);
         $post = $this->input->post(null, TRUE);
         if (!empty($_FILES['picture']['name'])) {
+            $config['upload_path']          = './assets/images/package';
+            $config['allowed_types']        = 'gif|jpg|png|jpeg';
+            $config['max_size']             = 10048; // 10 Mb
+            $config['file_name']            = 'package-' . date('ymd') . '-' . substr(md5(rand()), 0, 10);
+            $this->load->library('upload', $config);
             if ($this->upload->do_upload('picture')) {
-                $post['picture'] =  $this->upload->data('file_name');
+                $post['picture'] = $this->upload->data('file_name');
                 $this->package_m->addPItem($post);
                 if ($this->db->affected_rows() > 0) {
                     $this->session->set_flashdata('success-sweet', 'Data Item Layanan berhasil disimpan');
                 }
-                echo "<script>window.location='" . site_url('package/item') . "'; </script>";
+                redirect('package/item');
             } else {
-                $post['picture'] =  null;
-                $this->package_m->addPItem($post);
-                if ($this->db->affected_rows() > 0) {
-                    $this->session->set_flashdata('success-sweet', 'Data Item Layanan berhasil disimpan');
-                }
-                echo "<script>window.location='" . base_url('package/item') . "'; </script>";
+                $error = $this->upload->display_errors();
+                $this->session->set_flashdata('error-sweet', $error);
+                redirect('package/item');
             }
         } else {
-            $error = $this->upload->display_errors();
-            $this->session->set_flashdata('error-sweet', $error);
-            echo "<script>window.location='" . base_url('package/item') . "'; </script>";
+            $post['picture'] = '';
+            $this->package_m->addPItem($post);
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('success-sweet', 'Data Item Layanan berhasil disimpan');
+            }
+            redirect('package/item');
         }
     }
     public function editPItem()
     {
-        $config['upload_path']          = './assets/images/package';
-        $config['allowed_types']        = 'gif|jpg|png|jpeg';
-        $config['max_size']             = 10048; // 10 Mb
-        $config['file_name']             = 'package-' . date('ymd') . '-' . substr(md5(rand()), 0, 10);
-        $this->load->library('upload', $config);
         $post = $this->input->post(null, TRUE);
         if (!empty($_FILES['picture']['name'])) {
+            $config['upload_path']          = './assets/images/package';
+            $config['allowed_types']        = 'gif|jpg|png|jpeg';
+            $config['max_size']             = 10048; // 10 Mb
+            $config['file_name']            = 'package-' . date('ymd') . '-' . substr(md5(rand()), 0, 10);
+            $this->load->library('upload', $config);
             if ($this->upload->do_upload('picture')) {
                 $package = $this->package_m->getPItem($post['p_item_id'])->row();
-                if ($package->picture != null) {
+                if ($package && !empty($package->picture)) {
                     $target_file = './assets/images/package/' . $package->picture;
-                    unlink($target_file);
+                    if (file_exists($target_file)) {
+                        unlink($target_file);
+                    }
                 }
-                $post['picture'] =  $this->upload->data('file_name');
+                $post['picture'] = $this->upload->data('file_name');
                 $this->package_m->editPItem($post);
                 if ($this->db->affected_rows() > 0) {
                     $this->session->set_flashdata('success-sweet', 'Data Item layanan berhasil diperbaharui');
                 }
-                echo "<script>window.location='" . site_url('package/item') . "'; </script>";
+                redirect('package/item');
             } else {
-                $post['picture'] =  null;
-                $this->package_m->editPItem($post);
-                if ($this->db->affected_rows() > 0) {
-                    $this->session->set_flashdata('success-sweet', 'Data Item layanan berhasil diperbaharui');
-                }
-                echo "<script>window.location='" . base_url('package/item') . "'; </script>";
+                $error = $this->upload->display_errors();
+                $this->session->set_flashdata('error-sweet', $error);
+                redirect('package/item');
             }
         } else {
-            $error = $this->upload->display_errors();
-            $this->session->set_flashdata('error-sweet', $error);
-            echo "<script>window.location='" . base_url('package/item') . "'; </script>";
+            $this->package_m->editPItem($post);
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('success-sweet', 'Data Item layanan berhasil diperbaharui');
+            }
+            redirect('package/item');
         }
     }
     public function deletePItem()
@@ -173,9 +174,11 @@ class Package extends CI_Controller
             redirect('package/Item');
         } else {
             $package = $this->package_m->getPItem($p_item_id)->row();
-            if ($package->picture != null) {
+            if ($package && !empty($package->picture)) {
                 $target_file = './assets/images/package/' . $package->picture;
-                unlink($target_file);
+                if (file_exists($target_file)) {
+                    unlink($target_file);
+                }
             }
         }
 

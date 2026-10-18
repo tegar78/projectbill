@@ -80,15 +80,17 @@ class Package_m extends CI_Model
         $params = [
             'name' => htmlspecialchars($post['name']),
             'price' => $post['price'],
-            'is_active' => $post['is_active'],
-            'public' => $post['public'],
+            'picture' => !empty($post['picture']) ? $post['picture'] : '',
+            'description' => htmlspecialchars($post['description'] ?? ''),
             'category_id' => $post['category'],
-            'description' => htmlspecialchars($post['description']),
-            'date_created' => time()
+            'date_created' => time(),
+            'date_update' => 0,
+            'public' => $post['public'],
+            'is_active' => $post['is_active'],
+            'create_by' => !empty($this->session->userdata('id')) ? $this->session->userdata('id') : 0,
+            'role_id' => !empty($this->session->userdata('role_id')) ? $this->session->userdata('role_id') : 0,
+            'package_mitra' => 0
         ];
-        if (!empty($_FILES['picture']['name'])) {
-            $params['picture'] = $post['picture'];
-        }
         $this->db->insert('package_item', $params);
     }
     public function editPItem($post)
@@ -99,10 +101,10 @@ class Package_m extends CI_Model
             'public' => $post['public'],
             'is_active' => $post['is_active'],
             'category_id' => $post['category'],
-            'description' => htmlspecialchars($post['description']),
-            'date_created' => time()
+            'description' => htmlspecialchars($post['description'] ?? ''),
+            'date_update' => time()
         ];
-        if (!empty($_FILES['picture']['name'])) {
+        if (!empty($post['picture'])) {
             $params['picture'] = $post['picture'];
         }
         $this->db->where('p_item_id', $post['p_item_id']);

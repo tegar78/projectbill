@@ -91,8 +91,8 @@
                      <label>Kategori *</label>
                      <select name="category" id="" class="form-control" required>
                          <option value="">- Pilih -</option>
-                         <?php foreach ($p_category as $key => $data) { ?>
-                             <option value="<?= $data->p_category_id ?>"><?= $data->name ?></option>
+                         <?php foreach ($p_category as $key => $cat) { ?>
+                             <option value="<?= $cat->p_category_id ?>"><?= $cat->name ?></option>
                          <?php } ?>
                      </select>
                  </div>
@@ -183,8 +183,8 @@
                          <label>Kategori *</label>
                          <select name="category" id="" class="form-control" required>
                              <option value="<?= $data->p_category_id ?>"><?= $data->category_name ?></option>
-                             <?php foreach ($p_category as $key => $data) { ?>
-                                 <option value="<?= $data->p_category_id ?>"><?= $data->name ?></option>
+                             <?php foreach ($p_category as $key => $cat) { ?>
+                                 <option value="<?= $cat->p_category_id ?>"><?= $cat->name ?></option>
                              <?php } ?>
                          </select>
                      </div>
